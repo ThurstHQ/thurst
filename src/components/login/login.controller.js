@@ -4,14 +4,20 @@
         .module('app.login')
         .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = [];
-    function LoginCtrl() {
+    LoginCtrl.$inject = ['loginService'];
+    function LoginCtrl(loginService) {
         var vm = this;
 
         vm.login = login;
 
         function login(user) {
-            console.log(user);
+            loginService.login(user).then(function (res) {
+                if (res) {
+                    $state.go('verification');
+                } else {
+                    $state.go('messages');
+                }
+            });
         }
     }
 })();
