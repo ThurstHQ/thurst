@@ -20,7 +20,7 @@
             },
             verification: function (data) {
                 notificationsService.loading();
-                return $http.post(Settings.url + 'api/verification', data).then(function (res) {
+                return $http.post(Settings.url + 'api/verify', data).then(function (res) {
                     console.log(res);
                     notificationsService.hide();
                 }, function (error) {

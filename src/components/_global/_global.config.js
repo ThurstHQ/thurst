@@ -36,5 +36,6 @@
     runAppConfig.$inject = [];
 
     function runAppConfig() {
+        // window.HelpshiftPlugin.install("<API_KEY>", "<DOMAIN_NAME>", "<APP_ID>");
     }
 })();

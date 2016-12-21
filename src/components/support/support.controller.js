@@ -7,5 +7,16 @@
     SupportCtrl.$inject = [];
     function SupportCtrl() {
         var vm = this;
+
+        vm.showFAQs = showFAQs;
+        vm.showConversation = showConversation;
+
+        function showFAQs() {
+            window.HelpshiftPlugin.showFAQs();
+        }
+
+        function showConversation() {
+            window.HelpshiftPlugin.showConversation();
+        }
     }
 })();

@@ -11,6 +11,7 @@
         $stateProvider
             .state('verification', {
                 url: '/verification',
+                params: {id: null},
                 cache: false,
                 templateUrl: 'components/verification/verification.html',
                 controller: 'VerificationCtrl as vm'

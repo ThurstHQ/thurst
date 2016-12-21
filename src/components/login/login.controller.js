@@ -13,11 +13,11 @@
         function login(user) {
             loginService.login(user).then(function (res) {
                 if (res) {
-                    $state.go('verification');
+                    $state.go('verification', {id: res.id});
                 } else {
                     $state.go('messages');
                 }
-            },function(error){
+            }, function (error) {
                 $state.go('error');
             });
         }
