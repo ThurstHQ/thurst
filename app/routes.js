@@ -9,24 +9,28 @@ module.exports = function(app, passport) {
     });
 
     // process the login form
-    // app.post('/login', do all our passport stuff here);
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
+
     app.get('/signup', function(req, res) {
-
-        // render the page and pass in any flash data if it exists
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
     // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+    app.post('/signup', function (req, res, next) {
+            passport.authenticate('local-signup', function (err, user, info) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).send({message: err.message})
+                }
+                passportAuthLogic(err, res, req, next, user);
+                })(req, res, next)
+        }
+    );
 
     // =====================================
     // PROFILE SECTION =====================
@@ -57,4 +61,27 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function passportAuthLogic(err, res, req, next, user) {
+    if (err) {
+        // return next(err);
+        return res.status(401).send({message: err.message});
+    }
+    if (!user) {
+        return res.status(401).send({message: req.signMessage});
+    }
+
+    req.logIn(user, function (err) {
+        if (err) {
+            return next(err);
+        }
+        var payload = {
+            id: user._id,
+            salt: user.salt
+        };
+        var token = jwt.sign(payload, settings.config.tokenSalt);
+
+        return res.send({user: user, token: token});
+    });
 }
