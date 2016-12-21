@@ -30,23 +30,9 @@ require('./config/passport')(passport);
 
 var apiRoutes = express.Router();
 
-// apiRoutes.post('/signup', function(req, res) {
-//     if (!req.body.email || !req.body.password) {
-//         res.json({success: false, msg: 'Please pass email and password.'});
-//     } else {
-//         var newUser = new User({
-//             email: req.body.email,
-//             password: req.body.password
-//         });
-//         // save the user
-//         newUser.save(function(err) {
-//             if (err) {
-//                 return res.json({success: false, msg: 'Email already exists.'});
-//             }
-//             res.json({success: true, msg: 'Successful created new user.'});
-//         });
-//     }
-// });
+apiRoutes.get('/', function(req, res) {
+    res.send('Server working very well');
+});
 
 apiRoutes.post('/authenticate', function(req, res) {
     //TODO: if (!req.body.email)
