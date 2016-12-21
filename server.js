@@ -4,25 +4,17 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var passport	= require('passport');
-var config      = require('./config/database'); // get db config file
-var User        = require('./app/models/user'); // get the mongoose model
+var config      = require('./config/database');
+var User        = require('./app/models/user');
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
 
-// get our request parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// log to console
 app.use(morgan('dev'));
 
-// Use the passport package in our application
 app.use(passport.initialize());
-
-// demo Route (GET http://localhost:8080)
-app.get('/', function(req, res) {
-    res.send('Hello! The API is at http://localhost:' + port + '/api');
-});
 
 mongoose.connect(config.database);
 
@@ -30,23 +22,23 @@ require('./config/passport')(passport);
 
 var apiRoutes = express.Router();
 
-apiRoutes.post('/signup', function(req, res) {
-    if (!req.body.email || !req.body.password) {
-        res.json({success: false, msg: 'Please pass email and password.'});
-    } else {
-        var newUser = new User({
-            email: req.body.email,
-            password: req.body.password
-        });
-        // save the user
-        newUser.save(function(err) {
-            if (err) {
-                return res.json({success: false, msg: 'Email already exists.'});
-            }
-            res.json({success: true, msg: 'Successful created new user.'});
-        });
-    }
-});
+// apiRoutes.post('/signup', function(req, res) {
+//     if (!req.body.email || !req.body.password) {
+//         res.json({success: false, msg: 'Please pass email and password.'});
+//     } else {
+//         var newUser = new User({
+//             email: req.body.email,
+//             password: req.body.password
+//         });
+//         // save the user
+//         newUser.save(function(err) {
+//             if (err) {
+//                 return res.json({success: false, msg: 'Email already exists.'});
+//             }
+//             res.json({success: true, msg: 'Successful created new user.'});
+//         });
+//     }
+// });
 
 apiRoutes.post('/authenticate', function(req, res) {
     User.findOne({
@@ -55,7 +47,16 @@ apiRoutes.post('/authenticate', function(req, res) {
         if (err) throw err;
 
         if (!user) {
-            res.send({success: false, msg: 'Authentication failed. User not found.'});
+            var newUser = new User({
+                email: req.body.email,
+                password: req.body.password
+            });
+            newUser.save(function(err) {
+                if (err) {
+                    return res.json({success: false, msg: err});
+                }
+                res.json({success: true, msg: 'Successful created new user.'});
+            });
         } else {
             // check if password matches
             user.comparePassword(req.body.password, function (err, isMatch) {
