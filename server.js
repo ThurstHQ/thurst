@@ -73,7 +73,7 @@ apiRoutes.post('/authenticate', function(req, res) {
                 if (err) {
                     return res.json({success: false, msg: err});
                 }
-                let newMail = {
+                var newMail = {
                     from: 'Thurst <noreply@thurst.com>',
                     to: userEmail,
                     subject: 'Verification email',
