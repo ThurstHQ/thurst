@@ -14,6 +14,12 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    verified: {
+        type: Boolean
+    },
+    verify_token: {
+        type: String
     }
 });
 

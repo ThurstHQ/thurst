@@ -8,6 +8,14 @@ var config      = require('./config/database');
 var User        = require('./app/models/user');
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
+var randomstring = require('randomstring');
+
+var mailConfig = require('./config/mailgun');
+
+var mailgun = require('mailgun-js')({
+    apiKey: mailConfig.key,
+    domain: mailConfig.domain
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -41,21 +49,41 @@ var apiRoutes = express.Router();
 // });
 
 apiRoutes.post('/authenticate', function(req, res) {
+    //TODO: if (!req.body.email)
+    var userEmail = req.body.email;
+
     User.findOne({
-        email: req.body.email
+        email: userEmail
     }, function(err, user) {
-        if (err) throw err;
+        if (err) return res.status(403).json({"message": err.message});
 
         if (!user) {
+            var verificationToken = randomstring.generate({ length: 4 });
+
             var newUser = new User({
-                email: req.body.email,
-                password: req.body.password
+                email: userEmail,
+                password: req.body.password,
+                verified: false,
+                verify_token: verificationToken
             });
-            newUser.save(function(err) {
+            // Create user if not found him
+            newUser.save(function(err, user) {
+                console.log('user');
+                console.log(user);
                 if (err) {
                     return res.json({success: false, msg: err});
                 }
-                res.json({success: true, msg: 'Successful created new user.'});
+                let newMail = {
+                    from: 'Thurst <noreply@thurst.com>',
+                    to: userEmail,
+                    subject: 'Verification email',
+                    text: 'Please confirm your email address. Code: ' + verificationToken
+                };
+                mailgun.messages().send(newMail, function (error, body) {
+                    if (error) console.log(error);
+                });
+
+                res.json({success: true, newuser: true, msg: 'Successful created new user.', id: user.id});
             });
         } else {
             // check if password matches
@@ -64,11 +92,33 @@ apiRoutes.post('/authenticate', function(req, res) {
                     // if user is found and password is right create a token
                     var token = jwt.encode(user, config.secret);
                     // return the information including token as JSON
-                    res.json({success: true, token: 'JWT ' + token});
+                    res.json({success: true, newuser: false, token: 'JWT ' + token});
                 } else {
-                    res.send({success: false, msg: 'Authentication failed. Wrong password.'});
+                    res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
                 }
             });
+        }
+    });
+});
+
+apiRoutes.post('/verify', function (req, res) {
+    var code = req.body.code;
+    var userId = req.body.id;
+
+    User.findOne({ _id: userId }, function (err, user) {
+        if (user.verify_token == code) {
+            console.log('that token is correct! Verify the user');
+
+            User.findOneAndUpdate({_id: userId}, {'verified': true}, function (err, resp) {
+                if (err) return res.status(500).send({'message': err.message});
+                console.log('The user has been verified!');
+            });
+
+            var token = jwt.encode(user, config.secret);
+
+            return res.json({success: true, newuser: false, token: 'JWT ' + token});
+        } else {
+            return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
         }
     });
 });
@@ -78,14 +128,14 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
     if (token) {
         var decoded = jwt.decode(token, config.secret);
         User.findOne({
-            email: decoded.email
+            name: decoded.name
         }, function(err, user) {
             if (err) throw err;
 
             if (!user) {
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
-                res.json({success: true, msg: 'Welcome in the member area ' + user.email + '!'});
+                res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
             }
         });
     } else {
