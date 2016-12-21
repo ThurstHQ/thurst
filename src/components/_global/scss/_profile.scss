@@ -1,0 +1,68 @@
+.profile-content {
+  .row {
+    padding: 0;
+    .col {
+      padding: 0;
+      label.item.item-input {
+        padding: 0;
+        height: 28px;
+        border: none;
+        border-bottom: 1px solid $color-border-login-input;
+        margin: 15px 0;
+        .icon {
+          min-width: 28px;
+          text-align: center;
+          font-size: 20px;
+        }
+        select {
+          right: inherit;
+          padding-left: 5px;
+          max-width: 100%;
+          width: 100%;
+          direction: ltr;
+          font-size: 16px;
+          font-family: 'RobotoRegular';
+          color: $color-login-text;
+        }
+        input {
+          font-size: 16px;
+          font-family: 'RobotoRegular';
+          color: $color-login-text;
+        }
+      }
+      &:last-child {
+        label.item.item-input {
+          margin-left: 10px;
+        }
+      }
+    }
+
+  }
+  label.item.item-input {
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid $color-border-login-input;
+    input {
+      padding: 0;
+      height: 54px;
+      font-size: 16px;
+      font-family: 'RobotoRegular';
+      color: $color-login-text;
+    }
+  }
+  .wrapper-logout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    .button-logout {
+      background: $bg-blue-button-block-app;
+      color: $color-white;
+      display: block;
+      max-height: 33px;
+      min-height: 33px;
+      line-height: 19px;
+      font-size: 18px;
+    }
+  }
+}

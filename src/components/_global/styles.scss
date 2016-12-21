@@ -1,0 +1,57 @@
+@import 'scss/_font';
+@import 'scss/_variables';
+
+body {
+  font-family: 'RobotoRegular';
+  ::-webkit-input-placeholder {
+    color: $color-login-text;
+  }
+
+  ::-moz-placeholder {
+    color: $color-login-text;
+  }
+
+  /* Firefox 19+ */
+  :-moz-placeholder {
+    color: $color-login-text;
+  }
+
+  /* Firefox 18- */
+  :-ms-input-placeholder {
+    color: $color-login-text;
+  }
+}
+
+ion-header-bar {
+  background: $bg-toolbar !important;
+  color: $color-white;
+  font-family: 'RobotoBold';
+  button {
+    color: $color-icon-toolbar !important;
+  }
+}
+
+ion-side-menu {
+  ion-content {
+    a.selected{
+      background-color: transparentize($bg-blue-button-block-app,.3);
+      color: $color-white;
+    }
+  }
+}
+
+.padding {
+  padding: 16px;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+@import 'scss/login';
+@import 'scss/verification';
+@import 'scss/error';
+@import 'scss/messages';
+@import 'scss/connections';
+@import 'scss/settings';
+@import 'scss/profile';

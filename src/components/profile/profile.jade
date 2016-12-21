@@ -1,0 +1,32 @@
+ion-view
+    ion-nav-title Profile
+    ion-content.profile-content.padding(scroll='false')
+        .row
+            .col
+                label.item.item-input.item-select
+                    select
+                        option Blue
+                        option(selected) Green
+                        option Red
+            .col
+                label.item.item-input
+                    i.icon.ion-navigate.placeholder-icon
+                    input(type='text' ng-model='vm.location' placeholder='location')
+        .row
+            .col
+                label.item.item-input.item-select
+                    select
+                        option Blue
+                        option(selected) Green
+                        option Red
+            .col
+                label.item.item-input
+                    i.icon.ion-calendar.placeholder-icon
+                    input(type='text' ng-model='vm.birth' placeholder='date of birth')
+        label.item.item-input
+            input(type='text' ng-model='vm.pronouns' placeholder='pronouns')
+        label.item.item-input
+            input(type='text' ng-model='vm.yourself' placeholder='some words about yourself {200 characters}')
+        .wrapper-logout
+            button.button.button-icon.icon.ion-gear-b
+            button.button.button-clear.button-logout(ng-click='vm.logout()') Logout

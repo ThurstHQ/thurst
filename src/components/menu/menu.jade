@@ -1,0 +1,31 @@
+ion-side-menus
+    ion-side-menu-content(drag-content='false')
+        ion-nav-bar.header
+            ion-nav-buttons
+                button.button.button-icon.ion-navicon(menu-toggle='left')
+        ion-nav-view(name='menuContent')
+    ion-side-menu.menu(side='left')
+        ion-header-bar.header.row-center
+            button.button.button-icon.ion-android-arrow-back(menu-toggle='left')
+            .title.title-left.header-item
+                span.logo THURST CO
+        ion-content(scroll='false')
+            ion-scroll.height-100
+                ul.list.menu-list
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.profile', ng-class="{'selected':vm.now==='app.profile'}")
+                        i.icon.ion-pound
+                        |  Profile
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.messages', ng-class="{'selected':vm.now==='app.messages'}")
+                        i.icon.ion-pound
+                        |  Messages
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.connections', ng-class="{'selected':vm.now==='app.connections'}")
+                        i.icon.ion-pound
+                        |  Connections
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.support', ng-class="{'selected':vm.now==='app.support'}")
+                        i.icon.ion-pound
+                        |  Support
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.settings', ng-class="{'selected':vm.now==='app.settings'}")
+                        i.icon.ion-pound
+                        |  Settings
+
+

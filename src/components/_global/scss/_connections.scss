@@ -1,0 +1,4 @@
+.connections-page {
+  background-color: $bg-app;
+  @include list();
+}

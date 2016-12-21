@@ -1,0 +1,12 @@
+﻿ion-view
+    ion-nav-title.logo Settings
+    ion-content.settings-page.padding(scroll='false')
+        .wrapper
+            .list
+                label.item.item-input
+                    input(type="email" ng-model="vm.new.email" placeholder="New email")
+                label.item.item-input
+                    input(type="password" ng-model="vm.new.password" placeholder="New password")
+            button.button.button-clear.button-see-color See users of color only
+        button.button.button-clear.button-hide-profile Hide Profile Visibility
+        button.button.button-clear.button-delete Delete Account

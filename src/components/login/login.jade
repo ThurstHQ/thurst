@@ -1,0 +1,8 @@
+ion-view
+    ion-content.login-content.padding
+        form.list(name="login" ng-submit="vm.login(vm.user)")
+            label.item.item-input
+                input(type="email" ng-model="vm.user.email" placeholder="email" required="")
+            label.item.item-input
+                input(type="password" ng-model="vm.user.password" placeholder="password" required="")
+            input.button.button-clear(type="submit" value="Enter" ng-disabled="!login.$valid")

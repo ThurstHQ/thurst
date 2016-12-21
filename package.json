@@ -1,0 +1,43 @@
+{
+  "name": "thurst-co",
+  "version": "1.0.0",
+  "description": "",
+  "author": {
+    "name": "Pascalium Team",
+    "email": "request@pascalium.com"
+  },
+  "dependencies": {
+    "bower": "^1.8.0",
+    "browser-sync": "^2.18.5",
+    "cordova": "^6.4.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-angular-filesort": "^1.1.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-bower": "0.0.13",
+    "gulp-cached": "^1.1.1",
+    "gulp-count": "^0.3.0",
+    "gulp-csso": "^2.0.0",
+    "gulp-filter": "^2.0.2",
+    "gulp-flatten": "^0.3.1",
+    "gulp-ignore": "^2.0.2",
+    "gulp-inject": "^4.1.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-load-plugins": "^1.4.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-natural-sort": "^0.1.1",
+    "gulp-ng-html2js": "^0.2.2",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rev": "^7.1.2",
+    "gulp-rev-replace": "^0.4.3",
+    "gulp-sass": "^3.0.0",
+    "gulp-useref": "^2.1.0",
+    "gulp-watch": "^4.3.11",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "shelljs": "^0.7.5",
+    "wiredep": "^4.0.0"
+  }
+}

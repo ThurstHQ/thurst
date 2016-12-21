@@ -1,0 +1,4 @@
+.messages-page {
+  background-color: $bg-app;
+  @include list();
+}

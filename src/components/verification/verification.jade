@@ -1,0 +1,7 @@
+ion-view
+    ion-content.verification-content.padding
+        p.description A verification email has been sent to [user-email-address]. Please enter the code below to login.
+        form.list(name="login" ng-submit="vm.login(vm.user)")
+            label.item.item-input
+                input(type="text" ng-model="vm.user.email" placeholder="email verification code" required="")
+            input.button.button-clear(type="submit" value="Enter" ng-disabled="!login.$valid")

@@ -1,0 +1,9 @@
+.verification-content {
+  p.description {
+    width: calc(100% - 33px);
+    margin: 70px auto 0;
+    color: $color-login-text;
+    font-family: "RobotoBold";
+  }
+  @include login-verification-form(20px, 60px);
+}
