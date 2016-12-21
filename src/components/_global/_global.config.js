@@ -8,18 +8,20 @@
         ])
         .constant('Settings', {
             'applozic_key': 'thurst3f06f50453425773c771235df04b495f5',
-            'url': ''
+            'url': 'http://qa-thurst-back-end-1346444650.us-west-2.elb.amazonaws.com/'
         })
         .config(appConfig)
         .run(runAppConfig);
 
     appConfig.$inject = [
-        'Settings',
         '$urlRouterProvider',
         '$ionicConfigProvider',
-        'localStorageServiceProvider'
+        'localStorageServiceProvider',
+        '$locationProvider',
+        '$qProvider'
     ];
-    function appConfig(Settings, $urlRouterProvider, $ionicConfigProvider, localStorageServiceProvider) {
+    function appConfig($urlRouterProvider, $ionicConfigProvider, localStorageServiceProvider, $locationProvider, $qProvider) {
+        $locationProvider.hashPrefix('');
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.views.swipeBackEnabled(false);
@@ -28,23 +30,11 @@
 
         localStorageServiceProvider.setPrefix('papirux');
 
-        // RestangularProvider.setBaseUrl(Settings.url);
-        // RestangularProvider.setDefaultHttpFields({cache: false});
-        // RestangularProvider.setDefaultHeaders({
-        //     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        // });
+        $qProvider.errorOnUnhandledRejections(false);
     }
 
-    runAppConfig.$inject = [
-        '$log',
-        'Settings'
-    ];
+    runAppConfig.$inject = [];
 
-    function runAppConfig($log, Settings) {
-        // Restangular.setBaseUrl(Settings.url); //jshint ignore:line
-        // Restangular.setErrorInterceptor(function (response) {
-        //     $log.debug(response);
-        //     return true;
-        // });
+    function runAppConfig() {
     }
 })();

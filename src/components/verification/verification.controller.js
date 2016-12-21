@@ -4,14 +4,16 @@
         .module('app.verification')
         .controller('VerificationCtrl', VerificationCtrl);
 
-    VerificationCtrl.$inject = [];
-    function VerificationCtrl() {
+    VerificationCtrl.$inject = ['loginService'];
+    function VerificationCtrl(loginService) {
         var vm = this;
 
         vm.verification = verification;
 
-        function verification(user) {
-            console.log(user);
+        function verification(code) {
+            loginService.verification(code).then(function () {
+                $state.go('messages');
+            });
         }
     }
 })();

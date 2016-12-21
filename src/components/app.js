@@ -49,12 +49,12 @@
             }
         });
 
-
-        // setTimeout(function () {
-        //     $state.go('login');
-        // }, 1500);
-
-        //     $state.go('app.messages');
-        // }
+        setTimeout(function () {
+            if (localStorageService.get('user')) {
+                $state.go('app.messages');
+            } else {
+                $state.go('login');
+            }
+        }, 1500);
     }
 })();

@@ -1,5 +1,7 @@
 ion-view
-    ion-content.login-content.padding
+    ion-content.login-content.padding(scroll='false')
+        .wrapper-logo
+            img.logo(src='./assets/images/logo_2.png')
         form.list(name="login" ng-submit="vm.login(vm.user)")
             label.item.item-input
                 input(type="email" ng-model="vm.user.email" placeholder="email" required="")

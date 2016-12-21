@@ -1,3 +1,12 @@
 .login-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  .wrapper-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
   @include login-verification-form(20px, 40px);
 }

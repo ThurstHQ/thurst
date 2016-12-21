@@ -17,6 +17,8 @@
                 } else {
                     $state.go('messages');
                 }
+            },function(error){
+                $state.go('error');
             });
         }
     }
