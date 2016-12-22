@@ -8,7 +8,7 @@
     function ProfileCtrl(loginService, userService, cameraService, $ionicActionSheet, localStorageService) {
         var vm = this;
 
-        vm.user = localStorageService.get('user');
+        vm.user = localStorageService.get('user') || {};
 
         vm.logout = logout;
         vm.pictureUpdate = pictureUpdate;
@@ -18,6 +18,7 @@
             loginService.logout();
         }
 
+        console.log(vm.user);
         function pictureUpdate() {
             var options = {
                 quality: 50,
@@ -47,7 +48,6 @@
         }
 
         function userUpdate(data) {
-            console.log(data);
             userService.userPUT(data).then(function (res) {
                 vm.user = res;
             });

@@ -30,6 +30,11 @@
           font-size: 16px;
           font-family: 'RobotoRegular';
           color: $color-text;
+          option {
+            width: 100px !important;
+            max-width: 100px !important;
+            min-width: 100px !important;
+          }
         }
         input {
           font-size: 16px;
@@ -37,9 +42,24 @@
           color: $color-text;
         }
       }
-      &:last-child {
+      &:first-child {
         label.item.item-input {
-          margin-left: 10px;
+          margin-right: 10px;
+        }
+      }
+      &.checkbox-location {
+        display: flex;
+        align-items: flex-end;
+        .item-checkbox {
+          border: none;
+          flex: 1;
+          padding-left: 30px;
+          color: $color-text;
+          .checkbox {
+            left: 0;
+            padding: 7px 0;
+          }
+
         }
       }
     }
@@ -49,12 +69,16 @@
     padding: 0;
     border: none;
     border-bottom: 1px solid $color-border-login-input;
-    input {
+    input, textarea {
       padding: 0;
       height: 54px;
       font-size: 16px;
       font-family: 'RobotoRegular';
       color: $color-text;
+    }
+    textarea {
+      padding-top: 20px;
+      margin-top: 20px;
     }
   }
   .wrapper-logout {

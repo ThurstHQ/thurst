@@ -9,37 +9,32 @@ ion-view
             .col.col-60
                 label.item.item-input
                     input(type='text' ng-model='vm.user.username' placeholder='name')
-            .col
-                label.item.item-input
-                    input(type='text' ng-model='vm.user.phone' placeholder='phone number')
         .row
             .col.col-60
                 label.item.item-input.item-select
                     select(ng-model="vm.user.sexuality")
                         option(value="" disabled selected hidden) sexuality
-                        option(value="androgynosexual") Androgynosexual
-                        option(value="androsexual") Androsexual
-                        option(value="asexual") Asexual
-                        option(value="bisexual") Bisexual
-                        option(value="demisexual") Demisexual
-                        option(value="gay") Gay
-                        option(value="gray") Gray
-                        option(value="gynosexual") Gynosexual
-                        option(value="lesbian") Lesbian
-                        option(value="queer") Queer
-                        option(value="pansexual") Pansexual
-                        option(value="polysexual") Polysexual
-            .col
-                label.item.item-input
-                    i.icon.ion-navigate.placeholder-icon
-                    input(type='text' ng-model='vm.user.loc' placeholder='location')
+                        option(value="androgynosexual" selected="{{vm.user.sexuality === 'androgynosexual'}}") Androgynosexual
+                        option(value="androsexual" selected="{{vm.user.sexuality === 'androsexual'}}") Androsexual
+                        option(value="asexual" selected="{{vm.user.sexuality === 'asexual'}}") Asexual
+                        option(value="bisexual" selected="{{vm.user.sexuality === 'bisexual'}}") Bisexual
+                        option(value="demisexual" selected="{{vm.user.sexuality === 'demisexual'}}") Demisexual
+                        option(value="gay" selected="{{vm.user.sexuality === 'gay'}}") Gay
+                        option(value="gray" selected="{{vm.user.sexuality === 'gray'}}") Gray
+                        option(value="gynosexual" selected="{{vm.user.sexuality === 'gynosexual'}}") Gynosexual
+                        option(value="lesbian" selected="{{vm.user.sexuality === 'lesbian'}}") Lesbian
+                        option(value="queer" selected="{{vm.user.sexuality === 'queer'}}") Queer
+                        option(value="pansexual" selected="{{vm.user.sexuality === 'pansexual'}}") Pansexual
+                        option(value="polysexual" selected="{{vm.user.sexuality === 'polysexual'}}") Polysexual
+            .col.checkbox-location
+                ion-checkbox(ng-model='vm.user.loc') location
         .row
             .col.col-60
                 label.item.item-input.item-select
                     select(ng-model="vm.user.gender")
                         option(value="" disabled selected hidden) user inputs gender
-                        option(value="male") male
-                        option(value="female") female
+                        option(value="male" selected="{{vm.user.gender ==='male'}}") male
+                        option(value="female" selected="{{vm.user.gender === 'female'}}") female
             .col
                 label.item.item-input
                     i.icon.ion-calendar.placeholder-icon
@@ -47,7 +42,7 @@ ion-view
         label.item.item-input
             input(type='text' ng-model='vm.user.pronouns' placeholder='pronouns')
         label.item.item-input
-            input(type='text' ng-model='vm.user.bio' placeholder='some words about yourself {200 characters}')
+            textarea(type='text' ng-model='vm.user.bio' placeholder='some words about yourself {200 characters}')
         .wrapper-logout
             button.button.button-icon.icon.ion-gear-b
             button.button.button-clear.button-logout(ng-click='vm.logout()') Logout

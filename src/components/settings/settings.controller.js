@@ -7,5 +7,22 @@
     SettingsCtrl.$inject = [];
     function SettingsCtrl() {
         var vm = this;
+
+        vm.changeEmail = changeEmail;
+        vm.changePass = changePass;
+        vm.hideProfile = hideProfile;
+        vm.deleteAccount = deleteAccount;
+
+        function changeEmail() {
+        }
+
+        function changePass() {
+        }
+
+        function hideProfile() {
+        }
+
+        function deleteAccount() {
+        }
     }
 })();

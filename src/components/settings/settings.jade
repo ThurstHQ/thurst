@@ -8,5 +8,5 @@
                 label.item.item-input
                     input(type="password" ng-model="vm.new.password" placeholder="New password")
             button.button.button-clear.button-see-color See users of color only
-        button.button.button-clear.button-hide-profile Hide Profile Visibility
-        button.button.button-clear.button-delete Delete Account
+        button.button.button-clear.button-hide-profile(ng-click="vm.hideProfile()") Hide Profile Visibility
+        button.button.button-clear.button-delete(ng-click="vm.deleteAccount()") Delete Account
