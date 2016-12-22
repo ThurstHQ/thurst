@@ -30,8 +30,8 @@ require('./config/passport')(passport);
 
 var apiRoutes = express.Router();
 
-apiRoutes.get('/', function(req, res) {
-    res.send('Server working very well');
+app.get('/', function(req, res) {
+    res.send('Hello! The API is working.');
 });
 
 apiRoutes.post('/authenticate', function(req, res) {
@@ -75,9 +75,7 @@ apiRoutes.post('/authenticate', function(req, res) {
             // check if password matches
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
-                    // if user is found and password is right create a token
                     var token = jwt.encode(user, config.secret);
-                    // return the information including token as JSON
                     res.json({success: true, newuser: false, token: 'JWT ' + token});
                 } else {
                     res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
@@ -129,6 +127,11 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
     }
 });
 
+app.use('/api', apiRoutes);
+
+app.listen(port);
+console.log('Server working...');
+
 getToken = function (headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
@@ -141,8 +144,3 @@ getToken = function (headers) {
         return null;
     }
 };
-
-app.use('/api', apiRoutes);
-
-app.listen(port);
-console.log('Server working...');
