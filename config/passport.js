@@ -13,7 +13,7 @@ module.exports = function(passport) {
             }
             if (user) {
                 if (!user.verified) {
-                    return done({message: 'User email not verified.'}, false);
+                    return done({message: 'User email not verified.', newuser: true}, false);
                 }
                 done(null, user);
             } else {

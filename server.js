@@ -36,6 +36,12 @@ app.get('/', function(req, res) {
 
 apiRoutes.post('/authenticate', function(req, res) {
     //TODO: if (!req.body.email)
+    // if (req.body.email) {
+    //     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    // } else {
+    //
+    // }
+
     var userEmail = req.body.email;
 
     User.findOne({
@@ -73,12 +79,24 @@ apiRoutes.post('/authenticate', function(req, res) {
             });
         } else {
 
-            if (!user.verified) {
-                return res.status(403).send({success: false, msg: 'User email not verified.'});
-            }
-
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
+
+                    if (!user.verified) {
+                        var verificationToken = randomstring.generate({ length: 4 });
+                        var newMail = {
+                            from: 'Thurst <noreply@thurst.com>',
+                            to: userEmail,
+                            subject: 'Verification email',
+                            text: 'Please confirm your email address. Code: ' + verificationToken
+                        };
+                        mailgun.messages().send(newMail, function (error, body) {
+                            if (error) console.log(error);
+                        });
+
+                        return res.status(403).send({success: false, newuser: true,  msg: 'User email not verified.'});
+                    }
+
                     var token = jwt.encode(user, config.secret);
                     res.json({success: true, newuser: false, token: 'JWT ' + token});
                 } else {
