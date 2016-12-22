@@ -94,7 +94,7 @@ apiRoutes.post('/authenticate', function(req, res) {
                             if (error) console.log(error);
                         });
 
-                        return res.status(403).send({success: false, newuser: true,  msg: 'User email not verified.'});
+                        return res.json({success: false, newuser: true, id: user.id, msg: 'User email not verified.'});
                     }
 
                     var token = jwt.encode(user, config.secret);
