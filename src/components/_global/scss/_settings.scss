@@ -14,14 +14,14 @@
         input {
           height: 58px;
           padding: 0;
-          color: $color-login-text;
+          color: $color-text;
           font-family: "RobotoRegular";
         }
       }
     }
 
     .button-see-color {
-      background-color: #666666;
+      background-color: $color-see-button;
       color: $color-white;
       font-size: 20px;
       width: calc(100% - 8px);
@@ -33,7 +33,7 @@
   }
   .button-hide-profile {
     background-color: $color-hide-profile-button;
-    color: $color-login-text;
+    color: $color-text;
     font-size: 18px;
     width: calc(100% - 25px);
     margin: auto;

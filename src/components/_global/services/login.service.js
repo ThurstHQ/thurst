@@ -11,6 +11,9 @@
             login: function (data) {
                 notificationsService.loading();
                 return $http.post(Settings.url + 'api/authenticate', data).then(function (res) {
+                    if (res.data.token) {
+                        localStorageService.set('token', res.data.token);
+                    }
                     notificationsService.hide();
                     return res;
                 }, function (error) {
@@ -21,14 +24,16 @@
             verification: function (data) {
                 notificationsService.loading();
                 return $http.post(Settings.url + 'api/verify', data).then(function (res) {
-                    console.log(res);
+                    localStorageService.set('token', res.data.token);
                     notificationsService.hide();
+                    return res;
                 }, function (error) {
                     notificationsService.warn(error.msg);
+                    return error;
                 });
             },
             logout: function () {
-                localStorageService.remove('user');
+                localStorageService.remove('token');
                 $state.go('login');
             }
         };

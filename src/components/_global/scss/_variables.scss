@@ -4,11 +4,12 @@ $bg-app: #F0F0F0;
 $bg-blue-button-block-app: #6bcdfd;
 $color-white: #ffffff;
 $color-black: #000000;
-$color-login-text: #808080;
+$color-text: #808080;
 $color-border-login-input: #c8c8c8;
 $color-delete-account-button: #fd676a;
 $color-hide-profile-button: #d9d9d9;
 $color-contact-us-button: #47d9d8;
+$color-see-button: #47d9d8;
 
 @mixin blue-button-block-app($margin-button) {
   background: $bg-blue-button-block-app;
@@ -29,7 +30,7 @@ $color-contact-us-button: #47d9d8;
     input {
       height: 46px;
       padding: 0;
-      color: $color-login-text;
+      color: $color-text;
       font-family: "RobotoRegular";
     }
   }

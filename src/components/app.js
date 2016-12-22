@@ -50,7 +50,7 @@
         });
 
         setTimeout(function () {
-            if (localStorageService.get('user')) {
+            if (localStorageService.get('token')) {
                 $state.go('app.messages');
             } else {
                 $state.go('login');
