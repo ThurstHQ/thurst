@@ -12,6 +12,9 @@ module.exports = function(passport) {
                 return done(err, false);
             }
             if (user) {
+                if (!user.verified) {
+                    return done({message: 'User email not verified.'}, false);
+                }
                 done(null, user);
             } else {
                 done(null, false);

@@ -72,7 +72,11 @@ apiRoutes.post('/authenticate', function(req, res) {
                 res.json({success: true, newuser: true, msg: 'Successful created new user.', id: user.id});
             });
         } else {
-            // check if password matches
+
+            if (!user.verified) {
+                return res.status(403).send({success: false, msg: 'User email not verified.'});
+            }
+
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
                     var token = jwt.encode(user, config.secret);
@@ -119,7 +123,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
             if (!user) {
                 return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
             } else {
-                res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+                return res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
             }
         });
     } else {
