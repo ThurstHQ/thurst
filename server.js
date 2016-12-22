@@ -115,11 +115,11 @@ apiRoutes.post('/verify', function (req, res) {
             User.findOneAndUpdate({_id: userId}, {'verified': true}, function (err, resp) {
                 if (err) return res.status(500).send({'message': err.message});
                 console.log('The user has been verified!');
+
+                var token = jwt.encode(user, config.getEnv().secret);
+
+                return res.json({success: true, newuser: false, token: 'JWT ' + token});
             });
-
-            var token = jwt.encode(user, config.secret);
-
-            return res.json({success: true, newuser: false, token: 'JWT ' + token});
         } else {
             return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
         }
