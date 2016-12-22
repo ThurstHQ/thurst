@@ -129,7 +129,7 @@ apiRoutes.post('/verify', function (req, res) {
 apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
     var token = getToken(req.headers);
     if (token) {
-        var decoded = jwt.decode(token, config.secret);
+        var decoded = jwt.decode(token, config.getEnv().secret);
         User.findOne({
             name: decoded.name
         }, function(err, user) {
