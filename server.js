@@ -4,18 +4,14 @@ var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var mongoose    = require('mongoose');
 var passport	= require('passport');
-var config      = require('./config/database');
 var User        = require('./app/models/user');
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
 var randomstring = require('randomstring');
+var config = require('./config/config').config;
 
-var mailConfig = require('./config/mailgun');
+var sendEmail = require('./app/global/sendmail').sendEmail;
 
-var mailgun = require('mailgun-js')({
-    apiKey: mailConfig.key,
-    domain: mailConfig.domain
-});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,7 +20,7 @@ app.use(morgan('dev'));
 
 app.use(passport.initialize());
 
-mongoose.connect(config.database);
+mongoose.connect(config.getEnv().database);
 
 require('./config/passport')(passport);
 
@@ -66,14 +62,11 @@ apiRoutes.post('/authenticate', function(req, res) {
                     return res.json({success: false, msg: err});
                 }
                 var newMail = {
-                    from: 'Thurst <noreply@thurst.com>',
                     to: userEmail,
                     subject: 'Verification email',
                     text: 'Please confirm your email address. Code: ' + verificationToken
                 };
-                mailgun.messages().send(newMail, function (error, body) {
-                    if (error) console.log(error);
-                });
+                sendEmail(newMail.to, newMail.subject, newMail.text);
 
                 res.json({success: true, newuser: true, msg: 'Successful created new user.', id: user.id});
             });
@@ -84,21 +77,25 @@ apiRoutes.post('/authenticate', function(req, res) {
 
                     if (!user.verified) {
                         var verificationToken = randomstring.generate({ length: 4 });
-                        var newMail = {
-                            from: 'Thurst <noreply@thurst.com>',
-                            to: userEmail,
-                            subject: 'Verification email',
-                            text: 'Please confirm your email address. Code: ' + verificationToken
-                        };
-                        mailgun.messages().send(newMail, function (error, body) {
-                            if (error) console.log(error);
+
+                        user.verify_token = verificationToken;
+                        user.save(function (err, data) {
+                            if (err) {
+                                return res.json({success: false, msg: err});
+                            }
+                            var newMail = {
+                                to: userEmail,
+                                subject: 'Verification email',
+                                text: 'Please confirm your email address. Code: ' + verificationToken
+                            };
+                            sendEmail(newMail.to, newMail.subject, newMail.text);
+
+                            return res.json({success: true, newuser: true, id: user.id, msg: 'User email not verified.'});
                         });
-
-                        return res.json({success: false, newuser: true, id: user.id, msg: 'User email not verified.'});
+                    } else {
+                        var token = jwt.encode(user, config.getEnv().secret);
+                        res.json({success: true, newuser: false, token: 'JWT ' + token});
                     }
-
-                    var token = jwt.encode(user, config.secret);
-                    res.json({success: true, newuser: false, token: 'JWT ' + token});
                 } else {
                     res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
                 }
