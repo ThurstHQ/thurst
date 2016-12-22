@@ -16,6 +16,26 @@
                     notificationsService.warn(error.msg);
                     return error;
                 });
+            },
+            userPUT: function (data) {
+                return $http.put(Settings.url + 'api/user', data).then(function (res) {
+                    localStorageService.set('user', res.data);
+                    return res;
+                }, function (error) {
+                    notificationsService.warn(error.msg);
+                    return error;
+                });
+            },
+            setPhoto: function (data) {
+                notificationsService.loading();
+                return $http.post(Settings.url + 'api/photo', data).then(function (res) {
+                    notificationsService.hide();
+                    return res;
+                }, function (error) {
+                    notificationsService.hide();
+                    notificationsService.warn(error.msg);
+                    return error;
+                });
             }
         };
     }

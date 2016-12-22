@@ -15,9 +15,9 @@
                 templateUrl: 'components/menu/menu.html',
                 controller: 'MenuCtrl as vm',
                 resolve: {
-                    user: ['userService', function (userService) {
-                        return userService.userGET();
-                    }]
+                    // user: ['userService', function (userService) {
+                    //     return userService.userGET();
+                    // }]
                 }
             });
     }

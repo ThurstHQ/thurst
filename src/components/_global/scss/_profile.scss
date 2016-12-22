@@ -1,4 +1,11 @@
 .profile-content {
+  .wrapper-avatar {
+    text-align: center;
+    img {
+      max-width: 216px;
+      max-height: 216px;
+    }
+  }
   .row {
     padding: 0;
     .col {
@@ -16,7 +23,7 @@
         }
         select {
           right: inherit;
-          padding-left: 5px;
+          padding-left: 0;
           max-width: 100%;
           width: 100%;
           direction: ltr;

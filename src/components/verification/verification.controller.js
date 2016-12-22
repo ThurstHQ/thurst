@@ -15,7 +15,7 @@
                 id: $stateParams.id,
                 code: code
             }).then(function () {
-                $state.go('app.messages');
+                $state.go('app.profile');
             });
         }
     }

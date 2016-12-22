@@ -1,32 +1,53 @@
 ion-view
+    ion-nav-buttons(side='right')
+        button.button.button-icon.ion-checkmark-round.save-profile(ng-click='vm.userUpdate(vm.user)')
     ion-nav-title Profile
-    ion-content.profile-content.padding(scroll='false')
+    ion-content.profile-content.padding
+        .wrapper-avatar
+            img(src='assets/images/avatar.png')
         .row
+            .col.col-60
+                label.item.item-input
+                    input(type='text' ng-model='vm.user.username' placeholder='name')
             .col
+                label.item.item-input
+                    input(type='text' ng-model='vm.user.phone' placeholder='phone number')
+        .row
+            .col.col-60
                 label.item.item-input.item-select
-                    select
-                        option Blue
-                        option(selected) Green
-                        option Red
+                    select(ng-model="vm.user.sexuality")
+                        option(value="" disabled selected hidden) sexuality
+                        option(value="androgynosexual") Androgynosexual
+                        option(value="androsexual") Androsexual
+                        option(value="asexual") Asexual
+                        option(value="bisexual") Bisexual
+                        option(value="demisexual") Demisexual
+                        option(value="gay") Gay
+                        option(value="gray") Gray
+                        option(value="gynosexual") Gynosexual
+                        option(value="lesbian") Lesbian
+                        option(value="queer") Queer
+                        option(value="pansexual") Pansexual
+                        option(value="polysexual") Polysexual
             .col
                 label.item.item-input
                     i.icon.ion-navigate.placeholder-icon
-                    input(type='text' ng-model='vm.location' placeholder='location')
+                    input(type='text' ng-model='vm.user.loc' placeholder='location')
         .row
-            .col
+            .col.col-60
                 label.item.item-input.item-select
-                    select
-                        option Blue
-                        option(selected) Green
-                        option Red
+                    select(ng-model="vm.user.gender")
+                        option(value="" disabled selected hidden) user inputs gender
+                        option(value="male") male
+                        option(value="female") female
             .col
                 label.item.item-input
                     i.icon.ion-calendar.placeholder-icon
-                    input(type='text' ng-model='vm.birth' placeholder='date of birth')
+                    input(type='text' ng-model='vm.birthday' placeholder='date of birth')
         label.item.item-input
-            input(type='text' ng-model='vm.pronouns' placeholder='pronouns')
+            input(type='text' ng-model='vm.user.pronouns' placeholder='pronouns')
         label.item.item-input
-            input(type='text' ng-model='vm.yourself' placeholder='some words about yourself {200 characters}')
+            input(type='text' ng-model='vm.user.bio' placeholder='some words about yourself {200 characters}')
         .wrapper-logout
             button.button.button-icon.icon.ion-gear-b
             button.button.button-clear.button-logout(ng-click='vm.logout()') Logout

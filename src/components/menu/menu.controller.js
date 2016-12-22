@@ -4,8 +4,8 @@
         .module('app.menu')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', 'user', '$state'];
-    function MenuCtrl($scope, user, $state) {
+    MenuCtrl.$inject = ['$scope', '$state', 'localStorageService'];
+    function MenuCtrl($scope, $state, localStorageService) {
         var vm = this;
 
         // window.applozic.init({
@@ -19,7 +19,7 @@
         //     source: window.cordova ? '6' : '1',
         //     notificationIconLink: 'https://www.applozic.com/favicon.ico',
         //     authenticationTypeId: '1',
-        //     accessToken: '',
+        //     accessToken: localStorageService.get('token'),
         //     locShare: true,
         //     googleApiKey: "AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4",
         //     googleMapScriptLoaded: false,
