@@ -4,21 +4,21 @@
 body {
   font-family: 'RobotoRegular';
   ::-webkit-input-placeholder {
-    color: $color-login-text;
+    color: $color-text;
   }
 
   ::-moz-placeholder {
-    color: $color-login-text;
+    color: $color-text;
   }
 
   /* Firefox 19+ */
   :-moz-placeholder {
-    color: $color-login-text;
+    color: $color-text;
   }
 
   /* Firefox 18- */
   :-ms-input-placeholder {
-    color: $color-login-text;
+    color: $color-text;
   }
 }
 
