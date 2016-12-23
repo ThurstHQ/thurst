@@ -28,7 +28,7 @@ var UserSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: ''
+        default: 'public/avatar/av.png'
     },
     pictures: {
         type: [String]
@@ -42,8 +42,8 @@ var UserSchema = new Schema({
         default: ''
     },
     loc: {
-        type: [Number], // [<longitude>, <latitude>]
-        default: []
+        type: Boolean,
+        default: false
     },
     birthday: {
         type: Date,
