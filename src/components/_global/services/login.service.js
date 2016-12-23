@@ -4,13 +4,13 @@
         .module('app.config')
         .factory('loginService', loginService);
 
-    loginService.$inject = ['$http', '$state', 'Settings', 'notificationsService', 'localStorageService'];
+    loginService.$inject = ['Restangular', '$state', 'Settings', 'notificationsService', 'localStorageService'];
 
-    function loginService($http, $state, Settings, notificationsService, localStorageService) {
+    function loginService(Restangular, $state, Settings, notificationsService, localStorageService) {
         return {
             login: function (data) {
                 notificationsService.loading();
-                return $http.post(Settings.url + 'api/authenticate', data).then(function (res) {
+                return Restangular.one('api/authenticate').post(null, data).then(function (res) {
                     if (res.data.token) {
                         localStorageService.set('token', res.data.token);
                     }
@@ -23,7 +23,7 @@
             },
             verification: function (data) {
                 notificationsService.loading();
-                return $http.post(Settings.url + 'api/verify', data).then(function (res) {
+                return Restangular.one('api/verify').post(null, data).then(function (res) {
                     localStorageService.set('token', res.data.token);
                     notificationsService.hide();
                     return res;

@@ -12,7 +12,9 @@
             'app.settings',
             'app.support',
             'app.connections',
-            'app.messages'
+            'app.messages',
+            'app.policy',
+            'app.terms'
         ])
         .run(bootstrap);
 
