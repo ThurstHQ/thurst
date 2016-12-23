@@ -10,7 +10,7 @@
 
         window.applozic.init({
             appId: Settings.applozic_key,
-            userId: user.id,
+            userId: user._id,
             userName: user.name,
             imageLink: user.avatar,
             email: user.email,
@@ -25,27 +25,7 @@
             googleMapScriptLoaded: false,
             autoTypeSearchEnabled: true,
             loadOwnContacts: false,
-            olStatus: false,
-            onInit: function (response) {
-                if (response === "success") {
-                    // login successful, perform your actions if any, for example: load contacts, getting unread message count, etc
-                } else {
-                    // error in user login/register (you can hide chat button or refresh page)
-                }
-            },
-            contactDisplayName: function (otherUserId) {
-                return otherUserId;
-            },
-            contactDisplayImage: function (otherUserId) {
-                return otherUserId;
-            },
-            onTabClicked: function (response) {
-                // write your logic to execute task on tab load
-                //   object response =  {
-                //    tabId : userId or groupId,
-                //    isGroup : 'tab is group or not'
-                //  }
-            }
+            olStatus: false
         });
 
         $scope.$on('$stateChangeSuccess', function () {

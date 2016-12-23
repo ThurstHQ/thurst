@@ -40,7 +40,7 @@
                         options.sourceType = 1;
                     }
                     cameraService.getPicture(options).then(function (imageData) {
-                        uploadService.setPhoto({user_avatar: "data:image/jpeg;base64," + imageData}).then(function(res){
+                        uploadService.setPhoto({user_avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
                             vm.user.avatar = res.avatar;
                         });
                     });
