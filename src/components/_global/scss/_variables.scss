@@ -44,8 +44,8 @@ $color-see-button: #666666;
     .item {
       display: flex;
       align-items: center;
-      > i.icon {
-        font-size: 53px;
+      .avatar {
+        width: 53px;
       }
       .wrapper-text {
         flex: 1;

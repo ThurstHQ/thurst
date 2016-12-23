@@ -5,7 +5,8 @@
             'ionic',
             'ui.router',
             'LocalStorageModule',
-            'restangular'
+            'restangular',
+            'angular-google-analytics'
         ])
         .constant('Settings', {
             'applozic_key': 'thurst3f06f50453425773c771235df04b495f5',
@@ -20,13 +21,13 @@
     appConfig.$inject = [
         '$urlRouterProvider',
         '$ionicConfigProvider',
-        'localStorageServiceProvider',
         '$locationProvider',
         '$qProvider',
         'Settings',
-        'RestangularProvider'
+        'RestangularProvider',
+        'AnalyticsProvider'
     ];
-    function appConfig($urlRouterProvider, $ionicConfigProvider, localStorageServiceProvider, $locationProvider, $qProvider, Settings, RestangularProvider) {
+    function appConfig($urlRouterProvider, $ionicConfigProvider, $locationProvider, $qProvider, Settings, RestangularProvider, AnalyticsProvider) {
         $locationProvider.hashPrefix('');
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
@@ -34,28 +35,41 @@
 
         $urlRouterProvider.otherwise('/splash');
 
-        localStorageServiceProvider.setPrefix('papirux');
-
         $qProvider.errorOnUnhandledRejections(false);
 
         RestangularProvider.setBaseUrl(Settings.url);
         RestangularProvider.setDefaultHttpFields({cache: false});
-        RestangularProvider.setDefaultHeaders({
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+
+        AnalyticsProvider.setAccount({
+            tracker: 'UA-89420914-1',
+            trackEvent: true
         });
+        AnalyticsProvider.setPageEvent('$stateChangeSuccess');
+
     }
 
-    runAppConfig.$inject = ['Settings', '$ionicPlatform'];
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$state', 'Restangular'];
 
-    function runAppConfig(Settings, $ionicPlatform) {
-        $ionicPlatform.ready(function () {
-            if (window.HelpshiftPlugin) {
-                window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
+    function runAppConfig(Settings, localStorageService, $state, Restangular) {
+        if (localStorageService.get('token')) {
+            Restangular.setDefaultHeaders({
+                'Authorization': localStorageService.get('token')
+            });
+        }
+        if (window.HelpshiftPlugin) {
+            window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
+        }
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+            window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            window.cordova.plugins.Keyboard.disableScroll(true);
+        }
+        setTimeout(function () {
+            if (localStorageService.get('token')) {
+                $state.go('app.messages');
+            } else {
+                $state.go('login');
             }
-            if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-                window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-                window.cordova.plugins.Keyboard.disableScroll(true);
-            }
-        });
+        }, 1500);
+
     }
 })();

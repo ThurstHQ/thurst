@@ -34,7 +34,7 @@ ion-header-bar {
 ion-side-menu {
   ion-content {
     a.selected {
-      background-color: transparentize($bg-blue-button-block-app, .3);
+      background-color: $bg-blue-button-block-app;
       color: $color-white;
     }
   }

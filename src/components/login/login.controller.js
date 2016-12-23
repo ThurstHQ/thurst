@@ -12,9 +12,9 @@
 
         function login(user) {
             loginService.login(user).then(function (res) {
-                if (res.data.success) {
-                    if (res.data.newuser) {
-                        $state.go('verification', {id: res.data.id});
+                if (res.success) {
+                    if (res.newuser) {
+                        $state.go('verification', {id: res.id});
                     } else {
                         $state.go('app.messages');
                     }

@@ -15,21 +15,5 @@
             'app.messages',
             'app.policy',
             'app.terms'
-        ])
-        .run(bootstrap);
-
-    bootstrap.$inject = [
-        'localStorageService',
-        '$state'
-    ];
-
-    function bootstrap(localStorageService, $state) {
-        setTimeout(function () {
-            if (localStorageService.get('token')) {
-                $state.go('app.messages');
-            } else {
-                $state.go('login');
-            }
-        }, 1500);
-    }
+        ]);
 })();
