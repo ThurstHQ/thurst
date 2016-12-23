@@ -11,8 +11,6 @@ require('./config/passport')(passport);
 
 app.use(function(req, res, next) {
     if ( req.method === 'OPTIONS' ) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         console.log('OPTIONS SUCCESS');
         res.end();
     }
