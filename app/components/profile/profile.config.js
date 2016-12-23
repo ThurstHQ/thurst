@@ -7,11 +7,8 @@ module.exports = function (app, router) {
 
     router.route('/user')
         .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.getUserProfile);
-
-    // router.route('/user')
-    //     .all(passport.authenticate('jwt', { session: false}))
-    //     .put(ProfileController.updateUserProfile);
+        .get(ProfileController.getUserProfile)
+        .put(ProfileController.getUserProfile);
 
     router.route('/upload')
         .all(passport.authenticate('jwt', { session: false}))

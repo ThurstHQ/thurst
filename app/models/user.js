@@ -32,26 +32,32 @@ var UserSchema = new Schema({
         type: [String]
     },
     sexuality: {
-        type: String
+        type: String,
+        default: ''
     },
     gender: {
-        type: String
+        type: String,
+        default: ''
     },
     loc: {
-        type: [Number] // [<longitude>, <latitude>]
+        type: [Number], // [<longitude>, <latitude>]
+        default: []
     },
     birthday: {
-        type: Date
-        // required: true
+        type: Date,
+        default: ''
     },
     pronouns: {
-        type: String
+        type: String,
+        default: ''
     },
     bio: {
-        type: String
+        type: String,
+        default: ''
     },
     background: {
-        type: [String]
+        type: [String],
+        default: []
     },
     created: {
         type: Date,

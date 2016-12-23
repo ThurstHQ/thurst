@@ -10,25 +10,21 @@ exports.getUserProfile = function (req, res, next) {
         // console.log('!!!!!!!!');
         // console.log(req.headers);
         // console.log(req.user);
+
         if (token) {
             var decoded = jwt.decode(token, config.getEnv().secret);
-            User.findOne({
-                name: decoded.name
-            }, function(err, user) {
+            console.log('decoded');
+            console.log(decoded);
+            User.findOne({ _id: decoded._id }, { password:0 }, function(err, user) {
                 if (err) return res.status(500).json({'Error': err}); //TODO: change to err.message in prod
 
                 if (!user) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
-                    return res.json({success: true, msg: 'Welcome in the member area ' + user.email + '!'});
+                    return res.json(user);
                 }
             });
         } else {
             return res.status(403).send({success: false, msg: 'No token provided.'});
         }
-};
-
-exports.uploadImages = function (req, res, next) {
-    var userId = req.user._id || 'userID empty';
-
 };
