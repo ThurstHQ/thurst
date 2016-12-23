@@ -2,7 +2,6 @@ var JwtStrategy = require('passport-jwt').Strategy;
 
 var User = require('../app/models/user');
 var config = require('../config/config').config;
-var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = function(passport) {
     var opts = {};
