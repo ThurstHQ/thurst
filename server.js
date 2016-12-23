@@ -9,7 +9,7 @@ var express     = require('express'),
 
 require('./config/passport')(passport);
 
-// app.use(bodyParser.urlencoded({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(bodyParser.json({limit: '50mb'}));
 
 app.use(morgan('dev'));

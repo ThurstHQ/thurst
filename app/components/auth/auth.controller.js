@@ -13,7 +13,7 @@ exports.signUp = function (req, res, next) {
     // } else {
     //
     // }
-
+    console.log(req.body);
     var userEmail = req.body.email;
 
     User.findOne({
@@ -23,7 +23,8 @@ exports.signUp = function (req, res, next) {
 
         if (!user) {
             var verificationToken = randomstring.generate({ length: 4 });
-
+            console.log('userEmail');
+            console.log(userEmail);
             var newUser = new User({
                 email: userEmail,
                 password: req.body.password,

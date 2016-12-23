@@ -20,7 +20,7 @@ exports.getUserProfile = function (req, res, next) {
                 if (!user) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
-                    return res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+                    return res.json({success: true, msg: 'Welcome in the member area ' + user.email + '!'});
                 }
             });
         } else {

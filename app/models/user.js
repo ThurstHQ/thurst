@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 
 var UserSchema = new Schema({
     username: {
-        type: String,
+        type: String
     },
     email: {
         type: String,
@@ -41,7 +41,7 @@ var UserSchema = new Schema({
         type: [Number] // [<longitude>, <latitude>]
     },
     birthday: {
-        type: Date,
+        type: Date
         // required: true
     },
     pronouns: {
