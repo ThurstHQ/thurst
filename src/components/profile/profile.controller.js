@@ -18,7 +18,6 @@
             loginService.logout();
         }
 
-        console.log(vm.user);
         function pictureUpdate() {
             var options = {
                 quality: 50,
