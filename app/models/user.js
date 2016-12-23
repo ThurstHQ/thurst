@@ -26,7 +26,8 @@ var UserSchema = new Schema({
         type: String
     },
     avatar: {
-        type: String
+        type: String,
+        default: ''
     },
     pictures: {
         type: [String]
