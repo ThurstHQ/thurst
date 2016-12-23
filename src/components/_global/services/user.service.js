@@ -4,12 +4,13 @@
         .module('app.config')
         .factory('userService', userService);
 
-    userService.$inject = ['$http', 'Settings', 'localStorageService', 'notificationsService'];
+    userService.$inject = ['Restangular', 'localStorageService', 'notificationsService'];
 
-    function userService($http, Settings, localStorageService, notificationsService) {
+    function userService(Restangular, localStorageService, notificationsService) {
         return {
+            user: Restangular.service('api/user'),
             userGET: function () {
-                return $http.get(Settings.url + 'api/user').then(function (res) {
+                return this.user.one().get().then(function (res) {
                     localStorageService.set('user', res.data);
                     return res;
                 }, function (error) {
@@ -18,21 +19,10 @@
                 });
             },
             userPUT: function (data) {
-                return $http.put(Settings.url + 'api/user', data).then(function (res) {
+                return this.user.one().put(null, data).then(function (res) {
                     localStorageService.set('user', res.data);
                     return res;
                 }, function (error) {
-                    notificationsService.warn(error.msg);
-                    return error;
-                });
-            },
-            setPhoto: function (data) {
-                notificationsService.loading();
-                return $http.post(Settings.url + 'api/upload', data).then(function (res) {
-                    notificationsService.hide();
-                    return res;
-                }, function (error) {
-                    notificationsService.hide();
                     notificationsService.warn(error.msg);
                     return error;
                 });

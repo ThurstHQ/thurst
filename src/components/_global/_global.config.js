@@ -4,7 +4,8 @@
         .module('app.config', [
             'ionic',
             'ui.router',
-            'LocalStorageModule'
+            'LocalStorageModule',
+            'restangular'
         ])
         .constant('Settings', {
             'applozic_key': 'thurst3f06f50453425773c771235df04b495f5',
@@ -21,9 +22,11 @@
         '$ionicConfigProvider',
         'localStorageServiceProvider',
         '$locationProvider',
-        '$qProvider'
+        '$qProvider',
+        'Settings',
+        'RestangularProvider'
     ];
-    function appConfig($urlRouterProvider, $ionicConfigProvider, localStorageServiceProvider, $locationProvider, $qProvider) {
+    function appConfig($urlRouterProvider, $ionicConfigProvider, localStorageServiceProvider, $locationProvider, $qProvider, Settings, RestangularProvider) {
         $locationProvider.hashPrefix('');
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
@@ -34,6 +37,12 @@
         localStorageServiceProvider.setPrefix('papirux');
 
         $qProvider.errorOnUnhandledRejections(false);
+
+        RestangularProvider.setBaseUrl(Settings.url);
+        RestangularProvider.setDefaultHttpFields({cache: false});
+        RestangularProvider.setDefaultHeaders({
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        });
     }
 
     runAppConfig.$inject = ['Settings', '$ionicPlatform'];

@@ -4,8 +4,8 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['loginService', 'userService', 'cameraService', '$ionicActionSheet', 'localStorageService'];
-    function ProfileCtrl(loginService, userService, cameraService, $ionicActionSheet, localStorageService) {
+    ProfileCtrl.$inject = ['loginService', 'userService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService'];
+    function ProfileCtrl(loginService, userService, cameraService, $ionicActionSheet, localStorageService, uploadService) {
         var vm = this;
 
         vm.user = localStorageService.get('user') || {};
@@ -40,7 +40,7 @@
                         options.sourceType = 1;
                     }
                     cameraService.getPicture(options).then(function (imageData) {
-                        userService.setPhoto({user_avatar: "data:image/jpeg;base64," + imageData});
+                        uploadService.setPhoto({user_avatar: "data:image/jpeg;base64," + imageData});
                     });
                 }
             });
