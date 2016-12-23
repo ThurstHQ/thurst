@@ -28,7 +28,7 @@
             },
             setPhoto: function (data) {
                 notificationsService.loading();
-                return $http.post(Settings.url + 'api/photo', data).then(function (res) {
+                return $http.post(Settings.url + 'api/upload', data).then(function (res) {
                     notificationsService.hide();
                     return res;
                 }, function (error) {
