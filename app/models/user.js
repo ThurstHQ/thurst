@@ -3,6 +3,9 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
 var UserSchema = new Schema({
+    username: {
+        type: String,
+    },
     email: {
         type: String,
         unique: true,
@@ -12,11 +15,47 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        default: ''
+    },
     verified: {
         type: Boolean
     },
     verify_token: {
         type: String
+    },
+    avatar: {
+        type: String
+    },
+    pictures: {
+        type: [String]
+    },
+    sexuality: {
+        type: String
+    },
+    gender: {
+        type: String
+    },
+    loc: {
+        type: [Number] // [<longitude>, <latitude>]
+    },
+    birthday: {
+        type: Date,
+        // required: true
+    },
+    pronouns: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    background: {
+        type: [String]
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 });
 
