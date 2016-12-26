@@ -41,13 +41,31 @@ exports.editUserProfile = function (req, res, next) {
 
 
 exports.genderSearch = function (req, res, next) {
+    var newGender = req.user.gender.split(' ').filter(function (item) {
+        return item.length > 2;
+    });
+    // var search = new RegExp(req.query.query, 'i');
+    console.log('newGender');
+    console.log(newGender);
 
-    User.findOne({$or: [
-        {  }
-        ]}, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
+    
+    var gender = new RegExp(req.user.gender, 'i');
+    User.find({})
+        .or([
+            {},
+            {}
+            ])
+        .exec(function (err, user) {
         if (err) return res.status(500).json({'Error message': err});
         console.log(user);
         res.json(user);
     })
 
+};
+
+exports.deletePrifile = function (req, res, next) {
+    User.findByIdAndRemove(req.user._id, function (err, data) {
+        if (err) return res.status(500).json({'Error message': err});
+        return res.json({success: true, msg: 'The user was successfully removed.'});
+    })
 };

@@ -64,6 +64,10 @@ var UserSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    invisible: {
+        type: Boolean,
+        default: false
     }
 });
 
