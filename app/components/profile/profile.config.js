@@ -17,6 +17,6 @@ module.exports = function (app, router) {
 
     router.route('/rsearch')
         .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.genderSearch);
+        .get(ProfileController.rSearch);
 
 };

@@ -91,13 +91,15 @@ UserSchema.pre('save', function (next) {
     }
 });
 
-UserSchema.statics.random = function(callback) {
+UserSchema.statics.random = function(id, callback) {
     this.count(function(err, count) {
         if (err) {
             return callback(err);
         }
-        var rand = Math.floor(Math.random() * count);
-        this.findOne().skip(rand).exec(callback);
+        var rand = Math.floor(Math.random() * (count-1));
+        console.log('Random');
+        console.log(rand);
+        this.findOne({_id: {'$ne': id}}).skip(rand).exec(callback);
     }.bind(this));
 };
 
