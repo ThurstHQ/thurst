@@ -2,13 +2,13 @@
     ion-nav-title.logo Messages
     ion-content.messages-page
         .list
-            .item
-                img.avatar(ng-src="vm.user.avatar")
-                .wrapper-text
+            .item(ng-repeat="chat in vm.chats")
+                //img.avatar(ng-src="vm.user.avatar")
+                //.wrapper-text
                     p.first [Mail.Form]
                     p.second [Mail.Subject]
                     p.third [Mail.Body]
-                .wrapper-date
+                //.wrapper-date
                     p.date [Sent.Date]
                     i.icon.ion-trash-b
 

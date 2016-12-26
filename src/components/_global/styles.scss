@@ -67,3 +67,47 @@ ion-side-menu {
 @import 'scss/profile';
 @import 'scss/splash';
 @import 'scss/support';
+
+.popover-backdrop {
+  z-index: 9999999;
+}
+
+.popover-menu {
+  height: auto;
+}
+
+#mck-sidebox-launcher {
+  display: none;
+}
+
+.mck-sidebox {
+  height: 100%;
+  right: 0;
+  left: auto;
+  margin: 0;
+  border: 0;
+  padding-left: 0;
+  box-shadow: none;
+  border-radius: 0;
+  line-height: 18px;
+  min-width: 310px;
+}
+
+.mck-sidebox .mck-box-body {
+  padding: 0;
+  //position: absolute;
+  //width: 100%;
+  //height: 100%;
+  //top: 0;
+  //bottom: 0;
+  //overflow: hidden;
+}
+
+.mck-box-body .mck-tab-cell {
+  width: 100%;
+  //height: 100%;
+  overflow: auto;
+  position: absolute;
+  //padding-bottom: 10px;
+  //-webkit-overflow-scrolling: touch;
+}

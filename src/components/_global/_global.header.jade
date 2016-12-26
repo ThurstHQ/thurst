@@ -1,7 +1,10 @@
 head
     meta(charset='utf-8')
     meta(name="viewport", content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1")
+    meta(http-equiv="Content-Security-Policy", content="script-src 'self' https://apps.applozic.com https://maps.google.com https://maps.googleapis.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://apps.applozic.com 'unsafe-inline'")
     title App
+    //<link href="assets/applozic/css/mck-combined.min.css" rel="stylesheet">
+    <link href="assets/applozic/css/app/mck-sidebox-1.0.css" rel="stylesheet">
     <!-- build:css css/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -11,3 +14,5 @@ head
     <link rel="stylesheet" href="styles.css"/>
     <!-- endinject -->
     <!-- endbuild -->
+    <script type="text/javascript">var $original;if (typeof jQuery !== 'undefined') {$original = jQuery.noConflict(true);$ = $original;jQuery = $original;}</script>
+    <script src="assets/applozic/js/jquery-2.2.2.min.js"></script>
