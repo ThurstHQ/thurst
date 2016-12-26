@@ -8,7 +8,7 @@
 
     function searchService(notificationsService, Restangular) {
         return {
-            search: Restangular.service('wp/v2/search'),
+            search: Restangular.service('api/search'),
             getAll: function (data) {
                 notificationsService.loading();
                 return this.search.getList(data).then(function (res) {

@@ -4,15 +4,16 @@
         .module('app.config')
         .factory('loginService', loginService);
 
-    loginService.$inject = ['Restangular', '$state', 'notificationsService', 'localStorageService', '$rootScope'];
+    loginService.$inject = ['Restangular', '$state', 'notificationsService', 'localStorageService'];
 
-    function loginService(Restangular, $state, notificationsService, localStorageService, $rootScope) {
+    function loginService(Restangular, $state, notificationsService, localStorageService) {
         return {
             login: function (data) {
                 notificationsService.loading();
                 return Restangular.one('api/authenticate').post(null, data).then(function (res) {
                     if (res.token) {
-                        $rootScope.$emit('token', res.token);
+                        localStorageService.set('token', res.token);
+                        Restangular.setDefaultHeaders({'Authorization': res.token});
                     }
                     notificationsService.hide();
                     return res;
@@ -25,7 +26,8 @@
                 notificationsService.loading();
                 return Restangular.one('api/verify').post(null, data).then(function (res) {
                     if (res.token) {
-                        $rootScope.$emit('token', res.token);
+                        localStorageService.set('token', res.token);
+                        Restangular.setDefaultHeaders({'Authorization': res.token});
                     }
                     notificationsService.hide();
                     return res;
