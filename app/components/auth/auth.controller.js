@@ -71,7 +71,7 @@ exports.signUp = function (req, res, next) {
                         });
                     } else {
                         var token = jwt.encode(user, config.getEnv().secret);
-                        res.json({success: true, verify: true, token: 'JWT ' + token});
+                        res.json({success: true, verify: false, token: 'JWT ' + token});
                     }
                 } else {
                     res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});

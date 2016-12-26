@@ -42,7 +42,7 @@ exports.editUserProfile = function (req, res, next) {
 
 exports.genderSearch = function (req, res, next) {
 
-    User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
+    User.findOne({}, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
         if (err) return res.status(500).json({'Error message': err});
         console.log(user);
         res.json(user);
