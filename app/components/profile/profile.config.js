@@ -14,4 +14,8 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(Upload.uploadFiles);
 
+    router.route('/gsearch')
+        .all(passport.authenticate('jwt', { session: false}))
+        .get(ProfileController.genderSearch);
+
 };

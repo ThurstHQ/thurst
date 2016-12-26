@@ -6,13 +6,8 @@ var getToken = require('../../global/gettoken').getToken,
     config = require('../../../config/config').config;
 
 exports.getUserProfile = function (req, res, next) {
-        var token = getToken(req.headers);
 
-        if (token) {
-            var decoded = jwt.decode(token, config.getEnv().secret);
-            console.log('decoded');
-            console.log(decoded);
-            User.findById(decoded._id, { password:0, verify_token:0 }, function(err, user) {
+            User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
                 if (err) return res.status(500).json({'Error': err}); //TODO: change to err.message in prod
                 if (!user) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
@@ -20,14 +15,10 @@ exports.getUserProfile = function (req, res, next) {
                     return res.json(user);
                 }
             });
-        } else {
-            return res.status(403).send({success: false, msg: 'No token provided.'});
-        }
 };
 
 exports.editUserProfile = function (req, res, next) {
     var token = getToken(req.headers);
-
     if (token) {
         var decoded = jwt.decode(token, config.getEnv().secret);
         User.findOne({ _id: decoded._id }, { password:0 }, function(err, user) {
@@ -46,4 +37,15 @@ exports.editUserProfile = function (req, res, next) {
     } else {
         return res.status(403).send({success: false, msg: 'No token provided.'});
     }
+};
+
+
+exports.genderSearch = function (req, res, next) {
+
+    User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
+        if (err) return res.status(500).json({'Error message': err});
+        console.log(user);
+        res.json(user);
+    })
+
 };
