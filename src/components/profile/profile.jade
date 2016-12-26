@@ -42,7 +42,7 @@ ion-view
         label.item.item-input
             input(type='text' ng-model='vm.user.pronouns' placeholder='pronouns')
         label.item.item-input
-            textarea(type='text' ng-model='vm.user.bio' placeholder='some words about yourself {200 characters}')
+            textarea(type='text' ng-model='vm.user.bio' placeholder='some words about yourself {200 characters}' maxlength='200')
         .wrapper-logout
             button.button.button-icon.icon.ion-gear-b
             button.button.button-clear.button-logout(ng-click='vm.logout()') Logout
