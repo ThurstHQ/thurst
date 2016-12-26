@@ -67,11 +67,11 @@ exports.signUp = function (req, res, next) {
                             };
                             sendEmail(newMail.to, newMail.subject, newMail.text);
 
-                            return res.json({success: true, verify: true, id: user.id, msg: 'User email not verified.'});
+                            return res.json({success: true, verify: false, id: user.id, msg: 'User email not verified.'});
                         });
                     } else {
                         var token = jwt.encode(user, config.getEnv().secret);
-                        res.json({success: true, verify: false, token: 'JWT ' + token});
+                        res.json({success: true, verify: true, token: 'JWT ' + token});
                     }
                 } else {
                     res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
