@@ -87,7 +87,7 @@ exports.verify = function (req, res, next) {
 
     User.findOne({ _id: userId }, function (err, user) {
         if (user.verify_token == code) {
-            console.log('that token is correct! Verify the user');
+            // console.log('that token is correct! Verify the user');
 
             User.findOneAndUpdate({_id: userId}, {'verified': true}, function (err, resp) {
                 if (err) return res.status(500).send({'message': err.message});

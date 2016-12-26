@@ -19,4 +19,8 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.rSearch);
 
+    router.route('/search')
+        .all(passport.authenticate('jwt', { session: false}))
+        .get(ProfileController.Search);
+
 };

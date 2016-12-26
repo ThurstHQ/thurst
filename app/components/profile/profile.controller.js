@@ -22,6 +22,7 @@ exports.editUserProfile = function (req, res, next) {
     User.findByIdAndUpdate(user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
         if (err) return res.status(500).json({'Error': err});
         console.log(user);
+
         res.json(user)
     });
 
@@ -62,5 +63,20 @@ exports.deletePrifile = function (req, res, next) {
         if (err) return res.status(500).json({'Error message': err});
         return res.json({success: true, msg: 'The user was successfully removed.'});
     });
+
+};
+
+exports.Search = function (req, res, next) {
+
+    var gender = new RegExp(req.user.gender, 'i');
+    User.findOne({'gender': {$regex: gender}, _id: {'$ne': req.user._id}})
+        // .or([
+        //
+        //     ])
+        .exec(function (err, user) {
+        if (err) return res.status(500).json({'Error message': err});
+        console.log(user);
+        res.json(user);
+    })
 
 };
