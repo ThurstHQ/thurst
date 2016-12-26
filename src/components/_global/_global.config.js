@@ -20,7 +20,6 @@
         .run(runAppConfig);
 
     appConfig.$inject = [
-        '$urlRouterProvider',
         '$ionicConfigProvider',
         '$locationProvider',
         '$qProvider',
@@ -28,18 +27,15 @@
         'RestangularProvider',
         'AnalyticsProvider'
     ];
-    function appConfig($urlRouterProvider, $ionicConfigProvider, $locationProvider, $qProvider, Settings, RestangularProvider, AnalyticsProvider) {
+    function appConfig($ionicConfigProvider, $locationProvider, $qProvider, Settings, RestangularProvider, AnalyticsProvider) {
         $locationProvider.hashPrefix('');
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.views.swipeBackEnabled(false);
 
-        // $urlRouterProvider.otherwise('/login');
-
         $qProvider.errorOnUnhandledRejections(false);
 
         RestangularProvider.setBaseUrl(Settings.url);
-        // RestangularProvider.setDefaultHttpFields({cache: false});
 
         AnalyticsProvider.setAccount({
             tracker: 'UA-89420914-1',
@@ -49,10 +45,13 @@
 
     }
 
-    runAppConfig.$inject = ['Settings', 'localStorageService', '$state', 'Restangular', 'userService'];
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', 'userService', '$rootScope'];
 
-    function runAppConfig(Settings, localStorageService, $state, Restangular, userService) {
+    function runAppConfig(Settings, localStorageService, $location, Restangular, userService, $rootScope) {
         console.log('appconfig');
+
+        var token = localStorageService.get('token');
+
         if (window.HelpshiftPlugin) {
             window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
         }
@@ -60,21 +59,24 @@
             window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             window.cordova.plugins.Keyboard.disableScroll(true);
         }
-        if (localStorageService.get('token')) {
+
+        if (token) {
+            $location.path('messages');
+            init(token);
+        } else {
+            $location.path('login');
+        }
+
+        function init(token) {
             Restangular.setDefaultHeaders({
-                'Authorization': localStorageService.get('token')
+                'Authorization': token
             });
             userService.userGET().then(function (user) {
-                if (user.verified) {
-                    $state.go('app.messages');
-                } else if (user) {
-                    $state.go('verification');
-                }
                 $applozic.fn.applozic({
                     appId: Settings.applozic_key,   //Get your application key from https://www.applozic.com
                     userId: user._id,               //Logged in user's id, a unique identifier for user
                     userName: user.name || 'No Name',            //User's display name
-                    imageLink: '',                  //User's profile picture url
+                    imageLink: user.avatar,                  //User's profile picture url
                     email: user.email,
                     // contactNumber: '',              //optional, pass with internationl code eg: +16508352160
                     // desktopNotification: true,
@@ -108,8 +110,11 @@
                     }
                 });
             });
-        } else {
-            $state.go('login');
         }
+
+        $rootScope.$on('token', function (event, token) {
+            localStorageService.set('token', token);
+            init(token);
+        });
     }
 })();

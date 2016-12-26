@@ -12,6 +12,7 @@
             'app.support',
             'app.connections',
             'app.messages',
+            'app.search'
             // 'app.policy',
             // 'app.terms'
         ])
