@@ -45,7 +45,7 @@ exports.signUp = function (req, res, next) {
                 };
                 sendEmail(newMail.to, newMail.subject, newMail.text);
 
-                res.json({success: true, verify: true, msg: 'Successful created new user.', id: user.id});
+                res.json({success: true, verify: false, msg: 'Successful created new user.', id: user.id});
             });
         } else {
 
@@ -71,7 +71,7 @@ exports.signUp = function (req, res, next) {
                         });
                     } else {
                         var token = jwt.encode(user, config.getEnv().secret);
-                        res.json({success: true, verify: false, token: 'JWT ' + token});
+                        res.json({success: true, verify: true, token: 'JWT ' + token});
                     }
                 } else {
                     res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
@@ -95,7 +95,7 @@ exports.verify = function (req, res, next) {
 
                 var token = jwt.encode(user, config.getEnv().secret);
 
-                return res.json({success: true, verify: false, token: 'JWT ' + token});
+                return res.json({success: true, verify: true, token: 'JWT ' + token});
             });
         } else {
             return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
