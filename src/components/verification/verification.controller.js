@@ -7,6 +7,7 @@
     VerificationCtrl.$inject = ['$state', 'loginService', '$stateParams'];
     function VerificationCtrl($state, loginService, $stateParams) {
         var vm = this;
+        vm.email = $stateParams.email;
 
         vm.verification = verification;
 

@@ -12,12 +12,11 @@
 
         function login(user) {
             loginService.login(user).then(function (res) {
-                console.log(res);
                 if (res.success) {
                     if (res.verify) {
                         $state.go('app.messages');
                     } else {
-                        $state.go('verification', {id: res.id});
+                        $state.go('verification', {id: res.id, email: user.email});
                     }
                 } else {
                     $state.go('error');
