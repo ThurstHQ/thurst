@@ -8,7 +8,7 @@
     function ProfileCtrl(loginService, userService, cameraService, $ionicActionSheet, localStorageService, uploadService) {
         var vm = this;
 
-        vm.user = localStorageService.get('user') || {};
+        vm.user = localStorageService.get('user');
 
         vm.logout = logout;
         vm.pictureUpdate = pictureUpdate;

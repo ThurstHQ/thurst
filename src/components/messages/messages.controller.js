@@ -9,13 +9,13 @@
         var vm = this;
 
         // console.log(messages);
-        // $applozic.fn.applozic('getUserDetail', {
-        //     callback: function getUserDetail(response) {
-        //         if (response.status === 'success') {
-        //             console.log(response.data);
-        //             vm.chats = response.data.users;
-        //         }
-        //     }
-        // });
+        $applozic.fn.applozic('getUserDetail', {
+            callback: function getUserDetail(response) {
+                if (response.status === 'success') {
+                    console.log(response.data);
+                    vm.chats = response.data.users;
+                }
+            }
+        });
     }
 })();

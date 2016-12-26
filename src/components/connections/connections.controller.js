@@ -4,8 +4,9 @@
         .module('app.connections')
         .controller('ConnectionsCtrl', ConnectionsCtrl);
 
-    ConnectionsCtrl.$inject = [];
-    function ConnectionsCtrl() {
+    ConnectionsCtrl.$inject = ['localStorageService'];
+    function ConnectionsCtrl(localStorageService) {
         var vm = this;
+        vm.user = localStorageService.get('user');
     }
 })();

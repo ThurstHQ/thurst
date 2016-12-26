@@ -38,6 +38,10 @@
     width: calc(100% - 25px);
     margin: auto;
     display: block;
+    &.blue-button {
+      background: $bg-blue-button-block-app;
+      color: $color-white;
+    }
   }
   .button-delete {
     background-color: $color-delete-account-button;

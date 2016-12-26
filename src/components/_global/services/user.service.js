@@ -4,9 +4,9 @@
         .module('app.config')
         .factory('userService', userService);
 
-    userService.$inject = ['Restangular', 'localStorageService', 'notificationsService'];
+    userService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'loginService'];
 
-    function userService(Restangular, localStorageService, notificationsService) {
+    function userService(Restangular, localStorageService, notificationsService, loginService) {
         return {
             user: Restangular.service('api/user'),
             userGET: function () {
@@ -27,6 +27,17 @@
                 }, function (error) {
                     notificationsService.hide();
                     notificationsService.warn(error.msg);
+                    return error;
+                });
+            },
+            userDELETE: function () {
+                notificationsService.loading();
+                this.user.one().customDELETE().then(function (res) {
+                    notificationsService.hide();
+                    loginService.logout();
+                    return res;
+                }, function (error) {
+                    notificationsService.hide();
                     return error;
                 });
             }
