@@ -47,14 +47,14 @@ exports.deleteDatabase = function (req, res, next) {
 };
 
 exports.Search = function (req, res, next) {
-    console.log('req.query');
-    console.log(req.query);
+    // console.log('req.query');
+    // console.log(req.query);
 
     var reqQuery = req.query,
         queryArr = [];
 
-    console.log('Object.keys(reqQuery).length');
-    console.log(Object.keys(reqQuery).length);
+    // console.log('Object.keys(reqQuery).length');
+    // console.log(Object.keys(reqQuery).length);
 
     if (Object.keys(reqQuery).length == 0) {
         User.random(req.user._id, function (err, doc) {
@@ -76,10 +76,9 @@ exports.Search = function (req, res, next) {
 
                 }
                 queryArr.push(separateObj);
-            // }
-        }
-        console.log('queryArr');
-        console.log(queryArr);
+            }
+        // console.log('queryArr');
+        // console.log(queryArr);
 
         User
             .find({ _id: {'$ne': req.user._id} })
@@ -88,7 +87,5 @@ exports.Search = function (req, res, next) {
                 if (err) return res.status(500).send({message: err.message});
                 return res.json(users);
             });
-    }
-
-
+        }
 };
