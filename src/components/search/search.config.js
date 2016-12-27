@@ -17,11 +17,6 @@
                         templateUrl: 'components/search/search.html',
                         controller: 'SearchCtrl as vm'
                     }
-                },
-                resolve: {
-                    list: ['searchService', function (searchService) {
-                        return searchService.getAll();
-                    }]
                 }
             });
     }

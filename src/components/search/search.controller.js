@@ -4,10 +4,12 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['list'];
-    function SearchCtrl(list) {
+    SearchCtrl.$inject = ['searchService'];
+    function SearchCtrl(searchService) {
         var vm = this;
 
-        console.log(list);
+        searchService.getAll().then(function (res) {
+            vm.list = res;
+        });
     }
 })();

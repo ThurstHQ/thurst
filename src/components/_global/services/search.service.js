@@ -18,7 +18,7 @@
                         data.longitude = pos.coords.longitude;
                     });
                 }
-                return this.search.getList(null, data).then(function (res) {
+                return this.search.one().get(data).then(function (res) {
                     notificationsService.hide();
                     return res;
                 }, function (error) {
