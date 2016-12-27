@@ -55,7 +55,7 @@
         } else {
             $location.path('login');
         }
-        console.log(window.HelpshiftPlugin);
+
         if (window.HelpshiftPlugin) {
             window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
         }
@@ -63,6 +63,14 @@
             window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             window.cordova.plugins.Keyboard.disableScroll(true);
         }
+
+        Restangular.setErrorInterceptor(function (response) {
+            if (response.status === 401) {
+                localStorageService.clearAll();
+                $location.path('login');
+            }
+            return false;
+        });
 
         $rootScope.$on('initApplozic', function (event, user) {
             $applozic.fn.applozic({
