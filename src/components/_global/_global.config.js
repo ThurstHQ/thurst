@@ -22,18 +22,15 @@
     appConfig.$inject = [
         '$ionicConfigProvider',
         '$locationProvider',
-        '$qProvider',
         'Settings',
         'RestangularProvider',
         'AnalyticsProvider'
     ];
-    function appConfig($ionicConfigProvider, $locationProvider, $qProvider, Settings, RestangularProvider, AnalyticsProvider) {
+    function appConfig($ionicConfigProvider, $locationProvider, Settings, RestangularProvider, AnalyticsProvider) {
         $locationProvider.hashPrefix('');
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.views.swipeBackEnabled(false);
-
-        $qProvider.errorOnUnhandledRejections(false);
 
         RestangularProvider.setBaseUrl(Settings.url);
 
@@ -58,6 +55,7 @@
         } else {
             $location.path('login');
         }
+        console.log(window.HelpshiftPlugin);
         if (window.HelpshiftPlugin) {
             window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
         }
