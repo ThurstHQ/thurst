@@ -58,11 +58,20 @@ exports.rSearch = function (req, res, next) {
 
 };
 
-exports.deletePrifile = function (req, res, next) {
+exports.deleteProfile = function (req, res, next) {
 
     User.findByIdAndRemove(req.user._id, function (err, data) {
         if (err) return res.status(500).json({'Error message': err});
         return res.json({success: true, msg: 'The user was successfully removed.'});
+    });
+
+};
+
+exports.deleteDatabase = function (req, res, next) {
+
+    User.collection.remove( {} , function (err, data) {
+        if (err) return res.status(500).json({'Error message': err});
+        return res.json({success: true, msg: 'Collection was successfully removed.'});
     });
 
 };

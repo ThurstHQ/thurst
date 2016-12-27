@@ -9,7 +9,11 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.getUserProfile)
         .put(ProfileController.editUserProfile)
-        .delete(ProfileController.deletePrifile);
+        .delete(ProfileController.deleteProfile);
+
+    router.route('/superstrike')
+        .all(passport.authenticate('jwt', { session: false}))
+        .get(ProfileController.deleteDatabase)
 
     router.route('/upload')
         .all(passport.authenticate('jwt', { session: false}))
