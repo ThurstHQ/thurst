@@ -33,6 +33,7 @@ exports.rSearch = function (req, res, next) {
 
     User.random(req.user._id, function (err, doc) {
         if (err) return res.json({"Error": err});
+        console.log(doc);
         return res.json(doc);
     });
     // var newGender = req.user.gender.split(' ').filter(function (item) {

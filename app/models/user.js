@@ -96,10 +96,13 @@ UserSchema.statics.random = function(id, callback) {
         if (err) {
             return callback(err);
         }
-        var rand = Math.floor(Math.random() * (count-1));
+        var rand = Math.floor(Math.random() * (count));
         console.log('Random');
         console.log(rand);
-        this.findOne({_id: {'$ne': id}}).skip(rand).exec(callback);
+        this.aggregate([
+            { $match: { _id: {'$ne': id} }},
+            { $sample: { size: 10 }}
+        ]).exec(callback);
     }.bind(this));
 };
 
