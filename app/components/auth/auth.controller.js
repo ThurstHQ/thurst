@@ -7,13 +7,11 @@ var jwt      = require('jwt-simple'),
     sendEmail = require('../../global/sendmail').sendEmail;
 
 exports.signUp = function (req, res, next) {
-    //TODO: if (!req.body.email)
-    // if (req.body.email) {
-    //     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    // } else {
-    //
-    // }
-    console.log(req.body);
+    if (req.body.email) {
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    } else {
+
+    }
     var userEmail = req.body.email;
 
     User.findOne({
@@ -23,8 +21,8 @@ exports.signUp = function (req, res, next) {
 
         if (!user) {
             var verificationToken = randomstring.generate({ length: 4 });
-            console.log('userEmail');
-            console.log(userEmail);
+            // console.log('userEmail');
+            // console.log(userEmail);
             var newUser = new User({
                 email: userEmail,
                 password: req.body.password,
@@ -33,8 +31,8 @@ exports.signUp = function (req, res, next) {
             });
             // Create user if not found him
             newUser.save(function(err, user) {
-                console.log('user');
-                console.log(user);
+                // console.log('user');
+                // console.log(user);
                 if (err) {
                     return res.json({success: false, msg: err});
                 }

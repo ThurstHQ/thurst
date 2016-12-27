@@ -7,7 +7,7 @@ var jwt      = require('jwt-simple'),
 exports.getUserProfile = function (req, res, next) {
 
     User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
-        if (err) return res.status(500).json({'Error': err}); //TODO: change to err.message in prod
+        if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
         if (!user) {
             return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
         } else {
@@ -29,11 +29,15 @@ exports.editUserProfile = function (req, res, next) {
 };
 
 exports.deleteProfile = function (req, res, next) {
+    if (req.user._id) {
+        User.findByIdAndRemove(req.user._id, function (err, data) {
+            if (err) return res.status(500).json({'Error message': err});
+            return res.json({success: true, msg: 'The user was successfully removed.'});
+        });
+    } else {
+        return res.json({success: false, msg: 'The user was not successfully removed.'});
+    }
 
-    User.findByIdAndRemove(req.user._id, function (err, data) {
-        if (err) return res.status(500).json({'Error message': err});
-        return res.json({success: true, msg: 'The user was successfully removed.'});
-    });
 
 };
 
