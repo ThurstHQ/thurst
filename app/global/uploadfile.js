@@ -11,21 +11,16 @@ var http = require('http'),
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
-var Busboy = require('busboy');
+// var Busboy = require('busboy');
 
 exports.uploadFiles = function (req, res, next) {
     // console.log(req.user);
     // console.log('appDIr');
     // console.log(appDir);
-
-    var userId = req.user._id || 'empty userId',
-        userFile = {};
-
+    var userId = req.user._id || 'empty userId';
     // console.log('userId');
     // console.log(userId);
-
     var pathForSave = path.join('public', 'images', userId.toString());
-
     // console.log('headers');
     // console.log(req.headers);
     // console.log('pathForSave');
