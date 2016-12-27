@@ -4,32 +4,30 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', 'localStorageService'];
-    function SearchCtrl(searchService, $scope, localStorageService) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope'];
+    function SearchCtrl(searchService, $scope, $rootScope) {
         var vm = this;
-        vm.reqData = {page: 1};
+        vm.page = 1;
         vm.showInfinite = true;
+        vm.list = [];
         vm.load = load;
-
-        if (localStorageService.get('user').loc) {
-            navigator.geolocation.getCurrentPosition(function (pos) {
-                vm.reqData.latitude = pos.coords.latitude;
-                vm.reqData.longitude = pos.coords.longitude;
-            });
-        }
-
         function load() {
-            searchService.getAll(vm.reqData).then(function (res) {
-                vm.list = res;
-                $scope.$broadcast('scroll.infiniteScrollComplete');
+            var data = {page: vm.page};
+            if ($rootScope.loc) {
+                data = Object.assign(data, $rootScope.loc);
+            }
+            searchService.getAll(data).then(function (res) {
+                angular.forEach(res, function (item) {
+                    vm.list.push(item);
+                });
                 if (res.length === 0) {
-                    vm.reqData.page--;
+                    vm.page--;
                     vm.showInfinite = false;
                 } else {
-                    vm.reqData.page++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    vm.page++;
                 }
             });
         }
-
     }
 })();
