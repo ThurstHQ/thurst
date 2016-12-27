@@ -47,14 +47,8 @@ exports.deleteDatabase = function (req, res, next) {
 };
 
 exports.Search = function (req, res, next) {
-    // console.log('req.query');
-    // console.log(req.query);
-
     var reqQuery = req.query,
         queryArr = [];
-
-    // console.log('Object.keys(reqQuery).length');
-    // console.log(Object.keys(reqQuery).length);
 
     if (Object.keys(reqQuery).length == 0) {
         User.random(req.user._id, function (err, doc) {
@@ -63,22 +57,19 @@ exports.Search = function (req, res, next) {
         });
     } else {
         for (var field in reqQuery){
-            // if (reqQuery[field].length > 0) {
-                var separateObj = {};
+            var separateObj = {};
 
-                if (field === 'sexuality') {
-                    var searchSexuality= new RegExp(reqQuery.sexuality, 'i');
-                    separateObj.sexuality = {$regex: searchSexuality};
-                } else if (field === 'gender') {
-                    var arrGender = reqQuery.gender.split(',');
-                    separateObj.gender = {$regex: arrGender};
-                } else if (field === 'articleNumber') {
+            if (field === 'sexuality') {
+                var searchSexuality= new RegExp(reqQuery.sexuality, 'i');
+                separateObj.sexuality = {$regex: searchSexuality};
+            } else if (field === 'gender') {
+                var arrGender = reqQuery.gender.split(',');
+                separateObj.gender = {$regex: arrGender};
+            } else if (field === 'articleNumber') {
 
-                }
-                queryArr.push(separateObj);
             }
-        // console.log('queryArr');
-        // console.log(queryArr);
+            queryArr.push(separateObj);
+        }
 
         User
             .find({ _id: {'$ne': req.user._id} })
