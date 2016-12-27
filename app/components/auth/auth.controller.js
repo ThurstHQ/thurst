@@ -84,6 +84,7 @@ exports.verify = function (req, res, next) {
         userId = req.body.id;
 
     User.findOne({ _id: userId }, function (err, user) {
+        if (err) return res.status(403).json({"message": err.message});
         if (user.verify_token == code) {
             // console.log('that token is correct! Verify the user');
 

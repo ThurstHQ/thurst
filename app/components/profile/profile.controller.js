@@ -1,4 +1,7 @@
 var jwt      = require('jwt-simple'),
+    fs = require('fs'),
+    path = require('path'),
+    fsExtra = require('fs-extra'),
 
     User     = require('../../models/user'),
 
@@ -20,7 +23,7 @@ exports.getUserProfile = function (req, res, next) {
 exports.editUserProfile = function (req, res, next) {
 
     User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
-        if (err) return res.status(500).json({'Error': err});
+        if (err) return res.status(500).json({'Error': err.message});
         console.log(user);
 
         res.json(user)
@@ -31,14 +34,15 @@ exports.editUserProfile = function (req, res, next) {
 exports.deleteProfile = function (req, res, next) {
     if (req.user._id) {
         User.findByIdAndRemove(req.user._id, function (err, data) {
-            if (err) return res.status(500).json({'Error message': err});
-            return res.json({success: true, msg: 'The user was successfully removed.'});
+            if (err) return res.status(500).json({'Error message': err.message});
+            fsExtra.remove(path.join('public', 'images', req.user._id.toString()), function (err, data) {
+                if (err) return res.status(500).json({'Error': err.message});
+                return res.json({success: true, msg: 'The user was successfully removed.'});
+            });
         });
     } else {
         return res.json({success: false, msg: 'The user was not successfully removed.'});
     }
-
-
 };
 
 exports.deleteDatabase = function (req, res, next) {
