@@ -3,3 +3,10 @@
     ion-content.search-page
         .list
             .item(ng-repeat="item in vm.list")
+                img.avatar(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
+                .wrapper-text
+                    p.first {{item.email}}
+                    p.second {{item.pronouns}}
+                    p.third {{item.bio}}
+                .wrapper-date
+                    p.date [Sent.Date]

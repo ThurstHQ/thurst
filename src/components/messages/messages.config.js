@@ -17,15 +17,6 @@
                         templateUrl: 'components/messages/messages.html',
                         controller: 'MessagesCtrl as vm'
                     }
-                },
-                resolve: {
-                    // messages: function () {
-                    // return $applozic.fn.applozic('getUserDetail', {
-                    //     callback: function getUserDetail(data) {
-                    //         return data;
-                    //     }
-                    // });
-                    // }
                 }
             });
     }
