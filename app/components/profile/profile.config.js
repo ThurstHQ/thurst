@@ -3,7 +3,8 @@ var passport	= require('passport');
 module.exports = function (app, router) {
 
     var ProfileController = require('./profile.controller'),
-        Upload = require('../../global/uploadfile');
+        Upload = require('../../global/uploadfile'),
+        Remove = require('../../global/deleteFile');
 
     router.route('/user')
         .all(passport.authenticate('jwt', { session: false}))
@@ -18,6 +19,10 @@ module.exports = function (app, router) {
     router.route('/upload')
         .all(passport.authenticate('jwt', { session: false}))
         .post(Upload.uploadFiles);
+
+    router.route('/remove')
+        .all(passport.authenticate('jwt', { session: false}))
+        .post(Remove.deleteFile);
 
     router.route('/search')
         .all(passport.authenticate('jwt', { session: false}))

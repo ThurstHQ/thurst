@@ -56,7 +56,8 @@ exports.deleteDatabase = function (req, res, next) {
 
 exports.Search = function (req, res, next) {
     var reqQuery = req.query,
-        queryArr = [];
+        queryArr = [],
+        reqPage = req.query.page - 1 || 0;
 
     if (Object.keys(reqQuery).length == 0) {
         User.random(req.user._id, function (err, doc) {
@@ -82,6 +83,9 @@ exports.Search = function (req, res, next) {
         User
             .find({ _id: {'$ne': req.user._id} })
             .and(queryArr)
+            .sort({"created": -1})
+            .skip(reqPage*10)
+            .limit(10)
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: err.message});
                 return res.json(users);
