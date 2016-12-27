@@ -19,7 +19,7 @@ exports.getUserProfile = function (req, res, next) {
 
 exports.editUserProfile = function (req, res, next) {
 
-    User.findByIdAndUpdate(user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
+    User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
         if (err) return res.status(500).json({'Error': err});
         console.log(user);
 
@@ -79,10 +79,13 @@ exports.deleteDatabase = function (req, res, next) {
 exports.Search = function (req, res, next) {
     console.log('req.query');
     console.log(req.query);
+
     var reqQuery = req.query,
         queryArr = [];
+
     console.log('Object.keys(reqQuery).length');
     console.log(Object.keys(reqQuery).length);
+
     if (Object.keys(reqQuery).length == 0) {
         User.random(req.user._id, function (err, doc) {
             if (err) return res.json({"Error": err});

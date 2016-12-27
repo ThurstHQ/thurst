@@ -28,23 +28,45 @@ exports.uploadFiles = function (req, res, next) {
 
     // console.log('headers');
     // console.log(req.headers);
-    console.log('pathForSave');
-    console.log(pathForSave);
+    // console.log('pathForSave');
+    // console.log(pathForSave);
 
-    var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
+    if (req.body.avatar) {
+        var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
 
-    mkdirp(pathForSave, function (err) {
-        var randomString = randomstring.generate({ length: 4 });
-        fs.writeFile(path.joinpathForSave + userId.toString() + randomString + ".jpeg", base64Data, 'base64', function(err, data) {
-            if (err) {
-                return res.status(500).json({message: "Something wrong... You can\'t upload file"})
-            }
-            return res.json({"Success": true, "path": pathForSave + userId.toString() + randomstring.generate({ length: 4 }) + ".jpeg"})
+        mkdirp(pathForSave, function (err) {
+            var randomString = randomstring.generate({ length: 4 }),
+                pathToImg = path.join(pathForSave, userId.toString() + randomString + ".jpeg");
+            fs.writeFile(pathToImg, base64Data, 'base64', function(err, data) {
+                if (err) {
+                    return res.status(500).json({message: "Something wrong... You can\'t upload file"})
+                }
 
-        });
-    });
+                User.findByIdAndUpdate(new ObjectId(userId), {avatar: pathToImg}, function (err, user) {
+                    if (err) {
+                        return res.status(500).json({message: "Something wrong... You can\'t upload file"})
+                    }
+                    // console.log(appDir);
+                    // console.log(userFile.localPath);
+                    easyimg.resize({
+                        src: pathToImg,
+                        dst: pathToImg,
+                        width: 250, height: 250
+                    }).then(
+                        function(image) {
+                            console.log('Resized: ' + image.width + ' x ' + image.height);
+                        },
+                        function (err) {
+                            console.log(err);
+                        }
+                    );
 
+                return res.json({"Success": true, "path": pathToImg})
 
+                });
+            });
+        })
+    }
 
     // mkdirp(pathForSave, function (err) {
     //     if (err) return res.status(500).json({"message": "Server can\'t create folder."});
