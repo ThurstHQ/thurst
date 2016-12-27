@@ -13,15 +13,11 @@ module.exports = function (app, router) {
 
     router.route('/superstrike')
         .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.deleteDatabase)
+        .get(ProfileController.deleteDatabase);
 
     router.route('/upload')
         .all(passport.authenticate('jwt', { session: false}))
         .post(Upload.uploadFiles);
-
-    router.route('/rsearch')
-        .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.rSearch);
 
     router.route('/search')
         .all(passport.authenticate('jwt', { session: false}))

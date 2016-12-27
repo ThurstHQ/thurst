@@ -28,36 +28,6 @@ exports.editUserProfile = function (req, res, next) {
 
 };
 
-
-exports.rSearch = function (req, res, next) {
-
-    User.random(req.user._id, function (err, doc) {
-        if (err) return res.json({"Error": err});
-        console.log(doc);
-        return res.json(doc);
-    });
-    // var newGender = req.user.gender.split(' ').filter(function (item) {
-    //     return item.length > 2;
-    // });
-    // var search = new RegExp(req.query.query, 'i');
-    // console.log('newGender');
-    // console.log(newGender);
-    //
-    //
-    // var gender = new RegExp(req.user.gender, 'i');
-    // User.find({})
-    //     .or([
-    //         {},
-    //         {}
-    //         ])
-    //     .exec(function (err, user) {
-    //     if (err) return res.status(500).json({'Error message': err});
-    //     console.log(user);
-    //     res.json(user);
-    // })
-
-};
-
 exports.deleteProfile = function (req, res, next) {
 
     User.findByIdAndRemove(req.user._id, function (err, data) {
