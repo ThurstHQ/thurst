@@ -4,20 +4,13 @@
         .module('app.config')
         .factory('searchService', searchService);
 
-    searchService.$inject = ['notificationsService', 'Restangular', 'localStorageService'];
+    searchService.$inject = ['notificationsService', 'Restangular'];
 
-    function searchService(notificationsService, Restangular, localStorageService) {
+    function searchService(notificationsService, Restangular) {
         return {
             search: Restangular.service('api/search'),
-            getAll: function () {
+            getAll: function (data) {
                 notificationsService.loading();
-                var data = {};
-                if (localStorageService.get('user').loc) {
-                    navigator.geolocation.getCurrentPosition(function (pos) {
-                        data.latitude = pos.coords.latitude;
-                        data.longitude = pos.coords.longitude;
-                    });
-                }
                 return this.search.one().get(data).then(function (res) {
                     notificationsService.hide();
                     return res;

@@ -10,3 +10,4 @@
                     p.third {{item.bio}}
                 .wrapper-date
                     p.date [Sent.Date]
+        ion-infinite-scroll(ng-if="vm.showInfinite" on-infinite='vm.load()', distance='2%')
