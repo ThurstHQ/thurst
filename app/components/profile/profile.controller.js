@@ -68,16 +68,43 @@ exports.deletePrifile = function (req, res, next) {
 };
 
 exports.Search = function (req, res, next) {
+    console.log('req.query');
+    console.log(req.query);
+    var reqQuery = req.query,
+        queryArr = [];
 
-    var gender = new RegExp(req.user.gender, 'i');
-    User.findOne({'gender': {$regex: gender}, _id: {'$ne': req.user._id}})
-        // .or([
-        //
-        //     ])
-        .exec(function (err, user) {
-        if (err) return res.status(500).json({'Error message': err});
-        console.log(user);
-        res.json(user);
-    })
+    if (Object.keys(reqQuery).length == 0) {
+        User.random(req.user._id, function (err, doc) {
+            if (err) return res.json({"Error": err});
+            return res.json(doc);
+        });
+    } else {
+        for (var field in reqQuery){
+            // if (reqQuery[field].length > 0) {
+                var separateObj = {};
+
+                if (field === 'sexuality') {
+                    var searchSexuality= new RegExp(reqQuery.sexuality, 'i');
+                    separateObj.sexuality = {$regex: searchSexuality};
+                } else if (field === 'gender') {
+                    var arrGender = reqQuery.gender.split(',');
+                    separateObj.gender = {$regex: arrGender};
+                } else if (field === 'articleNumber') {
+
+                }
+                queryArr.push(separateObj);
+            // }
+        }
+    }
+    console.log('queryArr');
+    console.log(queryArr);
+
+    User
+        .find({ _id: {'$ne': req.user._id} })
+        .and(queryArr)
+        .exec(function (err, users) {
+            if (err) return res.status(500).send({message: err.message});
+            return res.json(users);
+        });
 
 };
