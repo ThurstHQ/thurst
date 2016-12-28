@@ -8,10 +8,14 @@
     function MessagesCtrl() {
         var vm = this;
 
+        vm.openChat = openChat;
+        function openChat(otherUserId) {
+            $applozic.fn.applozic('loadTab', otherUserId);
+        }
+
         $applozic.fn.applozic('getUserDetail', {
             callback: function getUserDetail(response) {
                 if (response.status === 'success') {
-                    console.log(response.data);
                     vm.chats = response.data.users;
                 }
             }

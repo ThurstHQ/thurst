@@ -2,7 +2,7 @@
     ion-nav-title.logo Messages
     ion-content.messages-page
         .list
-            .item(ng-repeat="chat in vm.chats")
+            .item(ng-repeat="chat in vm.chats", ng-click="vm.openChat(chat.userId)")
                 //img.avatar(ng-src="{{vm.user.avatar||'assets/images/avatar.png'}}")
                 //.wrapper-text
                     p.first [Mail.Form]
