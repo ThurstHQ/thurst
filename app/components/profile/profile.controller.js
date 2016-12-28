@@ -66,7 +66,7 @@ exports.Search = function (req, res, next) {
         // });
         // }
         User
-            .find({ _id: {'$ne': req.user._id} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
             .sort({"created": -1})
             .skip(reqPage*10)
             .limit(10)
@@ -92,7 +92,7 @@ exports.Search = function (req, res, next) {
         }
 
         User
-            .find({ _id: {'$ne': req.user._id} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
             .and(queryArr)
             .sort({"created": -1})
             .skip(reqPage*10)

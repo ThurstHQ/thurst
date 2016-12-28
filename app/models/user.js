@@ -1,3 +1,4 @@
+var GeoJSON = require('mongoose-geojson-schema');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
@@ -45,6 +46,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    point: mongoose.Schema.Types.Point,
     birthday: {
         type: Date,
         default: ''

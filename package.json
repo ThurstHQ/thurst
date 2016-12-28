@@ -21,6 +21,7 @@
     "mailgun-js": "^0.7.15",
     "mkdirp": "^0.5.1",
     "mongoose": "~4.2.4",
+    "mongoose-geojson-schema": "^2.1.2",
     "morgan": "~1.5.0",
     "nodemailer": "^2.7.0",
     "passport": "^0.3.0",
