@@ -14,7 +14,8 @@
             'helpshift_key': 'dc2a262b6d251c8c30a952ea00481df6',
             'helpshift_domain': 'thurst.helpshift.com',
             'helpshift_app_id': 'thurst_platform_20161218113708754-98c1e9ed85f48a3',
-            'url': 'http://qa-thurst-back-end-1346444650.us-west-2.elb.amazonaws.com/'
+            'url': 'http://qa-thurst-back-end-1346444650.us-west-2.elb.amazonaws.com/',
+            'keyAndroid': ''
         })
         .config(appConfig)
         .run(runAppConfig);
@@ -59,10 +60,39 @@
         if (window.HelpshiftPlugin) {
             window.HelpshiftPlugin.install(Settings.helpshift_key, Settings.helpshift_domain, Settings.helpshift_app_id);
         }
+
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             window.cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             window.cordova.plugins.Keyboard.disableScroll(true);
         }
+
+        if (window.PushNotification) {
+            var push = window.PushNotification.init({
+                android: {
+                    senderID: Settings.keyAndroid
+                },
+                ios: {
+                    alert: true,
+                    badge: true,
+                    sound: true,
+                    clearBadge: true
+                }
+            });
+            push.on('registration', function (data) {
+                // authenticationService.notificationPOST({
+                //     uuid: window.device.uuid,
+                //     notify_id: data.registrationId //jshint ignore:line
+                // });
+                localStorageService.set('pushToken', data.registrationId);
+            });
+            push.on('notification', function (data) {
+                console.log(data);
+            });
+            push.on('error', function (e) {
+                console.log(e.message);
+            });
+        }
+
 
         Restangular.setErrorInterceptor(function (response) {
             if (response.status === 401) {
