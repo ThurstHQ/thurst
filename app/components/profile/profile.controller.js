@@ -23,7 +23,7 @@ exports.getUserProfile = function (req, res, next) {
 exports.editUserProfile = function (req, res, next) {
 
     User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
-        if (err) return res.status(500).json({'Error': err.message});
+        if (err) return res.status(500).json({'Error': err});
         console.log(user);
 
         res.json(user)
@@ -57,19 +57,24 @@ exports.deleteDatabase = function (req, res, next) {
 exports.Search = function (req, res, next) {
     var reqQuery = req.query,
         queryArr = [],
-        reqPage = req.query.page - 1 || 0;
 
-    if (Object.keys(reqQuery).length == 1) {
+        // send next docs per page
+        reqPage = req.query.page - 1 || 0,
+
+        // send docs per request
+        reqAmount = req.query.amount || 10;
+
+    if (Object.keys(reqQuery).length == 2) {
         // User.random(req.user._id, function (err, doc) {
         //     if (err) return res.json({"Error": err});
         //     return res.json(doc);
         // });
         // }
         User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true} })
             .sort({"created": -1})
             .skip(reqPage*10)
-            .limit(10)
+            .limit(parseInt(reqAmount))
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: err.message});
                 return res.json(users);
@@ -92,11 +97,11 @@ exports.Search = function (req, res, next) {
         }
 
         User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true} })
             .and(queryArr)
             .sort({"created": -1})
             .skip(reqPage*10)
-            .limit(10)
+            .limit(parseInt(reqAmount))
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: err.message});
                 return res.json(users);
