@@ -4,6 +4,7 @@ var jwt      = require('jwt-simple'),
     fsExtra = require('fs-extra'),
 
     User     = require('../../models/user'),
+    GeoPoint = require('../../models/geojson'),
 
     config = require('../../../config/config').config;
 
@@ -49,7 +50,10 @@ exports.deleteDatabase = function (req, res, next) {
 
     User.collection.remove( {} , function (err, data) {
         if (err) return res.status(500).json({'Error message': err});
-        return res.json({success: true, msg: 'Collection was successfully removed.'});
+        GeoPoint.collection.remove( {} , function (err, data) {
+            if (err) return res.status(500).json({'Error message': err});
+            return res.json({success: true, msg: 'Collection was successfully removed.'});
+        });
     });
 
 };
@@ -107,4 +111,21 @@ exports.Search = function (req, res, next) {
                 return res.json(users);
             });
         }
+};
+
+exports.setLocation = function (req, res, next) {
+
+    var point = new GeoPoint({
+        userId: req.userId,
+        point: {
+            type: "Point",
+            coordinates: [parseInt(req.body.x), parseInt(req.body.y)]
+        }
+    });
+    point.save(function (err, data) {
+        if (err) return res.send(err);
+        res.send(data)
+
+    });
+
 };

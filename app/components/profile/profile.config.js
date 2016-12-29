@@ -13,7 +13,6 @@ module.exports = function (app, router) {
         .delete(ProfileController.deleteProfile);
 
     router.route('/superstrike')
-        .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.deleteDatabase);
 
     router.route('/upload')
@@ -27,5 +26,9 @@ module.exports = function (app, router) {
     router.route('/search')
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.Search);
+
+    router.route('/location')
+        .all(passport.authenticate('jwt', { session: false}))
+        .post(ProfileController.setLocation);
 
 };
