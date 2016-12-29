@@ -117,17 +117,21 @@ exports.Search = function (req, res, next) {
 exports.setLocation = function (req, res, next) {
 
     if (req.user._id && req.body.longitude && req.body.latitude) {
+
+
+
         var point = new GeoPoint({
             userId: req.user._id,
             point: {
                 type: "Point",
-                coordinates: [parseInt(req.body.longitude), parseInt(req.body.latitude)]
+                coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
             }
         });
         point.save(function (err, data) {
             if (err) return res.send(err);
             res.send(data);
         });
+
     } else {
         res.status(500).json({"message": "Please enter Id and the coordinates of the point."});
     }
