@@ -1,7 +1,7 @@
 $color-icon-toolbar: #027388;
 $bg-toolbar: #02bbd2;
 $bg-app: #F0F0F0;
-$bg-blue-button-block-app: #6bcdfd;
+$bg-blue-button-block-app: #11c1f3;
 $color-white: #ffffff;
 $color-black: #000000;
 $color-text: #808080;
@@ -10,15 +10,6 @@ $color-delete-account-button: #fd676a;
 $color-hide-profile-button: #d9d9d9;
 $color-contact-us-button: #47d9d8;
 $color-see-button: #666666;
-
-@mixin blue-button-block-app($margin-button) {
-  background: $bg-blue-button-block-app;
-  color: $color-white;
-  width: calc(100% - 78px);
-  margin: $margin-button auto;
-  display: block;
-  text-transform: uppercase;
-}
 
 @mixin login-verification-form($margin-label, $margin-button) {
   label.item.item-input {
@@ -35,7 +26,8 @@ $color-see-button: #666666;
     }
   }
   input[type="submit"] {
-    @include blue-button-block-app($margin-button);
+    width: calc(100% - 78px);
+    margin: 40px auto;
   }
 }
 

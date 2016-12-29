@@ -43,16 +43,25 @@
 
     }
 
-    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope'];
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'userService'];
 
-    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope) {
+    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, userService) {
         console.log('appconfig');
 
         var token = localStorageService.get('token');
 
         if (token) {
             Restangular.setDefaultHeaders({'Authorization': token});
-            $location.path('messages');
+            userService.userGET().then(function (res) {
+                if (res.username) {
+                    $location.path('messages');
+                } else {
+                    $location.path('profile');
+                }
+                if (res.loc) {
+                    initGeo();
+                }
+            });
         } else {
             $location.path('login');
         }
@@ -93,13 +102,21 @@
             });
         }
 
+        function initGeo() {
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                locationService.updateLocation({
+                    longitude: pos.coords.longitude,
+                    latitude: pos.coords.latitude
+                });
+            });
+        }
 
         Restangular.setErrorInterceptor(function (response) {
             if (response.status === 401) {
                 localStorageService.clearAll();
                 $location.path('login');
+                return false;
             }
-            return false;
         });
 
         $rootScope.$on('initApplozic', function (event, user) {
@@ -140,6 +157,9 @@
                     return "";
                 }
             });
+        });
+        $rootScope.$on('initGeo', function () {
+            initGeo();
         });
     }
 })();

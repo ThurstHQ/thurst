@@ -13,12 +13,7 @@
                 url: '/',
                 abstract: true,
                 templateUrl: 'components/menu/menu.html',
-                controller: 'MenuCtrl as vm',
-                resolve: {
-                    user: ['userService', function (userService) {
-                        return userService.userGET();
-                    }]
-                }
+                controller: 'MenuCtrl as vm'
             });
     }
 })();

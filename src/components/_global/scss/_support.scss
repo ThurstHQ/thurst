@@ -1,11 +1,6 @@
 .support-page {
   .help {
-    @include blue-button-block-app(10px);
     background-color: $color-hide-profile-button;
     color: $color-text;
-  }
-  .contact-us {
-    @include blue-button-block-app(10px);
-
   }
 }
