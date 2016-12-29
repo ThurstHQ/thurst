@@ -4,13 +4,13 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['loginService', 'userService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
-    function ProfileCtrl(loginService, userService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
+    ProfileCtrl.$inject = ['userService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
+    function ProfileCtrl(userService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
         var vm = this;
 
         vm.user = localStorageService.get('user');
 
-        vm.logout = logout;
+
         vm.pictureUpdate = pictureUpdate;
         vm.userUpdate = userUpdate;
         vm.initGeo = initGeo;
@@ -19,10 +19,6 @@
             if (data) {
                 $rootScope.$emit('initGeo');
             }
-        }
-
-        function logout() {
-            loginService.logout();
         }
 
         function pictureUpdate() {

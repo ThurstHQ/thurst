@@ -30,5 +30,8 @@ ion-side-menus
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.search', ng-class="{'selected':vm.now==='app.search'}")
                         i.icon.ion-pound
                         |  Search
+                    a.item(menu-close='', class='item-icon-left', ng-click="vm.logout()")
+                        i.icon.ion-pound
+                        |  Logout
 
 
