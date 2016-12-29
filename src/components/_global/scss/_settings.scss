@@ -1,54 +1,16 @@
 .settings-page {
   display: flex;
   flex-direction: column;
-  .wrapper {
+  .list {
     flex: 1;
-    .list {
-      margin: 0;
-      label.item.item-input {
-        width: 100%;
-        margin: 25px auto;
-        padding: 0;
-        border: none;
-        border-bottom: 1px solid $color-border-login-input;
-        input {
-          height: 58px;
-          padding: 0;
-          color: $color-text;
-          font-family: "RobotoRegular";
-        }
+    label.item {
+      padding: 0;
+      margin: 15px 0;
+      border: none;
+      border-bottom: 1px solid $color-border-login-input;
+      .input-label {
+        color: $color-text;
       }
     }
-
-    .button-see-color {
-      background-color: $color-see-button;
-      color: $color-white;
-      font-size: 20px;
-      width: calc(100% - 8px);
-      max-height: 67px;
-      height: 67px;
-      margin: auto;
-      display: block;
-    }
-  }
-  .button-hide-profile {
-    background-color: $color-hide-profile-button;
-    color: $color-text;
-    font-size: 18px;
-    width: calc(100% - 25px);
-    margin: auto;
-    display: block;
-    &.blue-button {
-      background: $bg-blue-button-block-app;
-      color: $color-white;
-    }
-  }
-  .button-delete {
-    background-color: $color-delete-account-button;
-    color: $color-black;
-    font-size: 18px;
-    width: calc(100% - 25px);
-    margin: 25px auto 0;
-    display: block;
   }
 }

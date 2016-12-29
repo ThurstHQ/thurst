@@ -9,22 +9,12 @@
         var vm = this;
         vm.user = localStorageService.get('user');
 
+        vm.passwordUpdate = passwordUpdate;
         vm.hideProfile = hideProfile;
         vm.deleteAccount = deleteAccount;
 
-        vm.settingsUpdate = settingsUpdate;
-
-        function settingsUpdate(data) {
-            var options = {};
-            if (data.email) {
-                options.email = data.email;
-            }
-            if (data.password) {
-                options.password = data.password;
-            }
-            userService.userPUT(options).then(function (res) {
-                vm.user = res;
-            });
+        function passwordUpdate(data) {
+            userService.userPUT(data);
         }
 
         function hideProfile() {

@@ -1,14 +1,16 @@
 ﻿ion-view
-    ion-nav-buttons(side='right')
-        button.button.button-icon.ion-checkmark-round.save-profile(ng-click='vm.settingsUpdate(vm.new)')
     ion-nav-title.logo Settings
     ion-content.settings-page.padding(scroll='false')
-        .wrapper
-            .list
-                label.item.item-input
-                    input(type="email" ng-model="vm.new.email" placeholder="New email")
-                label.item.item-input
-                    input(type="password" ng-model="vm.new.password" placeholder="New password")
-            button.button.button-clear.button-see-color See users of color only
-        button.button.button-clear.button-hide-profile(ng-click="vm.hideProfile()", ng-class="{'blue-button':vm.user.invisible}") {{vm.user.invisible ? 'Show' : 'Hide'}} Profile Visibility
-        button.button.button-clear.button-delete(ng-click="vm.deleteAccount()") Delete Account
+        form.list(name="changePassword" ng-submit="vm.passwordUpdate(vm.password)")
+            label.item.item-input
+                span.input-label Old password
+                input(type="password" ng-model="vm.password.old" required="")
+            label.item.item-input
+                span.input-label New password
+                input(type="password" ng-model="vm.password.new" required="")
+            label.item.item-input
+                span.input-label Confirm password
+                input(type="password" ng-model="vm.confirm" required="" compare-to="vm.password.new")
+            input.button.button-block.button-calm(type="submit" value="Update password" ng-disabled="!changePassword.$valid")
+        button.button.button-block(ng-click="vm.hideProfile()", ng-class="vm.user.invisible?'button-calm':'button-stable'") {{vm.user.invisible ? 'Show' : 'Hide'}} Profile Visibility
+        button.button.button-block.button-assertive(ng-click="vm.deleteAccount()") Delete Account
