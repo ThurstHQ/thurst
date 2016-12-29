@@ -118,18 +118,31 @@ exports.setLocation = function (req, res, next) {
 
     if (req.user._id && req.body.longitude && req.body.latitude) {
 
-
-
-        var point = new GeoPoint({
-            userId: req.user._id,
-            point: {
-                type: "Point",
-                coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+        GeoPoint.findOne({userId: req.user._id}, function (err, user) {
+            if (err) { return res.send(err); }
+            if (user) {
+                user.point = {
+                        type: "Point",
+                        coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+                    };
+                user.save(function (err, data) {
+                    if (err) return res.send(err);
+                    console.log('Saved', data);
+                    return res.json(data);
+                });
+            } else {
+                var point = new GeoPoint({
+                    userId: req.user._id,
+                    point: {
+                        type: "Point",
+                        coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
+                    }
+                });
+                point.save(function (err, data) {
+                    if (err) return res.send(err);
+                    res.send(data);
+                });
             }
-        });
-        point.save(function (err, data) {
-            if (err) return res.send(err);
-            res.send(data);
         });
 
     } else {
