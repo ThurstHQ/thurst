@@ -9,7 +9,7 @@
     function pagesService(notificationsService, Restangular) {
         return {
             pages: Restangular.service('wp/v2/pages'),
-            getPolicy: function () {
+            policyGET: function () {
                 notificationsService.loading();
                 return this.pages.one('34654').get().then(function (data) {
                     notificationsService.hide();
@@ -20,7 +20,7 @@
                     return false;
                 });
             },
-            getTerms: function () {
+            termsGET: function () {
                 notificationsService.loading();
                 return this.pages.one('34652').get().then(function (data) {
                     notificationsService.hide();
@@ -31,7 +31,7 @@
                     return false;
                 });
             },
-            getAbout: function () {
+            aboutGET: function () {
                 notificationsService.loading();
                 return this.pages.one('34656').get().then(function (data) {
                     notificationsService.hide();

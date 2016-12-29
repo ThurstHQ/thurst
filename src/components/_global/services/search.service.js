@@ -9,7 +9,7 @@
     function searchService(notificationsService, Restangular) {
         return {
             search: Restangular.service('api/search'),
-            getAll: function (data) {
+            allGET: function (data) {
                 notificationsService.loading();
                 return this.search.one().get(data).then(function (res) {
                     notificationsService.hide();

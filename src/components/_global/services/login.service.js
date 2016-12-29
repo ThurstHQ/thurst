@@ -8,7 +8,7 @@
 
     function loginService(Restangular, $state, notificationsService, localStorageService) {
         return {
-            login: function (data) {
+            loginPOST: function (data) {
                 notificationsService.loading();
                 return Restangular.one('api/authenticate').post(null, data).then(function (res) {
                     if (res.token) {
@@ -22,7 +22,7 @@
                     return error;
                 });
             },
-            verification: function (data) {
+            verificationPOST: function (data) {
                 notificationsService.loading();
                 return Restangular.one('api/verify').post(null, data).then(function (res) {
                     if (res.token) {

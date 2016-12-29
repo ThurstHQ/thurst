@@ -2,19 +2,19 @@
     'use strict';
     angular
         .module('app.config')
-        .factory('locationService', locationService);
+        .factory('changePasswordService', changePasswordService);
 
-    locationService.$inject = [
+    changePasswordService.$inject = [
         'Restangular',
         'notificationsService',
         'localStorageService'
     ];
 
-    function locationService(Restangular, notificationsService) {
+    function changePasswordService(Restangular, notificationsService) {
         return {
-            location: Restangular.service('api/location'),
-            updateLocationPOST: function (data) {
-                return this.location.post(data).then(function (res) {
+            chngpwd: Restangular.service('api/chngpwd'),
+            changePasswordPOST: function (data) {
+                return this.chngpwd.post(data).then(function (res) {
                     notificationsService.hide();
                     return res;
                 }, function (error) {

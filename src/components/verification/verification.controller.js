@@ -12,7 +12,7 @@
         vm.verification = verification;
 
         function verification(code) {
-            loginService.verification({
+            loginService.verificationPOST({
                 id: $stateParams.id,
                 code: code
             }).then(function () {

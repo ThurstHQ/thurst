@@ -19,7 +19,7 @@
                 },
                 resolve: {
                     data: ['pagesService', function (pagesService) {
-                        return pagesService.getAbout();
+                        return pagesService.aboutGET();
                     }]
                 }
             });

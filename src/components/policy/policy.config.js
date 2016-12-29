@@ -19,7 +19,7 @@
                 },
                 resolve: {
                     data: ['pagesService', function (pagesService) {
-                        return pagesService.getPolicy();
+                        return pagesService.policyGET();
                     }]
                 }
             });

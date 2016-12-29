@@ -23,7 +23,7 @@
             if (user.loc) {
                 data = Object.assign(data, user.coordinates);
             }
-            searchService.getAll(data).then(function (res) {
+            searchService.allGET(data).then(function (res) {
                 angular.forEach(res, function (item) {
                     vm.list.push(item);
                 });

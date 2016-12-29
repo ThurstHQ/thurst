@@ -104,7 +104,7 @@
 
         function initGeo() {
             navigator.geolocation.getCurrentPosition(function (pos) {
-                locationService.updateLocation({
+                locationService.updateLocationPOST({
                     longitude: pos.coords.longitude,
                     latitude: pos.coords.latitude
                 });

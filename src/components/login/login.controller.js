@@ -11,7 +11,7 @@
         vm.login = login;
 
         function login(user) {
-            loginService.login(user).then(function (res) {
+            loginService.loginPOST(user).then(function (res) {
                 if (res.success) {
                     if (res.verify) {
                         $state.go('app.messages');

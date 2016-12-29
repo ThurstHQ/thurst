@@ -13,7 +13,7 @@
     function uploadService(Restangular, notificationsService, localStorageService) {
         return {
             upload: Restangular.service('api/upload'),
-            setPhoto: function (data) {
+            setPhotoPOST: function (data) {
                 var user = localStorageService.get('user');
                 return this.upload.post(data).then(function (res) {
                     user.avatar = res.avatar;

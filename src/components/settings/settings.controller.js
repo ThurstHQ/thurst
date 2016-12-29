@@ -4,8 +4,8 @@
         .module('app.settings')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['userService', '$ionicPopup', 'localStorageService'];
-    function SettingsCtrl(userService, $ionicPopup, localStorageService) {
+    SettingsCtrl.$inject = ['userService', '$ionicPopup', 'localStorageService', 'changePasswordService'];
+    function SettingsCtrl(userService, $ionicPopup, localStorageService, changePasswordService) {
         var vm = this;
         vm.user = localStorageService.get('user');
 
@@ -14,7 +14,7 @@
         vm.deleteAccount = deleteAccount;
 
         function passwordUpdate(data) {
-            userService.userPUT(data);
+            changePasswordService.changePasswordPOST(data);
         }
 
         function hideProfile() {
