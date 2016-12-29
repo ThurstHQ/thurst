@@ -12,14 +12,6 @@
             userGET: function () {
                 return this.user.one().get().then(function (res) {
                     localStorageService.set('user', res);
-                    if (res.loc) {
-                        navigator.geolocation.getCurrentPosition(function (pos) {
-                            $rootScope.loc = {
-                                latitude: pos.coords.latitude,
-                                longitude: pos.coords.longitude
-                            };
-                        });
-                    }
                     if (res.username && res.sexuality && res.gender) {
                         $rootScope.$emit('initApplozic', res);
                     }

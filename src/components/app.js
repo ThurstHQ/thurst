@@ -50,6 +50,5 @@
                 console.log('onUserConnect', data);
             }
         });
-
     }
 })();
