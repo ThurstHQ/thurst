@@ -75,7 +75,7 @@ exports.Search = function (req, res, next) {
         // });
         // }
         User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verify: {'$ne': false} })
             .sort({"created": -1})
             .skip(reqPage*10)
             .limit(parseInt(reqAmount))
@@ -101,7 +101,7 @@ exports.Search = function (req, res, next) {
         }
 
         User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verify: {'$ne': false} })
             .and(queryArr)
             .sort({"created": -1})
             .skip(reqPage*10)
@@ -113,19 +113,22 @@ exports.Search = function (req, res, next) {
         }
 };
 
+
 exports.setLocation = function (req, res, next) {
 
-    var point = new GeoPoint({
-        userId: req.userId,
-        point: {
-            type: "Point",
-            coordinates: [parseInt(req.body.x), parseInt(req.body.y)]
-        }
-    });
-    point.save(function (err, data) {
-        if (err) return res.send(err);
-        res.send(data)
-
-    });
-
+    if (req.user._id && req.body.longitude && req.body.latitude) {
+        var point = new GeoPoint({
+            userId: req.user._id,
+            point: {
+                type: "Point",
+                coordinates: [parseInt(req.body.longitude), parseInt(req.body.latitude)]
+            }
+        });
+        point.save(function (err, data) {
+            if (err) return res.send(err);
+            res.send(data);
+        });
+    } else {
+        res.status(500).json({"message": "Please enter Id and the coordinates of the point."});
+    }
 };
