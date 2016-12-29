@@ -4,7 +4,7 @@ ion-view
     ion-nav-title Profile
     ion-content.profile-content.padding
         .wrapper-avatar
-            img(ng-src='{{vm.user.avatar}}', ng-click="vm.pictureUpdate()")
+            img(ng-src='{{vm.user.avatar || "assets/images/avatar.png"}}', ng-click="vm.pictureUpdate()")
         .row
             .col.col-60
                 label.item.item-input
