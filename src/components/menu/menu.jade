@@ -21,15 +21,15 @@ ion-side-menus
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.connections', ng-class="{'selected':vm.now==='app.connections'}")
                         i.icon.ion-person-stalker
                         |  Connections
-                    a.item(menu-close='', class='item-icon-left', ui-sref='app.support', ng-class="{'selected':vm.now==='app.support'}")
-                        i.icon.ion-help-circled
-                        |  Support
-                    a.item(menu-close='', class='item-icon-left', ui-sref='app.settings', ng-class="{'selected':vm.now==='app.settings'}")
-                        i.icon.ion-settings
-                        |  Settings
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.search', ng-class="{'selected':vm.now==='app.search'}")
                         i.icon.ion-search
                         |  Search
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.settings', ng-class="{'selected':vm.now==='app.settings'}")
+                        i.icon.ion-settings
+                        |  Settings
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.support', ng-class="{'selected':vm.now==='app.support'}")
+                        i.icon.ion-help-circled
+                        |  Support
                     a.item(menu-close='', class='item-icon-left', ng-click="vm.logout()")
                         i.icon.ion-key
                         |  Logout
