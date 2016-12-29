@@ -149,3 +149,26 @@ exports.setLocation = function (req, res, next) {
         res.status(500).json({"message": "Please enter Id and the coordinates of the point."});
     }
 };
+
+exports.getNear = function (req, res, next) {
+
+    GeoPoint.find(
+        {
+            point:
+                { $nearSphere: {
+                    $geometry: {
+                        type : "Point",
+                        coordinates : [ 50.23, 50.23 ]
+                    },
+                    $minDistance: 1000,
+                    $maxDistance: 5000
+                }
+
+                }
+        }, function (err, users) {
+            if (err) return res.send(err);
+            return res.json(users);
+        }
+    )
+
+};

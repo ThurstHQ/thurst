@@ -1,3 +1,5 @@
+var passport	= require('passport');
+
 module.exports = function (app, router) {
 
     var AuthController = require('./auth.controller');
@@ -7,5 +9,9 @@ module.exports = function (app, router) {
 
     router.route('/verify')
         .post(AuthController.verify);
+
+    router.route('/chngpwd')
+        .all(passport.authenticate('jwt', { session: false}))
+        .post(AuthController.changePass);
 
 };

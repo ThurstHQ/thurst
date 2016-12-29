@@ -1,5 +1,6 @@
 var jwt      = require('jwt-simple'),
     randomstring = require('randomstring'),
+    bcrypt = require('bcrypt'),
 
     User     = require('../../models/user'),
 
@@ -100,4 +101,23 @@ exports.verify = function (req, res, next) {
             return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
         }
     });
+};
+
+exports.changePass = function (req, res, next) {
+    if (req.body.password && req.body.newpassword) {
+        req.user.comparePassword(req.body.password, function (err, isMatch) {
+            if (isMatch && !err) {
+                req.user.password = req.body.newpassword;
+                req.user.save(function (err, user) {
+                    if (err) return res.status(500).send({'message': err.message});
+                    user.password = '';
+                    return res.json(user);
+                });
+            } else {
+                res.status(403).send({success: false, msg: 'Wrong previously password.'});
+            }
+        });
+    } else {
+        res.status(500). json({"message": "Need field password."})
+    }
 };
