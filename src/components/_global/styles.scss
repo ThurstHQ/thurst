@@ -20,6 +20,7 @@ body {
   }
   ion-side-menu {
     ion-content {
+      color: $color-text;
       a.selected {
         color: $bg-blue-button-block-app;
       }
