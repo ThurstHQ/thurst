@@ -1,13 +1,13 @@
 ﻿ion-view
     ion-nav-title.logo Search
     ion-content.search-page
-        .list
-            .item(ng-repeat="item in vm.list")
-                img.avatar(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
+        ion-list
+            ion-item(ng-repeat="item in vm.list")
+                img(ng-src="{{item.imageLink||'assets/images/avatar.png'}}")
                 .wrapper-text
-                    p.first {{item.email}}
-                    p.second {{item.pronouns}}
-                    p.third {{item.bio}}
-                .wrapper-date
-                    p.date [Sent.Date]
+                    h2 {{item.email}}
+                    p {{item.username}}
+                i.icon.ion-arrow-return-left
+                ion-option-button.button-calm(ng-click="vm.add(item)") Add
+                ion-option-button.button-balanced(ng-click="vm.message(item._id)") Message
         ion-infinite-scroll(ng-if="vm.showInfinite" on-infinite='vm.load()', distance='2%')

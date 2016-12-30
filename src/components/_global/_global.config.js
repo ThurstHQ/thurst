@@ -43,9 +43,9 @@
 
     }
 
-    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'userService'];
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'userService', 'notificationsService'];
 
-    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, userService) {
+    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, userService, notificationsService) {
         console.log('appconfig');
 
         var token = localStorageService.get('token');
@@ -54,6 +54,7 @@
             Restangular.setDefaultHeaders({'Authorization': token});
             userService.userGET().then(function (res) {
                 if (res.username) {
+                    initApplozic(res);
                     $location.path('messages');
                 } else {
                     $location.path('profile');
@@ -111,15 +112,7 @@
             });
         }
 
-        Restangular.setErrorInterceptor(function (response) {
-            if (response.status === 401) {
-                localStorageService.clearAll();
-                $location.path('login');
-                return false;
-            }
-        });
-
-        $rootScope.$on('initApplozic', function (event, user) {
+        function initApplozic(user) {
             $applozic.fn.applozic({
                 appId: Settings.applozic_key,   //Get your application key from https://www.applozic.com
                 userId: user._id,               //Logged in user's id, a unique identifier for user
@@ -136,27 +129,27 @@
                         $applozic.fn.applozic('getUserDetail', {
                             callback: function getUserDetail(response) {
                                 if (response.status === 'success') {
-                                    console.log('getUserDetail', response.data);
-                                    // vm.chats = response.data.users;
+                                    $rootScope.messages = response.data.users;
                                 }
                             }
                         });
-                        $applozic.fn.applozic('loadTab', 1);
                     } else {
-                        // error in user login/register (you can hide chat button or refresh page)
+                        notificationsService.warn(response);
                     }
-                },
-                contactDisplayName: function (id) {
-                    console.log('contactDisplayName', id);
-                    //return the display name of the user from your application code based on userId.
-                    return "";
-                },
-                contactDisplayImage: function (id) {
-                    console.log('contactDisplayImage', id);
-                    //return the display image url of the user from your application code based on userId.
-                    return "";
                 }
             });
+        }
+
+        Restangular.setErrorInterceptor(function (response) {
+            if (response.status === 401) {
+                localStorageService.clearAll();
+                $location.path('login');
+                return false;
+            }
+        });
+
+        $rootScope.$on('initApplozic', function (event, user) {
+            initApplozic(user);
         });
         $rootScope.$on('initGeo', function () {
             initGeo();

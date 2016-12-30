@@ -8,7 +8,7 @@ ion-side-menus
         ion-header-bar.bar-header.bar-calm
             button.button.button-icon.ion-android-arrow-back.close-menu(menu-toggle='left')
             .title.title-left.header-item
-                span.logo THURST CO
+                span.logo THURST
         ion-content(scroll='false')
             ion-scroll.height-100
                 ul.list.menu-list
@@ -18,12 +18,12 @@ ion-side-menus
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.messages', ng-class="{'selected':vm.now==='app.messages'}")
                         i.icon.ion-chatboxes
                         |  Messages
-                    a.item(menu-close='', class='item-icon-left', ui-sref='app.connections', ng-class="{'selected':vm.now==='app.connections'}")
-                        i.icon.ion-person-stalker
-                        |  Connections
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.search', ng-class="{'selected':vm.now==='app.search'}")
                         i.icon.ion-search
                         |  Search
+                    a.item(menu-close='', class='item-icon-left', ui-sref='app.connections', ng-class="{'selected':vm.now==='app.connections'}")
+                        i.icon.ion-person-stalker
+                        |  Connections
                     a.item(menu-close='', class='item-icon-left', ui-sref='app.settings', ng-class="{'selected':vm.now==='app.settings'}")
                         i.icon.ion-settings
                         |  Settings

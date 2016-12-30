@@ -15,6 +15,8 @@
         vm.list = [];
 
         vm.load = load;
+        vm.add = add;
+        vm.message = message;
         function load() {
             var data = {
                 page: page,
@@ -35,6 +37,13 @@
                     page++;
                 }
             });
+        }
+
+        function add() {
+        }
+
+        function message(id) {
+            $applozic.fn.applozic('loadTab', id);
         }
     }
 })();
