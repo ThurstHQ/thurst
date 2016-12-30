@@ -69,19 +69,34 @@ exports.Search = function (req, res, next) {
         reqAmount = req.query.amount || 10;
 
     if (Object.keys(reqQuery).length == 2) {
+        //TODO: random search by "sample function"
         // User.random(req.user._id, function (err, doc) {
         //     if (err) return res.json({"Error": err});
         //     return res.json(doc);
         // });
         // }
-        User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verify: {'$ne': false} })
-            .sort({"created": -1})
-            .skip(reqPage*10)
+
+        //TODO: random for search newest user field "created"
+        // User
+        //     .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
+        //     .sort({"created": -1})
+        //     .skip(reqPage*10)
+        //     .limit(parseInt(reqAmount))
+        //     .exec(function (err, users) {
+        //         if (err) return res.status(500).send({message: err.message});
+        //         return res.json(users);
+        //     });
+
+        User.find({
+                coords : {
+                    $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
+                }
+            }, { password: 0 })
             .limit(parseInt(reqAmount))
             .exec(function (err, users) {
-                if (err) return res.status(500).send({message: err.message});
-                return res.json(users);
+                if (err) return res.send(err);
+
+                res.send(users)
             });
 
     } else {
@@ -94,22 +109,41 @@ exports.Search = function (req, res, next) {
             } else if (field === 'gender') {
                 var arrGender = reqQuery.gender.split(',');
                 separateObj.gender = {$regex: arrGender};
-            } else if (field === 'articleNumber') {
-
+            } else if (field === 'maxdistance') {
+                separateObj= { coords : {
+                    $near : [ parseFloat(req.params.lon), parseFloat(req.params.lat) ],
+                            $maxDistance: reqQuery.maxdistance/111.12
+                    }
+                }
             }
             queryArr.push(separateObj);
         }
-
+        console.log('Advanced');
+        console.log(queryArr);
         User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verify: {'$ne': false} })
+            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} },{password:0, verify_token:0})
             .and(queryArr)
-            .sort({"created": -1})
             .skip(reqPage*10)
             .limit(parseInt(reqAmount))
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: err.message});
                 return res.json(users);
             });
+
+        // User.find({
+        //     coords : {
+        //         $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
+        //     }
+        // })
+        //     .limit(parseInt(reqAmount))
+        //     .populate('userId', 'gender sexuality')
+        //     .exec(function (err, geopoints) {
+        //         if (err) return res.send(err);
+        //
+        //         res.send(geopoints)
+        //     });
+
+
         }
 };
 
@@ -117,58 +151,43 @@ exports.Search = function (req, res, next) {
 exports.setLocation = function (req, res, next) {
 
     if (req.user._id && req.body.longitude && req.body.latitude) {
-
-        GeoPoint.findOne({userId: req.user._id}, function (err, user) {
-            if (err) { return res.send(err); }
-            if (user) {
-                user.point = {
-                        type: "Point",
-                        coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
-                    };
-                user.save(function (err, data) {
-                    if (err) return res.send(err);
-                    console.log('Saved', data);
-                    return res.json(data);
-                });
-            } else {
-                var point = new GeoPoint({
-                    userId: req.user._id,
-                    point: {
-                        type: "Point",
-                        coordinates: [parseFloat(req.body.longitude), parseFloat(req.body.latitude)]
-                    }
-                });
-                point.save(function (err, data) {
-                    if (err) return res.send(err);
-                    res.send(data);
-                });
-            }
+        req.user.coords = [req.body.longitude, req.body.latitude];
+        req.user.save(function (err, user) {
+            if (err) return res.json(err);
+            user.password = '';
+            return res.json(user);
         });
-
     } else {
-        res.status(500).json({"message": "Please enter Id and the coordinates of the point."});
+        res.status(500).json({"message": "Please enter coordinates of the point."});
     }
 };
 
-exports.getNear = function (req, res, next) {
+// exports.getNear = function (req, res, next) {
+//
+//     GeoPoint.find({
+//             coords : { $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
+//             }
+//         },
+//         function (err, geopoints) {
+//             if (err) return res.send(err);
+//
+//             res.send(geopoints)
+//         });
+//
+// };
 
-    GeoPoint.find(
-        {
-            point:
-                { $nearSphere: {
-                    $geometry: {
-                        type : "Point",
-                        coordinates : [ 50.23, 50.23 ]
-                    },
-                    $minDistance: 1000,
-                    $maxDistance: 5000
-                }
-
-                }
-        }, function (err, users) {
-            if (err) return res.send(err);
-            return res.json(users);
-        }
-    )
-
-};
+// WORKING route
+// exports.getNear = function (req, res, next) {
+//
+//     GeoPoint.find({
+//             coords : { $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ],
+//                 $maxDistance: req.params.dist/111.12
+//             }
+//         },
+//         function (err, geopoints) {
+//             if (err) return res.send(err);
+//
+//             res.send(geopoints)
+//         });
+//
+// };

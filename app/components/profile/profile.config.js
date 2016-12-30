@@ -23,7 +23,7 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(Remove.deleteFile);
 
-    router.route('/search')
+    router.route('/search/:lon/:lat')
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.Search);
 
@@ -31,8 +31,8 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(ProfileController.setLocation);
 
-    router.route('/getnear')
-        // .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.getNear);
+    // router.route('/getnear/:lon/:lat/:dist?')
+    //     .all(passport.authenticate('jwt', { session: false}))
+    //     .get(ProfileController.getNear);
 
 };

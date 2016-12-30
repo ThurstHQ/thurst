@@ -46,7 +46,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    point: mongoose.Schema.Types.Point,
+    coords: [Number, Number],
     birthday: {
         type: Date,
         default: ''

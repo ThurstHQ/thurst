@@ -1,10 +1,14 @@
-var GeoJSON = require('mongoose-geojson-schema');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
-var GeoJsonSchema = new mongoose.Schema({
-    userId: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    point: mongoose.Schema.Types.Point
+var dtSchema = new Schema({
+    userId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    },
+    longitude : Number,
+    latitude  : Number,
+    coords: [Number, Number]
 });
 
-module.exports = mongoose.model('GeoJson', GeoJsonSchema);
+module.exports = mongoose.model('GeoJson', dtSchema);
