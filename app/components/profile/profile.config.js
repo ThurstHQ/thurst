@@ -23,7 +23,7 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(Remove.deleteFile);
 
-    router.route('/search/:lon/:lat')
+    router.route('/search')
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.Search);
 

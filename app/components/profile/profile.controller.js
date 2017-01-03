@@ -67,6 +67,9 @@ exports.Search = function (req, res, next) {
 
         // send docs per request
         reqAmount = req.query.amount || 10;
+    console.log(reqQuery.page);
+    console.log(reqQuery.amount);
+    console.log(Object.keys(reqQuery).length);
 
     if (Object.keys(reqQuery).length == 2) {
         //TODO: random search by "sample function"
@@ -86,50 +89,70 @@ exports.Search = function (req, res, next) {
         //         if (err) return res.status(500).send({message: err.message});
         //         return res.json(users);
         //     });
+        if (req.user.loc) {
 
-        User.find({
+            User.find({
                 coords : {
-                    $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
-                }
+                    $near : [ req.user.coords[0] , req.user.coords[1] ]
+                },
+                _id: {'$ne': req.user._id},
+                invisible: {'$ne': true},
+                verified: {'$ne': false}
             }, { password: 0 })
-            .limit(parseInt(reqAmount))
-            .exec(function (err, users) {
-                if (err) return res.send(err);
+                .skip(reqPage*10)
+                .limit(parseInt(reqAmount))
+                .exec(function (err, users) {
+                    if (err) return res.send(err);
 
-                res.send(users)
-            });
+                    res.send(users)
+                });
+
+        } else {
+            User
+                .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
+                .sort({"created": -1})
+                .skip(reqPage*10)
+                .limit(parseInt(reqAmount))
+                .exec(function (err, users) {
+                    if (err) return res.status(500).send({message: err.message});
+                    return res.json(users);
+                });
+        }
 
     } else {
-        for (var field in reqQuery){
-            var separateObj = {};
+            for (var field in reqQuery) {
+                var separateObj = {};
 
-            if (field === 'sexuality') {
-                var searchSexuality= new RegExp(reqQuery.sexuality, 'i');
-                separateObj.sexuality = {$regex: searchSexuality};
-            } else if (field === 'gender') {
-                var arrGender = reqQuery.gender.split(',');
-                separateObj.gender = {$regex: arrGender};
-            } else if (field === 'maxdistance') {
-                separateObj= { coords : {
-                    $near : [ parseFloat(req.params.lon), parseFloat(req.params.lat) ],
-                            $maxDistance: reqQuery.maxdistance/111.12
+                if (field === 'sexuality') {
+                    var searchSexuality = new RegExp(reqQuery.sexuality, 'i');
+                    separateObj.sexuality = {$regex: searchSexuality};
+                } else if (field === 'gender') {
+                    var arrGender = reqQuery.gender.split(',');
+                    separateObj.gender = {$regex: arrGender};
+                } else if (field === 'maxdistance' && req.user.loc) {
+                    separateObj = {
+                        coords: {
+                            $near: [ req.user.coords[0], req.user.coords[1]],
+                            $maxDistance: req.query.maxdistance / 111.12
+                        }
                     }
                 }
+                queryArr.push(separateObj);
             }
-            queryArr.push(separateObj);
-        }
-        console.log('Advanced');
-        console.log(queryArr);
-        User
-            .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} },{password:0, verify_token:0})
-            .and(queryArr)
-            .skip(reqPage*10)
-            .limit(parseInt(reqAmount))
-            .exec(function (err, users) {
-                if (err) return res.status(500).send({message: err.message});
-                return res.json(users);
-            });
-
+            console.log('Advanced');
+            console.log(queryArr);
+            User
+                .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}}, {
+                    password: 0,
+                    verify_token: 0
+                })
+                .and(queryArr)
+                .skip(reqPage * 10)
+                .limit(parseInt(reqAmount))
+                .exec(function (err, users) {
+                    if (err) return res.status(500).send({message: err.message});
+                    return res.json(users);
+                });
         // User.find({
         //     coords : {
         //         $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
