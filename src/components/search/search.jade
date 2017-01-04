@@ -1,5 +1,8 @@
 ﻿ion-view
+    ion-nav-buttons(side='right')
+        button.button.button-icon.ion-android-more-vertical.open-filter(ng-click="vm.modal.show()")
     ion-nav-title.logo Search
+
     ion-content.search-page
         ion-list
             ion-item(ng-repeat="item in vm.list")

@@ -37,8 +37,10 @@
                 });
             },
             logout: function () {
-                localStorageService.clearAll();
-                $state.go('login');
+                console.log(window);
+                new UserClientService(this).logout();
+                // localStorageService.clearAll();
+                // $state.go('login');
             }
         };
     }

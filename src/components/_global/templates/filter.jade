@@ -1,0 +1,28 @@
+ion-modal-view
+    ion-header-bar.bar.bar-header.bar-calm
+        button.button.button-icon.ion-close(ng-click="vm.modal.hide()")
+        h1.title Filters
+        button.button.button-icon.ion-checkmark(ng-click="vm.search(vm.filter)")
+    ion-content
+        .list
+            label.item.item-input
+                span.input-label Username
+                input(type="text" ng-model='vm.filter.username')
+            label.item.item-input
+                span.input-label Gender
+                input(type='text' ng-model='vm.filter.gender')
+            label.item.item-input.item-select
+                .input-label Sexuality
+                select(ng-model="vm.filter.sexuality")
+                    option(value="androgynosexual") Androgynosexual
+                    option(value="androsexual") Androsexual
+                    option(value="asexual") Asexual
+                    option(value="bisexual") Bisexual
+                    option(value="demisexual") Demisexual
+                    option(value="gay") Gay
+                    option(value="gray") Gray
+                    option(value="gynosexual") Gynosexual
+                    option(value="lesbian") Lesbian
+                    option(value="queer") Queer
+                    option(value="pansexual") Pansexual
+                    option(value="polysexual") Polysexual
