@@ -4,16 +4,14 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', 'localStorageService', '$ionicModal'];
-    function SearchCtrl(searchService, $scope, localStorageService, $ionicModal) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$ionicModal'];
+    function SearchCtrl(searchService, $scope, $ionicModal) {
         var vm = this,
-            user = localStorageService.get('user'),
             perPage = 10,
             page = 1;
 
         vm.showInfinite = true;
         vm.list = [];
-
         vm.load = load;
         vm.add = add;
         vm.message = message;
@@ -23,17 +21,16 @@
                 page: page,
                 amount: perPage
             };
-            if (user.loc) {
-                data = Object.assign(data, user.coordinates);
-            }
-            if (filter) {
-                data = Object.assign(data, filter);
-            }
+            data = Object.assign(data, vm.filter);
 
             searchService.allGET(data).then(function (res) {
-                angular.forEach(res, function (item) {
-                    vm.list.push(item);
-                });
+                if (filter) {
+                    vm.list = res;
+                } else {
+                    angular.forEach(res, function (item) {
+                        vm.list.push(item);
+                    });
+                }
                 if (res.length < perPage) {
                     page--;
                     vm.showInfinite = false;
@@ -52,8 +49,8 @@
         }
 
         function search(filter) {
-            page = 1;
             if (filter) {
+                page = 1;
                 load(filter);
             }
             vm.modal.hide();
