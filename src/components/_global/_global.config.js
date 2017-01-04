@@ -112,6 +112,16 @@
             });
         }
 
+        function getUserDetail() {
+            $applozic.fn.applozic('getUserDetail', {
+                callback: function getUserDetail(response) {
+                    if (response.status === 'success') {
+                        $rootScope.messages = response.data.users;
+                    }
+                }
+            });
+        }
+
         function initApplozic(user) {
             $applozic.fn.applozic({
                 appId: Settings.applozic_key,   //Get your application key from https://www.applozic.com
@@ -126,13 +136,7 @@
                 // accessToken: '',                //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                 onInit: function (response) {
                     if (response === "success") {
-                        $applozic.fn.applozic('getUserDetail', {
-                            callback: function getUserDetail(response) {
-                                if (response.status === 'success') {
-                                    $rootScope.messages = response.data.users;
-                                }
-                            }
-                        });
+                        getUserDetail();
                     } else {
                         notificationsService.warn(response);
                     }
@@ -153,6 +157,9 @@
         });
         $rootScope.$on('initGeo', function () {
             initGeo();
+        });
+        $rootScope.$on('getUserDetail', function () {
+            getUserDetail();
         });
     }
 })();

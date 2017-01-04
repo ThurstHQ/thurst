@@ -8,14 +8,19 @@
     function MessagesCtrl($rootScope) {
         var vm = this;
         vm.message = message;
+        vm.doRefresh = doRefresh;
 
 
         function message(id) {
             $applozic.fn.applozic('loadTab', id);
         }
 
+        function doRefresh() {
+            $rootScope.$emit('getUserDetail');
+            $rootScope.$broadcast('scroll.refreshComplete');
+        }
+
         $rootScope.$watch('messages', function () {
-            console.log($rootScope.messages);
             vm.list = $rootScope.messages;
         });
     }
