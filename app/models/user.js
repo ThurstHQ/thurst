@@ -71,7 +71,8 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    connections: [Schema.Types.ObjectId]
+    connections: [Schema.Types.ObjectId],
+    connectedBy: [Schema.Types.ObjectId]
 });
 
 UserSchema.pre('save', function (next) {

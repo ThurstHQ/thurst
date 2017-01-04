@@ -33,7 +33,8 @@ module.exports = function (app, router) {
 
     router.route('/connections')
         .all(passport.authenticate('jwt', { session: false}))
-        .get(ProfileController.setConnections)
-        .post(ProfileController.getConnections);
+        .post(ProfileController.setConnections)
+        .get(ProfileController.getConnections)
+        .delete(ProfileController.deleteConnections);
 
 };

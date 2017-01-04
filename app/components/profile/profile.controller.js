@@ -186,28 +186,52 @@ exports.setLocation = function (req, res, next) {
 };
 
 exports.setConnections = function (req, res, next) {
-
-    User.find(req.user._id, { password:0, verify_token:0 }, function(err, user) {
-        if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
-        if (!user) {
-            return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-            return res.json(user);
-        }
-    });
-
+    req.user.connections.push(req.body.connectionId);
+    req.user.save(function (err, user) {
+        if (err) return res.status(500).json({success: false, msg: err});
+        User.findById(req.body.connectionId, function (err, connectingUser) {
+            connectingUser.connectedBy.push(req.user._id);
+            connectingUser.save(function (err, user) {
+                if (err) return res.status(500).json({success: false, msg: err});
+                res.json({success: true, msg: 'You have connected user.'});
+            })
+        });
+    })
 };
 
+exports.deleteConnections = function (req, res, next) {
+    req.user.connections.pull(req.body.connectionId);
+    req.user.save(function (err, user) {
+        if (err) return res.status(500).json({success: false, msg: err});
+        User.findById(req.body.connectionId, function (err, connectingUser) {
+            connectingUser.connectedBy.pull(req.user._id);
+            connectingUser.save(function (err, user) {
+                if (err) return res.status(500).json({success: false, msg: err});
+                res.json({success: true, msg: 'You have connected user.'});
+            })
+        });
+    })
+};
 
 exports.getConnections = function (req, res, next) {
+    var myConnections = {};
 
-    User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
-        if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
-        if (!user) {
-            return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-            return res.json(user);
-        }
+    User.findById(req.user._id)
+        .populate({
+            path: 'connections',
+            select: 'username _id avatar gender pronouns sexuality',
+            model: 'User'
+        })
+        .populate({
+            path: 'connectedBy',
+            select: 'username _id avatar gender pronouns sexuality',
+            model: 'User'
+        })
+        .exec(function (err, user) {
+            if (err) return res.status(500).json({success: false, msg: err});
+            myConnections.iamconnected = user.connections;
+            myConnections.connectedMe = user.connectedBy;
+            res.json(myConnections);
     });
 
 };
