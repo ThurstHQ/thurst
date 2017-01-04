@@ -2,14 +2,20 @@
     ion-nav-title.logo Messages
     ion-content.messages-page
         ion-list
-            ion-item(ng-repeat="item in vm.list")
+            ion-item.item-avatar.item-icon-right(ng-click="vm.message('1')")
+                img(src="assets/images/avatar.png")
+                .wrapper-text
+                    h2 demo@email.com
+                    p Demo
+                i.icon.ion-compose
+            ion-item.item-avatar.item-icon-right(ng-repeat="item in vm.list", ng-click="vm.message(item.userId)")
                 img(ng-src="{{item.imageLink||'assets/images/avatar.png'}}")
                 .wrapper-text
                     h2 {{item.email}}
                     p {{item.userName}}
-                i.icon.ion-arrow-return-left
-                ion-option-button.button-calm(ng-click="vm.add(item)") Add
-                ion-option-button.button-balanced(ng-click="vm.message(item.userId)") Message
+                i.icon.ion-compose
+                //ion-option-button.button-calm(ng-click="vm.add(item)") Add
+                //ion-option-button.button-balanced(ng-click="vm.message(item.userId)") Message
 
 
 

@@ -1,11 +1,10 @@
 ﻿ion-view
     ion-nav-title.logo Connections
     ion-content.connections-page
-        .list
-            .item
-                img.avatar(ng-src="{{vm.user.avatar ||'assets/images/avatar.png'}}")
-                .wrapper-text
-                    p.first Username
-                    p.second Pronouns
-                .wrapper-date
-                    i.icon.ion-email
+        ion-item.item-avatar
+            img.avatar(ng-src="{{vm.user.avatar ||'assets/images/avatar.png'}}")
+            .wrapper-text
+                p.first Username
+                p.second Pronouns
+            .wrapper-date
+                i.icon.ion-email
