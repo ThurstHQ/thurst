@@ -127,7 +127,7 @@ exports.Search = function (req, res, next) {
                     var searchSexuality = new RegExp(reqQuery.sexuality, 'i');
                     separateObj.sexuality = {$regex: searchSexuality};
                 } else if (field === 'gender') {
-                    var arrGender = reqQuery.gender.split(',');
+                    var arrGender = new RegExp(reqQuery.gender, 'i');
                     separateObj.gender = {$regex: arrGender};
                 } else if (field === 'maxdistance' && req.user.loc) {
                     separateObj = {
@@ -185,32 +185,29 @@ exports.setLocation = function (req, res, next) {
     }
 };
 
-// exports.getNear = function (req, res, next) {
-//
-//     GeoPoint.find({
-//             coords : { $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
-//             }
-//         },
-//         function (err, geopoints) {
-//             if (err) return res.send(err);
-//
-//             res.send(geopoints)
-//         });
-//
-// };
+exports.setConnections = function (req, res, next) {
 
-// WORKING route
-// exports.getNear = function (req, res, next) {
-//
-//     GeoPoint.find({
-//             coords : { $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ],
-//                 $maxDistance: req.params.dist/111.12
-//             }
-//         },
-//         function (err, geopoints) {
-//             if (err) return res.send(err);
-//
-//             res.send(geopoints)
-//         });
-//
-// };
+    User.find(req.user._id, { password:0, verify_token:0 }, function(err, user) {
+        if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
+        if (!user) {
+            return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } else {
+            return res.json(user);
+        }
+    });
+
+};
+
+
+exports.getConnections = function (req, res, next) {
+
+    User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
+        if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
+        if (!user) {
+            return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } else {
+            return res.json(user);
+        }
+    });
+
+};

@@ -70,7 +70,8 @@ var UserSchema = new Schema({
     invisible: {
         type: Boolean,
         default: false
-    }
+    },
+    connections: [Schema.Types.ObjectId]
 });
 
 UserSchema.pre('save', function (next) {

@@ -31,8 +31,9 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(ProfileController.setLocation);
 
-    // router.route('/getnear/:lon/:lat/:dist?')
-    //     .all(passport.authenticate('jwt', { session: false}))
-    //     .get(ProfileController.getNear);
+    router.route('/connections')
+        .all(passport.authenticate('jwt', { session: false}))
+        .get(ProfileController.setConnections)
+        .post(ProfileController.getConnections);
 
 };
