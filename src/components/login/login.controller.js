@@ -13,9 +13,7 @@
         function login(user) {
             loginService.loginPOST(user).then(function (res) {
                 if (res.success) {
-                    if (res.verify) {
-                        $state.go('app.messages');
-                    } else {
+                    if (!res.verify) {
                         $state.go('verification', {id: res.id, email: user.email});
                     }
                 } else {

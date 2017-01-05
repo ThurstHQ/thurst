@@ -29,7 +29,7 @@
                 saveToPhotoAlbum: false,
                 correctOrientation: true
             };
-            $ionicActionSheet.show({
+            var hideSheet = $ionicActionSheet.show({
                 buttons: [
                     {text: 'Gallery'},
                     {text: 'Camera'}
@@ -43,8 +43,9 @@
                         options.sourceType = 1;
                     }
                     cameraService.getPicture(options).then(function (imageData) {
+                        hideSheet();
                         uploadService.setPhotoPOST({avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
-                            vm.user.avatar = res.avatar;
+                            vm.user = res;
                         });
                     });
                 }

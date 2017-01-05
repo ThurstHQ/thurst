@@ -51,18 +51,7 @@
         var token = localStorageService.get('token');
 
         if (token) {
-            Restangular.setDefaultHeaders({'Authorization': token});
-            userService.userGET().then(function (res) {
-                if (res.username) {
-                    initApplozic(res);
-                    $location.path('messages');
-                } else {
-                    $location.path('profile');
-                }
-                if (res.loc) {
-                    initGeo();
-                }
-            });
+            init(token);
         } else {
             $location.path('login');
         }
@@ -103,22 +92,27 @@
             });
         }
 
+        function init(token) {
+            Restangular.setDefaultHeaders({'Authorization': token});
+            userService.userGET().then(function (res) {
+                if (res.username) {
+                    initApplozic(res);
+                    $location.path('messages');
+                } else {
+                    $location.path('profile');
+                }
+                if (res.loc) {
+                    initGeo();
+                }
+            });
+        }
+
         function initGeo() {
             navigator.geolocation.getCurrentPosition(function (pos) {
                 locationService.updateLocationPOST({
                     longitude: pos.coords.longitude,
                     latitude: pos.coords.latitude
                 });
-            });
-        }
-
-        function getUserDetail() {
-            $applozic.fn.applozic('getUserDetail', {
-                callback: function getUserDetail(response) {
-                    if (response.status === 'success') {
-                        $rootScope.messages = response.data.users;
-                    }
-                }
             });
         }
 
@@ -144,6 +138,16 @@
             });
         }
 
+        function getUserDetail() {
+            $applozic.fn.applozic('getUserDetail', {
+                callback: function getUserDetail(response) {
+                    if (response.status === 'success') {
+                        $rootScope.messages = response.data.users;
+                    }
+                }
+            });
+        }
+
         Restangular.setErrorInterceptor(function (response) {
             if (response.status === 401) {
                 localStorageService.clearAll();
@@ -160,6 +164,9 @@
         });
         $rootScope.$on('getUserDetail', function () {
             getUserDetail();
+        });
+        $rootScope.$on('login', function (event, token) {
+            init(token);
         });
     }
 })();

@@ -7,19 +7,21 @@
     uploadService.$inject = [
         'Restangular',
         'notificationsService',
-        'localStorageService'
+        'localStorageService',
+        'Settings'
     ];
 
-    function uploadService(Restangular, notificationsService, localStorageService) {
+    function uploadService(Restangular, notificationsService, localStorageService, Settings) {
         return {
             upload: Restangular.service('api/upload'),
             setPhotoPOST: function (data) {
                 var user = localStorageService.get('user');
+                notificationsService.loading();
                 return this.upload.post(data).then(function (res) {
-                    user.avatar = res.avatar;
+                    user.avatar = Settings.url + res.path;
                     localStorageService.set('user', user);
                     notificationsService.hide();
-                    return res;
+                    return user;
                 }, function (error) {
                     notificationsService.hide();
                     notificationsService.warn(error.msg);

@@ -4,9 +4,9 @@
         .module('app.config')
         .factory('connectionsService', connectionsService);
 
-    connectionsService.$inject = ['Restangular', 'localStorageService', 'notificationsService'];
+    connectionsService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'Settings'];
 
-    function connectionsService(Restangular, localStorageService, notificationsService) {
+    function connectionsService(Restangular, localStorageService, notificationsService, Settings) {
         return {
             connections: Restangular.service('api/connections'),
             data: localStorageService.get('connections') || {},
@@ -17,6 +17,9 @@
                         delete me.data[val._id];
                     });
                     angular.forEach(res.iamconnected, function (val) {
+                        if (val.avatar) {
+                            val.avatar = Settings.url + val.avatar;
+                        }
                         me.data[val._id] = val;
                     });
                     localStorageService.set('connections', me.data);
