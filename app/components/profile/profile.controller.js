@@ -186,31 +186,39 @@ exports.setLocation = function (req, res, next) {
 };
 
 exports.setConnections = function (req, res, next) {
-    req.user.connections.push(req.body.connectionId);
-    req.user.save(function (err, user) {
-        if (err) return res.status(500).json({success: false, msg: err});
-        User.findById(req.body.connectionId, function (err, connectingUser) {
-            connectingUser.connectedBy.push(req.user._id);
-            connectingUser.save(function (err, user) {
-                if (err) return res.status(500).json({success: false, msg: err});
-                res.json({success: true, msg: 'You have connected user.'});
-            })
-        });
-    })
+    if (req.body.connectionId) {
+        req.user.connections.push(req.body.connectionId);
+        req.user.save(function (err, user) {
+            if (err) return res.status(500).json({success: false, msg: err});
+            User.findById(req.body.connectionId, function (err, connectingUser) {
+                connectingUser.connectedBy.push(req.user._id);
+                connectingUser.save(function (err, user) {
+                    if (err) return res.status(500).json({success: false, msg: err});
+                    res.json({success: true, msg: 'You have connected user.'});
+                })
+            });
+        })
+    } else {
+        res.status(500).json({"message": "Please send user id."});
+    }
 };
 
 exports.deleteConnections = function (req, res, next) {
-    req.user.connections.pull(req.body.connectionId);
-    req.user.save(function (err, user) {
-        if (err) return res.status(500).json({success: false, msg: err});
-        User.findById(req.body.connectionId, function (err, connectingUser) {
-            connectingUser.connectedBy.pull(req.user._id);
-            connectingUser.save(function (err, user) {
-                if (err) return res.status(500).json({success: false, msg: err});
-                res.json({success: true, msg: 'You have connected user.'});
-            })
-        });
-    })
+    if (req.query.connectionId) {
+        req.user.connections.pull(req.query.connectionId);
+        req.user.save(function (err, user) {
+            if (err) return res.status(500).json({success: false, msg: err});
+            User.findById(req.query.connectionId, function (err, connectingUser) {
+                connectingUser.connectedBy.pull(req.user._id);
+                connectingUser.save(function (err, user) {
+                    if (err) return res.status(500).json({success: false, msg: err});
+                    res.json({success: true, msg: 'You have connected user.'});
+                })
+            });
+        })
+    } else {
+        res.status(500).json({"message": "Please send user id."});
+    }
 };
 
 exports.getConnections = function (req, res, next) {
