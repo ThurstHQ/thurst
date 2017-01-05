@@ -4,14 +4,14 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', '$ionicModal', 'connectionsService', 'localStorageService'];
-    function SearchCtrl(searchService, $scope, $ionicModal, connectionsService, localStorageService) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate'];
+    function SearchCtrl(searchService, $scope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate) {
         var vm = this,
             perPage = 10,
             page = 1;
 
         vm.showInfinite = true;
-        vm.list = [];
+        vm.list = {};
         vm.user = localStorageService.get('user');
 
         vm.load = load;
@@ -28,12 +28,11 @@
 
             searchService.allGET(data).then(function (res) {
                 if (filter) {
-                    vm.list = res;
-                } else {
-                    angular.forEach(res, function (item) {
-                        vm.list.push(item);
-                    });
+                    vm.list = {};
                 }
+                angular.forEach(res, function (val) {
+                    vm.list[val._id] = val;
+                });
                 if (res.length < perPage) {
                     page--;
                     vm.showInfinite = false;
@@ -45,7 +44,10 @@
         }
 
         function add(user) {
-            connectionsService.connectionsPOST(user);
+            connectionsService.connectionsPOST(user).then(function () {
+                vm.list[user._id].connectedBy.push(vm.user._id);
+                $ionicListDelegate.closeOptionButtons();
+            });
         }
 
         function message(id) {

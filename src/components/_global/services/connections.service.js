@@ -13,6 +13,9 @@
             connectionsGET: function () {
                 var me = this;
                 return me.connections.one().get().then(function (res) {
+                    angular.forEach(me.data, function (val) {
+                        delete me.data[val._id];
+                    });
                     angular.forEach(res.iamconnected, function (val) {
                         me.data[val._id] = val;
                     });
@@ -42,7 +45,7 @@
             connectionsDELETE: function (data) {
                 var me = this;
                 notificationsService.loading();
-                this.connections.one().customDELETE(null, data).then(function (res) {
+                return this.connections.one().customDELETE(null, data).then(function (res) {
                     delete me.data[data.connectionId];
                     localStorageService.set('connections', me.data);
                     notificationsService.hide();
