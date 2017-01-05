@@ -1,10 +1,10 @@
 ﻿ion-view
     ion-nav-title.logo Connections
     ion-content.connections-page
-        ion-item.item-avatar
-            img.avatar(ng-src="{{vm.user.avatar ||'assets/images/avatar.png'}}")
-            .wrapper-text
-                p.first Username
-                p.second Pronouns
-            .wrapper-date
-                i.icon.ion-email
+        ion-list
+            ion-item.item-avatar.item-icon-right(ng-repeat="item in vm.connections", ng-click="vm.message(item._id)")
+                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
+                .wrapper-text
+                    h2 {{item.username || 'No name'}}
+                    p {{item.pronouns}}
+                ion-option-button.button-assertive(ng-click="vm.remove(item._id)") Remove

@@ -13,7 +13,12 @@
                 url: '/',
                 abstract: true,
                 templateUrl: 'components/menu/menu.html',
-                controller: 'MenuCtrl as vm'
+                controller: 'MenuCtrl as vm',
+                resolve: {
+                    connections: ['connectionsService', function (connectionsService) {
+                        return connectionsService.connectionsGET();
+                    }]
+                }
             });
     }
 })();

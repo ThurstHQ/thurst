@@ -4,18 +4,21 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', '$ionicModal'];
-    function SearchCtrl(searchService, $scope, $ionicModal) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$ionicModal', 'connectionsService', 'localStorageService'];
+    function SearchCtrl(searchService, $scope, $ionicModal, connectionsService, localStorageService) {
         var vm = this,
             perPage = 10,
             page = 1;
 
         vm.showInfinite = true;
         vm.list = [];
+        vm.user = localStorageService.get('user');
+
         vm.load = load;
         vm.add = add;
         vm.message = message;
         vm.search = search;
+
         function load(filter) {
             var data = {
                 page: page,
@@ -41,7 +44,8 @@
             });
         }
 
-        function add() {
+        function add(user) {
+            connectionsService.connectionsPOST(user);
         }
 
         function message(id) {

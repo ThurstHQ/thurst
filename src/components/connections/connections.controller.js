@@ -4,9 +4,20 @@
         .module('app.connections')
         .controller('ConnectionsCtrl', ConnectionsCtrl);
 
-    ConnectionsCtrl.$inject = ['localStorageService'];
-    function ConnectionsCtrl(localStorageService) {
+    ConnectionsCtrl.$inject = ['localStorageService', 'connectionsService'];
+    function ConnectionsCtrl(localStorageService, connectionsService) {
         var vm = this;
-        vm.user = localStorageService.get('user');
+        vm.connections = localStorageService.get('connections');
+        vm.message = message;
+        vm.remove = remove;
+        function message(id) {
+            $applozic.fn.applozic('loadTab', id);
+        }
+
+        function remove(id) {
+            connectionsService.connectionsDELETE({connectionId: id}).then(function (res) {
+                vm.connections = res;
+            });
+        }
     }
 })();
