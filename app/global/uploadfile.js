@@ -19,8 +19,10 @@ exports.uploadFiles = function (req, res, next) {
 
     if (req.body.avatar) {
         var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
+        console.log();
 
         mkdirp(pathForSave, function (err) {
+            if (err) console.error(err)
             var randomString = randomstring.generate({ length: 4 }),
                 pathToImg = path.join(pathForSave, userId.toString() + '-' + randomString + ".jpeg");
             fs.writeFile(pathToImg, base64Data, 'base64', function(err, data) {
