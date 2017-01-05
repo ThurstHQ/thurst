@@ -187,17 +187,21 @@ exports.setLocation = function (req, res, next) {
 
 exports.setConnections = function (req, res, next) {
     if (req.body.connectionId) {
-        req.user.connections.push(req.body.connectionId);
-        req.user.save(function (err, user) {
-            if (err) return res.status(500).json({success: false, msg: err});
-            User.findById(req.body.connectionId, function (err, connectingUser) {
-                connectingUser.connectedBy.push(req.user._id);
-                connectingUser.save(function (err, user) {
-                    if (err) return res.status(500).json({success: false, msg: err});
-                    res.json({success: true, msg: 'You have connected user.'});
-                })
-            });
-        })
+        if (req.user.connections.indexOf(req.body.connectionId) === -1) {
+            req.user.connections.push(req.body.connectionId);
+            req.user.save(function (err, user) {
+                if (err) return res.status(500).json({success: false, msg: err});
+                User.findById(req.body.connectionId, function (err, connectingUser) {
+                    connectingUser.connectedBy.push(req.user._id);
+                    connectingUser.save(function (err, user) {
+                        if (err) return res.status(500).json({success: false, msg: err});
+                        res.json({success: true, msg: 'You have connected user.'});
+                    })
+                });
+            })
+        } else {
+            res.json({"message": "User already in your contact list."});
+        }
     } else {
         res.status(500).json({"message": "Please send user id."});
     }
