@@ -1213,7 +1213,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus,.mck-dropup-menu>li>a:focus,  .mck-sid
 }
 
 .mck-text-box-panel {
-	width: 25px !important;
+	width: 33px !important;
 }
 
 .mck-text-box-panel .mck-blk-12 {
@@ -2057,13 +2057,13 @@ mck-sidebox .mck-dropdown-menu>li>a:focus,.mck-dropup-menu>li>a:focus,  .mck-sid
 
 .mck-sidebox .mck-tab-title-w-status, .mck-sidebox .mck-tab-title-w-typing
 	{
-	line-height: 35px;
+	line-height: 30px;
 	height: 30px;
 	position: relative;
 }
 
 .mck-sidebox .mck-tab-status {
-	line-height: 15px;
+	line-height: 1;
 	font-size: 12px;
 	opacity: 0.6;
 }
