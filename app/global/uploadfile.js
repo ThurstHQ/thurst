@@ -22,9 +22,11 @@ exports.uploadFiles = function (req, res, next) {
         console.log();
 
         mkdirp(pathForSave, function (err) {
-            if (err) console.error(err)
+            if (err) console.log(err);
             var randomString = randomstring.generate({ length: 4 }),
                 pathToImg = path.join(pathForSave, userId.toString() + '-' + randomString + ".jpeg");
+            console.log(pathForSave);
+            console.log(pathToImg);
             fs.writeFile(pathToImg, base64Data, 'base64', function(err, data) {
                 if (err) {
                     return res.status(500).json({message: "Something wrong... You can\'t upload file"})
