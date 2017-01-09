@@ -122,9 +122,8 @@
                 userName: profile.username,            //User's display name
                 imageLink: profile.avatar,                  //User's profile picture url
                 email: profile.email,
-                // contactNumber: '',              //optional, pass with internationl code eg: +16508352160
-                // desktopNotification: true,
-                // notificationIconLink: 'https://www.applozic.com/favicon.ico',   //Icon to show in desktop notification, replace with your icon
+                desktopNotification: true,
+                notificationIconLink: 'https://www.applozic.com/favicon.ico',   //Icon to show in desktop notification, replace with your icon
                 // authenticationTypeId: '0',      //1 for password verification from Applozic server and 0 for access Token verification from your server
                 // accessToken: '',                //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                 onInit: function (response) {

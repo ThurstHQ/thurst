@@ -3,83 +3,47 @@
         .mck-box-dialog.mck-box-sm.mck-right.mck-bg-white
             #mck-sidebox-content.mck-sidebox-content.mck-box-content
                 #mck-conversation-header.mck-conversation-header.mck-truncate.n-vis
-                .bar.bar-header
-                    button.button.button-icon.ion-ios-arrow-back(type='button', data-dismiss='mckbox', aria-label='Close')
-                    h1#mck-tab-title.title
-                    button.button.button-icon.ion-more(ng-click="$root.chatPopoverOpen($event)")
-                //#mck-product-group.mck-tab-panel.mck-btn-group.mck-product-group
-                    #mck-product-box.mck-product-box.n-vis.mck-dropdown-toggle(data-toggle='mckdropdown', aria-expanded='true')
-                        .mck-row
-                            .blk-lg-10
-                                .mck-row
-                                    .blk-lg-3.mck-product-icon
-                                    .blk-lg-9
-                                        .mck-row
-                                            .blk-lg-8.mck-product-title.mck-truncate
-                                            .move-right.mck-product-rt-up.mck-truncate.blk-lg-4
-                                                strong.mck-product-key
-                                                | :
-                                                span.mck-product-value
-                                        .mck-row
-                                            .blk-lg-8.mck-truncate.mck-product-subtitle
-                                            .move-right.mck-product-rt-down.mck-truncate.blk-lg-4
-                                                strong.mck-product-key
-                                                | :
-                                                span.mck-product-value
-                            .blk-lg-2
-                                span.mck-caret.n-vis
-                    ul#mck-conversation-list.mck-dropdown-menu.menu-right.mck-conversation-list.n-vis(role='menu')
-                //#mck-tab-option-panel.mck-tab-panel.mck-top-btn-panel
-                    #mck-tab-menu-box.mck-tab-menu-box.vis
-                        .mck-row
-                            .blk-lg-2.move-right
-                                .mck-dropdown-toggle(data-toggle='mckdropdown', aria-expanded='true')
-                                    img(src='assets/applozic/css/app/images/mck-icon-menu.png', alt='Tab Menu')
-                                ul#mck-tab-menu-list.mck-dropdown-menu.mck-tab-menu-box.menu-right(role='menu')
-                                    li.mck-tab-message-option
-                                        a#mck-delete-button.mck-delete-button.menu-item(title='Clear Messages')
-                                            | Clear Messages
-                                    li#li-mck-block-user
-                                        a#mck-block-button.menu-item(title='Block User')
-                                            | Block User
-                                    li#li-mck-group-info.mck-group-menu-options
-                                        a#mck-group-info-btn.menu-item(title='Group Info')
-                                            | Group Info
-                                    li#li-mck-leave-group.mck-group-menu-options
-                                        a#mck-leave-group-btn.menu-item(title='Exit Group')
-                                            | Exit Group
-                ion-view.mck-box-body.pane
-                    .has-header.has-footer#mck-message-cell.mck-tab-cell.mck-message-cell(scroll-glue="$root.chatGlued")
+                .mck-box-top
+                    .blk-lg-2
+                        .icon.ion-android-arrow-back.move-right(data-dismiss='mckbox')
+
+                    .blk-lg-8
+                        #mck-tab-individual.mck-row.n-vis
+                            .mck-box-title
+                                #mck-tab-title.mck-tab-title.mck-truncate
+                                #mck-tab-status.mck-tab-status.mck-truncate.n-vis
+                                .mck-typing-box.mck-truncate.n-vis
+                                    span.name-text
+                                    span typing...
+                    #mck-tab-option-panel
+                        #mck-tab-menu-box.mck-tab-menu-box.vis
+                            .mck-row
+                                .blk-lg-2.move-right
+                                    .mck-dropdown-toggle(data-toggle='mckdropdown', aria-expanded='true')
+                                        .icon.ion-android-more-vertical
+                                    ul#mck-tab-menu-list.mck-dropdown-menu.mck-tab-menu-box.menu-right(role='menu')
+                                        li.mck-tab-message-option
+                                            a#mck-delete-button.mck-delete-button.menu-item(href='#', title='Clear Messages')
+                                                | Clear Messages
+                                        li#li-mck-block-user
+                                            a#mck-block-button.menu-item(href='#', title='Block User')
+                                                | Block User
+                .mck-box-body
+                    #mck-message-cell.mck-tab-cell.mck-message-cell
                         .mck-message-inner
-                        #mck-contact-loading.mck-loading
-                            span.mck-icon-loading
-                        #mck-show-more-icon.mck-show-more-icon.n-vis
-                            h3 No more conversations!
-                //#mck-file-menu.mck-file-menu
-                    .mck-row
-                        .blk-lg-6.mck-left.mck-pt10
-                            a#mck-file-up.mck-btn-text-panel.mck-file-upload
-                                .mck-menu-icon
-                                    span.mck-icon-photo
-                                p.mck-truncate(title='File & Photos') Files & Photos
-                        .blk-lg-6.mck-pt10
-                            a#mck-btn-loc.mck-btn-loc
-                                .mck-menu-icon
-                                    span.mck-icon-marker-blue
-                                p.mck-truncate(title='Location') Location
-                #mck-sidebox-ft.mck-box-ft.bar.bar-footer
+                #mck-sidebox-ft.mck-box-ft
                     .mck-box-form.n-vis
                         p#mck-msg-error.mck-sidebox-error.n-vis
                         #mck-msg-response.mck-box-response.n-vis
                             #mck-response-text.response-text
-                        form#mck-msg-form.vertical.mck-msg-form(ng-submit="$root.chatSubmit()")
+                        form#mck-msg-form.vertical.mck-msg-form
                             .mck-form-group.n-vis
                                 label.sr-only.placeholder-text.control-label(for='mck-msg-to') To:
                                 input#mck-msg-to.mck-form-cntrl(name='mck-msg-to', placeholder='To', required='')
                             .mck-form-group.last.last-child
                                 label.sr-only.placeholder-text.control-label(for='mck-textbox') Message
                                 #mck-textbox-container.mck-textbox-container
-                                    //.mck-blk-2.mck-text-box-panel.move-left
+                                    .mck-blk-2.mck-text-box-panel.move-left
                                         .mck-blk-12
                                             button#mck-btn-smiley.mck-btn.mck-btn-smiley.mck-btn-text-panel(type='button', title='Smiley')
                                                 span.mck-icon-smiley-blue
@@ -90,19 +54,10 @@
                                         #mck-attachfile-box.mck-blk-12.n-vis
                                             button#mck-file-up2.mck-file-upload.mck-btn.mck-btn-text-panel(type='button', title='Attach File')
                                                 span.mck-icon-upload
-                                    #mck-text-box.mck-blk-8.mck-text-box.mck-text.no-fastclick.required(contenteditable='true')
+                                    #mck-text-box.mck-blk-6.mck-text-box.mck-text.no-fastclick.required(contenteditable='true')
                                     .mck-blk-2.mck-text-box-panel.move-right
                                         .mck-blk-12
                                             button#mck-msg-sbmt.mck-btn.mck-btn-text-panel(type='submit', title='Send Message')
                                                 span.mck-icon-send
                                     input#mck-file-input.mck-file-input.n-vis(type='file', name='files[]')
                                     #mck-file-box.n-vis
-                    //#mck-contacts-content.mck-contacts-content.mck-text-center
-                        button#mck-msg-new.mck-msg-new.mck-btn.mck-btn-blue(type='submit', title='new message')
-                            span New Message
-script(id="chat-popover.html", type="text/ng-template")
-    ion-popover-view.popover-menu#mck-tab-option-panel
-        div#mck-tab-menu-box
-            ion-list#mck-tab-menu-list(role="menu")
-                a#mck-delete-button.popover-item.item Clear Messages
-                a#li-mck-block-user.popover-item.item Block User

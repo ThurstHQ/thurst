@@ -19,29 +19,9 @@
         ])
         .run(appRun);
 
-    appRun.$inject = [
-        '$rootScope',
-        '$ionicPopover',
-        '$timeout'
-    ];
-    function appRun($rootScope, $ionicPopover, $timeout) {
-        $rootScope.chatGlued = true;
-        $rootScope.chatSubmit = chatSubmit;
+    appRun.$inject = [];
+    function appRun() {
 
-        $ionicPopover.fromTemplateUrl('chat-popover.html', {
-            scope: $rootScope
-        }).then(function (popover) {
-            $rootScope.chatPopover = popover;
-        });
-        $rootScope.chatPopoverOpen = function ($event) {
-            $rootScope.chatPopover.show($event);
-        };
-
-        function chatSubmit() {
-            $timeout(function () {
-                $rootScope.chatGlued = true;
-            });
-        }
 
         $applozic.fn.applozic('subscribeToEvents', {
             onMessageReceived: function (data) {
