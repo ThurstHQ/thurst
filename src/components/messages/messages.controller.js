@@ -10,13 +10,12 @@
         vm.message = message;
         vm.doRefresh = doRefresh;
 
-
         function message(id) {
             $applozic.fn.applozic('loadTab', id);
         }
 
         function doRefresh() {
-            $rootScope.$emit('getProfileDetail');
+            $rootScope.$emit('getUserDetail');
             $rootScope.$broadcast('scroll.refreshComplete');
         }
 
