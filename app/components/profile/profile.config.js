@@ -12,9 +12,9 @@ module.exports = function (app, router) {
         .put(ProfileController.editUserProfile)
         .delete(ProfileController.deleteProfile);
 
-    // router.route('/user/:id')
-    //     .all(passport.authenticate('jwt', { session: false}))
-    //     .get(ProfileController.getUserProfile);
+    router.route('/user/:id')
+        .all(passport.authenticate('jwt', { session: false}))
+        .get(ProfileController.getUserInfo);
 
     router.route('/superstrike')
         .get(ProfileController.deleteDatabase);
@@ -41,6 +41,4 @@ module.exports = function (app, router) {
         .get(ProfileController.getConnections)
         .delete(ProfileController.deleteConnections);
 
-    router.route('/ddd')
-        .get(ProfileController.ddd)
 };

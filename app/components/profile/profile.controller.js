@@ -249,9 +249,16 @@ exports.getConnections = function (req, res, next) {
 
 };
 
-exports.ddd = function (req, res, next) {
+exports.getUserInfo = function (req, res) {
 
-    console.log(appDir);
-    res.send('Ok')
-
+    if (req.params.id) {
+        User
+            .find({'_id': req.params.id},  { password:0, verify_token:0 })
+            .exec(function (err, users) {
+                if (err) return res.status(500).send({message: 'Something is wrong... Problem accessing the server'});
+                res.json(users);
+            });
+    } else {
+        res.status(500).json({"message": "Please send user id."});
+    }
 };
