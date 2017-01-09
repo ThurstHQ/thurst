@@ -10,7 +10,6 @@
         vm.message = message;
         vm.doRefresh = doRefresh;
 
-
         function message(id) {
             $applozic.fn.applozic('loadTab', id);
         }
@@ -21,6 +20,7 @@
         }
 
         $rootScope.$watch('messages', function () {
+            console.log($rootScope.messages);
             vm.list = $rootScope.messages;
         });
     }

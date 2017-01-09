@@ -10,12 +10,10 @@
         return {
             search: Restangular.service('api/search'),
             allGET: function (data) {
-                notificationsService.loading();
                 return this.search.one().get(data).then(function (res) {
-                    notificationsService.hide();
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }

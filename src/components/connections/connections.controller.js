@@ -10,6 +10,7 @@
         vm.connections = localStorageService.get('connections');
         vm.message = message;
         vm.remove = remove;
+
         function message(id) {
             $applozic.fn.applozic('loadTab', id);
         }

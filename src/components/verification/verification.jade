@@ -1,4 +1,6 @@
 ion-view
+    ion-nav-bar.bar-header.bar-light
+        ion-nav-back-button
     ion-content.verification-content.padding
         p.description A verification email has been sent to {{vm.email}}. Please enter the code below to login.
         form.list(name="login" ng-submit="vm.verification(vm.code)")
