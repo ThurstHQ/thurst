@@ -6,14 +6,15 @@ var jwt      = require('jwt-simple'),
     User     = require('../../models/user'),
     GeoPoint = require('../../models/geojson'),
 
-    config = require('../../../config/config').config;
+    config = require('../../../config/config').config,
+    appDir = path.dirname(require.main.filename);
 
 exports.getUserProfile = function (req, res, next) {
 
     User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
         if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
         if (!user) {
-            return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+            return res.status(403).send({success: false, "message": 'Authentication failed. User not found.'});
         } else {
             return res.json(user);
         }
@@ -38,11 +39,11 @@ exports.deleteProfile = function (req, res, next) {
             if (err) return res.status(500).json({'Error message': err.message});
             fsExtra.remove(path.join('public', 'images', req.user._id.toString()), function (err, data) {
                 if (err) return res.status(500).json({'Error': err.message});
-                return res.json({success: true, msg: 'The user was successfully removed.'});
+                return res.json({success: true, "message": 'The user was successfully removed.'});
             });
         });
     } else {
-        return res.json({success: false, msg: 'The user was not successfully removed.'});
+        return res.json({success: false, "message": 'The user was not successfully removed.'});
     }
 };
 
@@ -52,7 +53,7 @@ exports.deleteDatabase = function (req, res, next) {
         if (err) return res.status(500).json({'Error message': err});
         GeoPoint.collection.remove( {} , function (err, data) {
             if (err) return res.status(500).json({'Error message': err});
-            return res.json({success: true, msg: 'Collection was successfully removed.'});
+            return res.json({success: true, "message": 'Collection was successfully removed.'});
         });
     });
 
@@ -190,12 +191,12 @@ exports.setConnections = function (req, res, next) {
         if (req.user.connections.indexOf(req.body.connectionId) === -1) {
             req.user.connections.push(req.body.connectionId);
             req.user.save(function (err, user) {
-                if (err) return res.status(500).json({success: false, msg: err});
+                if (err) return res.status(500).json({success: false, "message": err});
                 User.findById(req.body.connectionId, function (err, connectingUser) {
                     connectingUser.connectedBy.push(req.user._id);
                     connectingUser.save(function (err, user) {
-                        if (err) return res.status(500).json({success: false, msg: err});
-                        res.json({success: true, msg: 'You have connected user.'});
+                        if (err) return res.status(500).json({success: false, "message": err});
+                        res.json({success: true, "message": 'You have connected user.'});
                     })
                 });
             })
@@ -211,12 +212,12 @@ exports.deleteConnections = function (req, res, next) {
     if (req.query.connectionId) {
         req.user.connections.pull(req.query.connectionId);
         req.user.save(function (err, user) {
-            if (err) return res.status(500).json({success: false, msg: err});
+            if (err) return res.status(500).json({success: false, "message": err});
             User.findById(req.query.connectionId, function (err, connectingUser) {
                 connectingUser.connectedBy.pull(req.user._id);
                 connectingUser.save(function (err, user) {
-                    if (err) return res.status(500).json({success: false, msg: err});
-                    res.json({success: true, msg: 'You have connected user.'});
+                    if (err) return res.status(500).json({success: false, "message": err});
+                    res.json({success: true, "message": 'You have connected user.'});
                 })
             });
         })
@@ -240,10 +241,17 @@ exports.getConnections = function (req, res, next) {
             model: 'User'
         })
         .exec(function (err, user) {
-            if (err) return res.status(500).json({success: false, msg: err});
+            if (err) return res.status(500).json({success: false, "message": err});
             myConnections.iamconnected = user.connections;
             myConnections.connectedMe = user.connectedBy;
             res.json(myConnections);
     });
+
+};
+
+exports.ddd = function (req, res, next) {
+
+    console.log(appDir);
+    res.send('Ok')
 
 };

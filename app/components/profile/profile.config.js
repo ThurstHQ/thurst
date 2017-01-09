@@ -6,11 +6,15 @@ module.exports = function (app, router) {
         Upload = require('../../global/uploadfile'),
         Remove = require('../../global/deleteFile');
 
-    router.route('/user')
+    router.route('/profile')
         .all(passport.authenticate('jwt', { session: false}))
         .get(ProfileController.getUserProfile)
         .put(ProfileController.editUserProfile)
         .delete(ProfileController.deleteProfile);
+
+    // router.route('/user/:id')
+    //     .all(passport.authenticate('jwt', { session: false}))
+    //     .get(ProfileController.getUserProfile);
 
     router.route('/superstrike')
         .get(ProfileController.deleteDatabase);
@@ -37,4 +41,6 @@ module.exports = function (app, router) {
         .get(ProfileController.getConnections)
         .delete(ProfileController.deleteConnections);
 
+    router.route('/ddd')
+        .get(ProfileController.ddd)
 };

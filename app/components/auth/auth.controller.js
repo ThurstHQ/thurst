@@ -32,7 +32,7 @@ exports.signUp = function (req, res, next) {
                     // console.log('user');
                     // console.log(user);
                     if (err) {
-                        return res.json({success: false, msg: err});
+                        return res.json({success: false, "message": err});
                     }
                     var newMail = {
                         to: userEmail,
@@ -41,7 +41,7 @@ exports.signUp = function (req, res, next) {
                     };
                     sendEmail(newMail.to, newMail.subject, newMail.text);
 
-                    res.json({success: true, verify: false, msg: 'Successful created new user.', id: user.id});
+                    res.json({success: true, verify: false, "message": 'Successful created new user.', id: user.id});
                 });
             } else {
 
@@ -54,7 +54,7 @@ exports.signUp = function (req, res, next) {
                             user.verify_token = verificationToken;
                             user.save(function (err, data) {
                                 if (err) {
-                                    return res.json({success: false, msg: err});
+                                    return res.json({success: false, "message": err});
                                 }
                                 var newMail = {
                                     to: userEmail,
@@ -63,20 +63,20 @@ exports.signUp = function (req, res, next) {
                                 };
                                 sendEmail(newMail.to, newMail.subject, newMail.text);
 
-                                return res.json({success: true, verify: false, id: user.id, msg: 'User email not verified.'});
+                                return res.json({success: true, verify: false, id: user.id, "message": 'User email not verified.'});
                             });
                         } else {
                             var token = jwt.encode(user, config.getEnv().secret);
                             res.json({success: true, verify: true, token: 'JWT ' + token});
                         }
                     } else {
-                        res.status(403).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                        res.status(403).send({success: false, "message": 'Authentication failed. Wrong password.'});
                     }
                 });
             }
         });
     } else {
-        res.status(500).send({success: false, msg: 'Send email and password please.'});
+        res.status(500).send({success: false, "message": 'Send email and password please.'});
     }
 };
 
@@ -114,7 +114,7 @@ exports.changePass = function (req, res, next) {
                     return res.json(user);
                 });
             } else {
-                res.status(403).send({success: false, msg: 'Wrong previously password.'});
+                res.status(403).send({success: false, "message": 'Wrong previously password.'});
             }
         });
     } else {
