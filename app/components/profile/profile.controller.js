@@ -253,7 +253,7 @@ exports.getUserInfo = function (req, res) {
 
     if (req.params.id) {
         User
-            .find({'_id': req.params.id},  { password:0, verify_token:0 })
+            .findOne({'_id': req.params.id},  { password:0, verify_token:0 })
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: 'Something is wrong... Problem accessing the server'});
                 res.json(users);
