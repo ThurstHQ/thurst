@@ -32,7 +32,7 @@
                     notificationsService.hide();
                     return res;
                 }, function (error) {
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },

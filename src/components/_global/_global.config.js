@@ -43,10 +43,9 @@
 
     }
 
-    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'userService', 'notificationsService'];
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'profileService', 'notificationsService'];
 
-    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, userService, notificationsService) {
-        console.log('appconfig');
+    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, profileService, notificationsService) {
 
         var token = localStorageService.get('token');
 
@@ -94,7 +93,7 @@
 
         function init(token) {
             Restangular.setDefaultHeaders({'Authorization': token});
-            userService.userGET().then(function (res) {
+            profileService.profileGET().then(function (res) {
                 if (res.username) {
                     initApplozic(res);
                     $location.path('messages');
@@ -116,13 +115,13 @@
             });
         }
 
-        function initApplozic(user) {
+        function initApplozic(profile) {
             $applozic.fn.applozic({
                 appId: Settings.applozic_key,   //Get your application key from https://www.applozic.com
-                userId: user._id,               //Logged in user's id, a unique identifier for user
-                userName: user.username,            //User's display name
-                imageLink: user.avatar,                  //User's profile picture url
-                email: user.email,
+                userId: profile._id,               //Logged in user's id, a unique identifier for user
+                userName: profile.username,            //User's display name
+                imageLink: profile.avatar,                  //User's profile picture url
+                email: profile.email,
                 // contactNumber: '',              //optional, pass with internationl code eg: +16508352160
                 // desktopNotification: true,
                 // notificationIconLink: 'https://www.applozic.com/favicon.ico',   //Icon to show in desktop notification, replace with your icon
@@ -130,7 +129,7 @@
                 // accessToken: '',                //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                 onInit: function (response) {
                     if (response === "success") {
-                        getUserDetail();
+                        getProfileDetail();
                     } else {
                         notificationsService.warn(response);
                     }
@@ -138,7 +137,7 @@
             });
         }
 
-        function getUserDetail() {
+        function getProfileDetail() {
             $applozic.fn.applozic('getUserDetail', {
                 callback: function getUserDetail(response) {
                     if (response.status === 'success') {
@@ -156,14 +155,14 @@
             }
         });
 
-        $rootScope.$on('initApplozic', function (event, user) {
-            initApplozic(user);
+        $rootScope.$on('initApplozic', function (event, profile) {
+            initApplozic(profile);
         });
         $rootScope.$on('initGeo', function () {
             initGeo();
         });
-        $rootScope.$on('getUserDetail', function () {
-            getUserDetail();
+        $rootScope.$on('getProfileDetail', function () {
+            getProfileDetail();
         });
         $rootScope.$on('login', function (event, token) {
             init(token);

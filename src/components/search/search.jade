@@ -6,9 +6,10 @@
     ion-content.search-page
         ion-list
             ion-item(ng-repeat="item in vm.list", ng-click="vm.message(item._id)")
-                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
+                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}" ng-click="$event.stopPropagation();vm.goTo(item)")
                 .wrapper-text
                     h2 {{item.username || 'No name'}}
                     p {{item.pronouns}}
-                ion-option-button.button-calm(ng-click="$event.stopPropagation(); vm.add(item)" ng-if="item.connectedBy.indexOf(vm.user._id) === -1") Add
+                ion-option-button.button-calm(ng-click="$event.stopPropagation(); vm.add(item)" ng-if="item.connectedBy.indexOf(vm.profile._id) === -1") Add
+                ion-option-button.button-assertive(ng-click="$event.stopPropagation(); vm.remove(item)" ng-if="item.connectedBy.indexOf(vm.profile._id) !== -1") Remove
         ion-infinite-scroll(ng-if="vm.showInfinite" on-infinite='vm.load()', distance='2%')

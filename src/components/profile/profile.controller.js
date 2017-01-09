@@ -4,15 +4,15 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['userService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
-    function ProfileCtrl(userService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
+    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
+    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
         var vm = this;
 
-        vm.user = localStorageService.get('user');
+        vm.profile = localStorageService.get('profile');
 
 
         vm.pictureUpdate = pictureUpdate;
-        vm.userUpdate = userUpdate;
+        vm.profileUpdate = profileUpdate;
         vm.initGeo = initGeo;
 
         function initGeo(data) {
@@ -45,16 +45,16 @@
                     cameraService.getPicture(options).then(function (imageData) {
                         hideSheet();
                         uploadService.setPhotoPOST({avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
-                            vm.user = res;
+                            vm.profile = res;
                         });
                     });
                 }
             });
         }
 
-        function userUpdate(data) {
-            userService.userPUT(data).then(function (res) {
-                vm.user = res;
+        function profileUpdate(data) {
+            profileService.profilePUT(data).then(function (res) {
+                vm.profile = res;
             });
         }
     }

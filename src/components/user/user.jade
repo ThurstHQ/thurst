@@ -1,0 +1,24 @@
+ion-view
+    ion-nav-bar.bar-header.bar-calm
+        ion-nav-back-button
+        ion-nav-title {{vm.user.username}}
+    ion-content.profile-content.padding
+        .wrapper-avatar
+            img(ng-src='{{vm.user.avatar || "assets/images/avatar.png"}}')
+        .card(ng-if="vm.user.sexuality")
+            .item.item-divider Sexuality
+            .item {{vm.user.sexuality}}
+        .card(ng-if="vm.user.gender")
+            .item.item-divider Gender
+            .item {{vm.user.gender}}
+        .card(ng-if="vm.user.birthday")
+            .item.item-divider  Date of birth
+            .item {{vm.user.birthday}}
+        .card(ng-if="vm.user.pronouns")
+            .item.item-divider Pronouns
+            .item {{vm.user.pronouns}}
+        .card(ng-if="vm.user.bio")
+            .item.item-divider Bio
+            .item {{vm.user.bio}}
+        button.button.button-block.button-calm(ng-click='vm.add(vm.user)' ng-if="vm.user.connectedBy.indexOf(vm.profile._id) === -1") Add
+        button.button.button-block.button-assertive(ng-click='vm.remove(vm.user)' ng-if="vm.user.connectedBy.indexOf(vm.profile._id) !== -1 ") Remove

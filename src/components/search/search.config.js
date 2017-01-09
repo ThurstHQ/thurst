@@ -10,7 +10,6 @@
     function searchConfig($stateProvider) {
         $stateProvider
             .state('app.search', {
-                cache: false,
                 url: 'search',
                 views: {
                     'menuContent': {

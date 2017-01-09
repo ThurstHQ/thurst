@@ -12,7 +12,8 @@
             'app.support',
             'app.connections',
             'app.messages',
-            'app.search'
+            'app.search',
+            'app.user'
             // 'app.policy',
             // 'app.terms'
         ])

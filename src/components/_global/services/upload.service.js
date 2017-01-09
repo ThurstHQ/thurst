@@ -15,16 +15,15 @@
         return {
             upload: Restangular.service('api/upload'),
             setPhotoPOST: function (data) {
-                var user = localStorageService.get('user');
+                var profile = localStorageService.get('profile');
                 notificationsService.loading();
                 return this.upload.post(data).then(function (res) {
-                    user.avatar = Settings.url + res.path;
-                    localStorageService.set('user', user);
+                    profile.avatar = Settings.url + res.path;
+                    localStorageService.set('profile', profile);
                     notificationsService.hide();
-                    return user;
+                    return profile;
                 }, function (error) {
-                    notificationsService.hide();
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }

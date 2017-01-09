@@ -15,7 +15,6 @@
                     notificationsService.hide();
                     return data;
                 }, function (error) {
-                    notificationsService.hide();
                     notificationsService.warn(error.data.message);
                     return false;
                 });
@@ -26,7 +25,6 @@
                     notificationsService.hide();
                     return data;
                 }, function (error) {
-                    notificationsService.hide();
                     notificationsService.warn(error.data.message);
                     return false;
                 });
@@ -37,7 +35,6 @@
                     notificationsService.hide();
                     return data;
                 }, function (error) {
-                    notificationsService.hide();
                     notificationsService.warn(error.data.message);
                     return false;
                 });

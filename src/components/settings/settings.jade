@@ -1,16 +1,16 @@
 ﻿ion-view
     ion-nav-title.logo Settings
     ion-content.settings-page.padding(scroll='false')
-        form.list(name="changePassword" ng-submit="vm.passwordUpdate(vm.password)")
+        form.list(name="changePassword" ng-submit="vm.passwordUpdate(vm.password); this.reset()")
             label.item.item-input
                 span.input-label Old password
-                input(type="password" ng-model="vm.password.old" required="")
+                input(type="password" ng-model="vm.password.password" required="")
             label.item.item-input
                 span.input-label New password
-                input(type="password" ng-model="vm.password.new" required="")
+                input(type="password" ng-model="vm.password.newpassword" required="")
             label.item.item-input
                 span.input-label Confirm password
-                input(type="password" ng-model="vm.confirm" required="" compare-to="vm.password.new")
+                input(type="password" ng-model="vm.confirm" required="" compare-to="vm.password.newpassword")
             input.button.button-block.button-calm(type="submit" value="Update password" ng-disabled="!changePassword.$valid")
-        button.button.button-block(ng-click="vm.hideProfile()", ng-class="vm.user.invisible?'button-calm':'button-stable'") {{vm.user.invisible ? 'Show' : 'Hide'}} Profile Visibility
+        button.button.button-block(ng-click="vm.hideProfile()", ng-class="vm.profile.invisible?'button-calm':'button-stable'") {{vm.profile.invisible ? 'Show' : 'Hide'}} Profile Visibility
         button.button.button-block.button-assertive(ng-click="vm.deleteAccount()") Delete Account

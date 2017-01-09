@@ -2,51 +2,50 @@
     'use strict';
     angular
         .module('app.config')
-        .factory('userService', userService);
+        .factory('profileService', profileService);
 
-    userService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'loginService', '$rootScope', 'Settings'];
+    profileService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'loginService', '$rootScope', 'Settings'];
 
-    function userService(Restangular, localStorageService, notificationsService, loginService, $rootScope, Settings) {
+    function profileService(Restangular, localStorageService, notificationsService, loginService, $rootScope, Settings) {
         return {
-            user: Restangular.service('api/user'),
-            userGET: function () {
-                return this.user.one().get().then(function (res) {
+            profile: Restangular.service('api/profile'),
+            profileGET: function () {
+                return this.profile.one().get().then(function (res) {
                     if (res.avatar) {
                         res.avatar = Settings.url + res.avatar;
                     }
-                    localStorageService.set('user', res);
+                    localStorageService.set('profile', res);
                     return res;
                 }, function (error) {
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },
-            userPUT: function (data) {
+            profilePUT: function (data) {
                 notificationsService.loading();
-                return this.user.one().customPUT(data).then(function (res) {
+                return this.profile.one().customPUT(data).then(function (res) {
                     if (res.avatar) {
                         res.avatar = Settings.url + res.avatar;
                     }
-                    localStorageService.set('user', res);
+                    localStorageService.set('profile', res);
                     if (res.username && res.sexuality && res.gender) {
                         $rootScope.$emit('initApplozic', res);
                     }
-                    notificationsService.hide();
+                    notificationsService.show('Saved');
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },
-            userDELETE: function () {
+            profileDELETE: function () {
                 notificationsService.loading();
-                this.user.one().customDELETE().then(function (res) {
+                this.profile.one().customDELETE().then(function (res) {
                     notificationsService.hide();
                     loginService.logout();
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }

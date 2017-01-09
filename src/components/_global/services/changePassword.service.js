@@ -15,11 +15,10 @@
             chngpwd: Restangular.service('api/chngpwd'),
             changePasswordPOST: function (data) {
                 return this.chngpwd.post(data).then(function (res) {
-                    notificationsService.hide();
+                    notificationsService.show('Saved');
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }

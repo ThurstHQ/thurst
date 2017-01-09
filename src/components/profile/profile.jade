@@ -2,39 +2,39 @@ ion-view
     ion-nav-title Profile
     ion-content.profile-content.padding
         .wrapper-avatar
-            img(ng-src='{{vm.user.avatar || "assets/images/avatar.png"}}', ng-click="vm.pictureUpdate()")
+            img(ng-src='{{vm.profile.avatar || "assets/images/avatar.png"}}', ng-click="vm.pictureUpdate()")
         .list
             label.item.item-input
                 span.input-label Username
-                input(type="text" ng-model='vm.user.username')
+                input(type="text" ng-model='vm.profile.username')
             label.item.item-input.item-select
                 .input-label Sexuality
-                select(ng-model="vm.user.sexuality")
-                    option(value="androgynosexual" selected="{{vm.user.sexuality === 'androgynosexual'}}") Androgynosexual
-                    option(value="androsexual" selected="{{vm.user.sexuality === 'androsexual'}}") Androsexual
-                    option(value="asexual" selected="{{vm.user.sexuality === 'asexual'}}") Asexual
-                    option(value="bisexual" selected="{{vm.user.sexuality === 'bisexual'}}") Bisexual
-                    option(value="demisexual" selected="{{vm.user.sexuality === 'demisexual'}}") Demisexual
-                    option(value="gay" selected="{{vm.user.sexuality === 'gay'}}") Gay
-                    option(value="gray" selected="{{vm.user.sexuality === 'gray'}}") Gray
-                    option(value="gynosexual" selected="{{vm.user.sexuality === 'gynosexual'}}") Gynosexual
-                    option(value="lesbian" selected="{{vm.user.sexuality === 'lesbian'}}") Lesbian
-                    option(value="queer" selected="{{vm.user.sexuality === 'queer'}}") Queer
-                    option(value="pansexual" selected="{{vm.user.sexuality === 'pansexual'}}") Pansexual
-                    option(value="polysexual" selected="{{vm.user.sexuality === 'polysexual'}}") Polysexual
+                select(ng-model="vm.profile.sexuality")
+                    option(value="androgynosexual" selected="{{vm.profile.sexuality === 'androgynosexual'}}") Androgynosexual
+                    option(value="androsexual" selected="{{vm.profile.sexuality === 'androsexual'}}") Androsexual
+                    option(value="asexual" selected="{{vm.profile.sexuality === 'asexual'}}") Asexual
+                    option(value="bisexual" selected="{{vm.profile.sexuality === 'bisexual'}}") Bisexual
+                    option(value="demisexual" selected="{{vm.profile.sexuality === 'demisexual'}}") Demisexual
+                    option(value="gay" selected="{{vm.profile.sexuality === 'gay'}}") Gay
+                    option(value="gray" selected="{{vm.profile.sexuality === 'gray'}}") Gray
+                    option(value="gynosexual" selected="{{vm.profile.sexuality === 'gynosexual'}}") Gynosexual
+                    option(value="lesbian" selected="{{vm.profile.sexuality === 'lesbian'}}") Lesbian
+                    option(value="queer" selected="{{vm.profile.sexuality === 'queer'}}") Queer
+                    option(value="pansexual" selected="{{vm.profile.sexuality === 'pansexual'}}") Pansexual
+                    option(value="polysexual" selected="{{vm.profile.sexuality === 'polysexual'}}") Polysexual
             label.item.item-input
                 span.input-label Gender
-                input(type='text' ng-model='vm.user.gender')
+                input(type='text' ng-model='vm.profile.gender')
             label.item.item-input
                 input(type='date' ng-model='vm.birthday' placeholder='date of birth')
             label.item.item-input
-                input(type='text' ng-model='vm.user.pronouns' placeholder='Pronouns')
+                input(type='text' ng-model='vm.profile.pronouns' placeholder='Pronouns')
             label.item.item-input
-                textarea(type='text' ng-model='vm.user.bio' placeholder='Some words about yourself {200 characters}' maxlength='200')
+                textarea(type='text' ng-model='vm.profile.bio' placeholder='Some words about yourself {200 characters}' maxlength='200')
             .item.item-toggle
                 | Location
                 label.toggle.toggle-calm
-                    input(type="checkbox" ng-model='vm.user.loc' ng-change="vm.initGeo(vm.user.loc)")
+                    input(type="checkbox" ng-model='vm.profile.loc' ng-change="vm.initGeo(vm.profile.loc)")
                     .track
                         .handle
-        button.button.button-block.button-calm(ng-click='vm.userUpdate(vm.user)') Update profile
+        button.button.button-block.button-calm(ng-click='vm.profileUpdate(vm.profile)') Update profile

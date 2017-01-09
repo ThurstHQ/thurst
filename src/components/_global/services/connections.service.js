@@ -25,7 +25,7 @@
                     localStorageService.set('connections', me.data);
                     return me.data;
                 }, function (error) {
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },
@@ -40,8 +40,7 @@
                     notificationsService.hide();
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },
@@ -54,7 +53,7 @@
                     notificationsService.hide();
                     return me.data;
                 }, function (error) {
-                    notificationsService.hide();
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }

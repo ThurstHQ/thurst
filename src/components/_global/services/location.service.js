@@ -18,8 +18,7 @@
                     notificationsService.hide();
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
-                    notificationsService.warn(error.msg);
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             }
