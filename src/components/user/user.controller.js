@@ -4,10 +4,10 @@
         .module('app.user')
         .controller('UserCtrl', UserCtrl);
 
-    UserCtrl.$inject = ['localStorageService', 'connectionsService', '$rootScope'];
-    function UserCtrl(localStorageService, connectionsService, $rootScope) {
+    UserCtrl.$inject = ['localStorageService', 'connectionsService', '$rootScope', 'user'];
+    function UserCtrl(localStorageService, connectionsService, $rootScope, user) {
         var vm = this;
-        vm.user = localStorageService.get('user');
+        vm.user = user;
         vm.profile = localStorageService.get('profile');
 
         vm.add = add;

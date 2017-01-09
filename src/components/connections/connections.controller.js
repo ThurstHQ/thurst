@@ -4,17 +4,12 @@
         .module('app.connections')
         .controller('ConnectionsCtrl', ConnectionsCtrl);
 
-    ConnectionsCtrl.$inject = ['localStorageService', 'connectionsService', '$state'];
-    function ConnectionsCtrl(localStorageService, connectionsService, $state) {
+    ConnectionsCtrl.$inject = ['localStorageService', 'connectionsService'];
+    function ConnectionsCtrl(localStorageService, connectionsService) {
         var vm = this;
         vm.connections = localStorageService.get('connections');
-        vm.goTo = goTo;
         vm.message = message;
         vm.remove = remove;
-        function goTo(user) {
-            localStorageService.set('user', user);
-            $state.go('app.user');
-        }
 
         function message(id) {
             $applozic.fn.applozic('loadTab', id);

@@ -4,8 +4,8 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$state', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate', 'Settings'];
-    function SearchCtrl(searchService, $state, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate, Settings) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate', 'Settings'];
+    function SearchCtrl(searchService, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate, Settings) {
         var vm = this,
             perPage = 10,
             page = 1;
@@ -19,7 +19,7 @@
         vm.remove = remove;
         vm.message = message;
         vm.search = search;
-        vm.goTo = goTo;
+        vm.doRefresh = doRefresh;
 
         function load(filter) {
             var data = {
@@ -45,6 +45,7 @@
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                     page++;
                 }
+                $rootScope.$broadcast('scroll.refreshComplete');
             });
         }
 
@@ -74,9 +75,9 @@
             vm.modal.hide();
         }
 
-        function goTo(user) {
-            localStorageService.set('user', user);
-            $state.go('app.user');
+        function doRefresh() {
+            page = 1;
+            load(true);
         }
 
 
