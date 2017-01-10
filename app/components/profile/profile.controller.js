@@ -146,14 +146,14 @@ exports.Search = function (req, res, next) {
                 }
                 queryArr.push(separateObj);
             }
-            if (!req.query.maxdistance && req.user.loc) {
-                separateObj = {
-                    coords: {
-                        $near: [ req.user.coords[0], req.user.coords[1]]
-                    }
-                };
-                queryArr.push(separateObj);
-            }
+            // if (!req.query.maxdistance && req.user.loc) {
+            //     separateObj = {
+            //         coords: {
+            //             $near: [ req.user.coords[0], req.user.coords[1]]
+            //         }
+            //     };
+            //     queryArr.push(separateObj);
+            // }
             console.log('Advanced');
             console.log(queryArr);
             User
