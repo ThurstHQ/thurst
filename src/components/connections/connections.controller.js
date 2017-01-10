@@ -16,7 +16,7 @@
         }
 
         function remove(id) {
-            connectionsService.connectionsDELETE({connectionId: id}).then(function (res) {
+            connectionsService.connectionsDELETE(id).then(function (res) {
                 vm.connections = res;
             });
         }

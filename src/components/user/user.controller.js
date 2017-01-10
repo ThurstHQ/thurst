@@ -21,7 +21,7 @@
         }
 
         function remove() {
-            connectionsService.connectionsDELETE({connectionId: vm.user._id}).then(function () {
+            connectionsService.connectionsDELETE(vm.user._id).then(function () {
                 vm.user.connectedBy.splice(vm.profile._id, 1);
                 $rootScope.$emit('updateUserInSearch', vm.user);
             });
