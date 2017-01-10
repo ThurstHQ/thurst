@@ -90,25 +90,31 @@ exports.Search = function (req, res, next) {
         //         if (err) return res.status(500).send({message: err.message});
         //         return res.json(users);
         //     });
-        if (req.user.loc) {
 
-            User.find({
-                coords : {
-                    $near : [ req.user.coords[0] , req.user.coords[1] ]
-                },
-                _id: {'$ne': req.user._id},
-                invisible: {'$ne': true},
-                verified: {'$ne': false}
-            }, { password: 0 })
-                .skip(reqPage*10)
-                .limit(parseInt(reqAmount))
-                .exec(function (err, users) {
-                    if (err) return res.send(err);
 
-                    res.send(users)
-                });
-
-        } else {
+        // if (req.user.loc) {
+        //
+        //     User.find({
+        //         coords : {
+        //             $near : [ req.user.coords[0] , req.user.coords[1] ]
+        //         },
+        //         coords: [],
+        //         _id: {'$ne': req.user._id},
+        //         invisible: {'$ne': true},
+        //         verified: {'$ne': false}
+        //     }, { password: 0 })
+        //         .skip(reqPage*10)
+        //         .limit(parseInt(reqAmount))
+        //         .exec(function (err, users) {
+        //             if (err) return res.status(500).send({message: err});
+        //             // User.find({coords: []}, function (err, usersWithoutCoords) {
+        //             //     if (err) return res.status(500).send({message: err.message});
+        //             //     res.json(users.concat(usersWithoutCoords));
+        //             // });
+        //             res.json(users);
+        //         });
+        //
+        // } else {
             User
                 .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
                 .sort({"created": -1})
@@ -118,7 +124,7 @@ exports.Search = function (req, res, next) {
                     if (err) return res.status(500).send({message: err.message});
                     return res.json(users);
                 });
-        }
+        // }
 
     } else {
             for (var field in reqQuery) {
@@ -138,6 +144,14 @@ exports.Search = function (req, res, next) {
                         }
                     }
                 }
+                queryArr.push(separateObj);
+            }
+            if (!req.query.maxdistance && req.user.loc) {
+                separateObj = {
+                    coords: {
+                        $near: [ req.user.coords[0], req.user.coords[1]]
+                    }
+                };
                 queryArr.push(separateObj);
             }
             console.log('Advanced');
@@ -177,8 +191,8 @@ exports.setLocation = function (req, res, next) {
     if (req.user._id && req.body.longitude && req.body.latitude) {
         req.user.coords = [req.body.longitude, req.body.latitude];
         req.user.save(function (err, user) {
-            if (err) return res.json(err);
-            user.password = '';
+            if (err) return res.status(500).json({success: false, "message": err});
+            // user.password = '';
             return res.json(user);
         });
     } else {
