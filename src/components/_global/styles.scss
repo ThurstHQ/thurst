@@ -39,6 +39,11 @@ body {
     max-width: 60%;
     flex: 0 0 60%;
   }
+  .card {
+    .item {
+      white-space: normal;
+    }
+  }
 }
 
 @import 'scss/login';

@@ -9,9 +9,11 @@
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
+
+        initBirthday(vm.profile.birthday);
+
         vm.pictureUpdate = pictureUpdate;
         vm.profileUpdate = profileUpdate;
-
 
         function pictureUpdate() {
             var options = {
@@ -44,6 +46,12 @@
             });
         }
 
+        function initBirthday(birthday) {
+            if (birthday) {
+                vm.profile.birthday = new Date(birthday);
+            }
+        }
+
         function profileUpdate(data) {
             if (data.loc) {
                 $rootScope.$emit('initGeo', data);
@@ -52,6 +60,7 @@
             }
             profileService.profilePUT(data).then(function (res) {
                 vm.profile = res;
+                initBirthday(res.birthday);
             });
         }
     }

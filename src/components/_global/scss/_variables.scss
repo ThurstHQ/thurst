@@ -31,13 +31,15 @@ $bg-blue-button-block-app: #11c1f3;
     align-items: center;
     padding-right: 16px;
     img {
-      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
       margin-right: 16px;
     }
     .wrapper-text {
       display: flex;
       flex-direction: column;
       flex: 1;
+      overflow: hidden;
       h2 {
         color: $color-black;
       }

@@ -12,7 +12,8 @@
 
 .mck-sidebox {
   left: auto;
-  //box-shadow: none;
+  box-shadow: none;
+  width: 100% !important;
   .mck-box-dialog {
     min-width: 310px;
     .mck-box-content {

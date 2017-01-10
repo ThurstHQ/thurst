@@ -16,6 +16,11 @@
     .input-label {
       color: $color-text;
     }
+    select{
+      width: 100%;
+      direction: ltr;
+      padding-left: 0;
+    }
   }
   .item.item-toggle {
     border: none;
