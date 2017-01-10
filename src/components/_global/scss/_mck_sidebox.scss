@@ -1,0 +1,51 @@
+.popover-backdrop {
+  z-index: 9999999;
+}
+
+.popover-menu {
+  height: auto;
+}
+
+#mck-sidebox-launcher {
+  display: none;
+}
+
+.mck-sidebox {
+  left: auto;
+  //box-shadow: none;
+  .mck-box-dialog {
+    min-width: 310px;
+    .mck-box-content {
+      display: flex !important;
+      flex-direction: column;
+      .mck-box-top {
+        max-height: 44px;
+        min-height: 44px;
+        .mck-top-btn-panel {
+          background: transparent;
+          padding: 0;
+        }
+        .mck-box-title {
+          padding-left: 10px;
+        }
+        .icon {
+          font-size: 24px;
+          text-align: center;
+          margin: 0;
+        }
+        .mck-dropdown-menu.menu-right,
+        .mck-dropup-menu.menu-right {
+          right: -5px;
+        }
+      }
+      .mck-box-body {
+        padding: 0;
+        flex: 1;
+        overflow: auto;
+      }
+      .mck-form-group {
+        margin: 5px 0;
+      }
+    }
+  }
+}

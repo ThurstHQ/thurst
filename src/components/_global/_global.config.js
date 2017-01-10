@@ -40,11 +40,9 @@
             trackEvent: true
         });
         AnalyticsProvider.setPageEvent('$stateChangeSuccess');
-
     }
 
     runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'profileService', 'notificationsService'];
-
     function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, profileService, notificationsService) {
 
         var token = localStorageService.get('token');
@@ -64,32 +62,32 @@
             window.cordova.plugins.Keyboard.disableScroll(true);
         }
 
-        if (window.PushNotification) {
-            var push = window.PushNotification.init({
-                android: {
-                    senderID: Settings.keyAndroid
-                },
-                ios: {
-                    alert: true,
-                    badge: true,
-                    sound: true,
-                    clearBadge: true
-                }
-            });
-            push.on('registration', function (data) {
-                // authenticationService.notificationPOST({
-                //     uuid: window.device.uuid,
-                //     notify_id: data.registrationId //jshint ignore:line
-                // });
-                localStorageService.set('pushToken', data.registrationId);
-            });
-            push.on('notification', function (data) {
-                console.log(data);
-            });
-            push.on('error', function (e) {
-                console.log(e.message);
-            });
-        }
+        // if (window.PushNotification) {
+        //     var push = window.PushNotification.init({
+        //         android: {
+        //             senderID: Settings.keyAndroid
+        //         },
+        //         ios: {
+        //             alert: true,
+        //             badge: true,
+        //             sound: true,
+        //             clearBadge: true
+        //         }
+        //     });
+        //     push.on('registration', function (data) {
+        //         // authenticationService.notificationPOST({
+        //         //     uuid: window.device.uuid,
+        //         //     notify_id: data.registrationId //jshint ignore:line
+        //         // });
+        //         localStorageService.set('pushToken', data.registrationId);
+        //     });
+        //     push.on('notification', function (data) {
+        //         console.log(data);
+        //     });
+        //     push.on('error', function (e) {
+        //         console.log(e.message);
+        //     });
+        // }
 
         function init(token) {
             Restangular.setDefaultHeaders({'Authorization': token});
@@ -106,24 +104,24 @@
             });
         }
 
-        function initGeo(res) {
+        function initGeo(profile) {
             navigator.geolocation.getCurrentPosition(function (pos) {
                 locationService.updateLocationPOST({
                     longitude: pos.coords.longitude,
                     latitude: pos.coords.latitude
-                },res);
+                }, profile);
             });
         }
 
         function initApplozic(profile) {
             $applozic.fn.applozic({
-                appId: Settings.applozic_key,   //Get your application key from https://www.applozic.com
-                userId: profile._id,               //Logged in user's id, a unique identifier for user
-                userName: profile.username,            //User's display name
-                imageLink: profile.avatar,                  //User's profile picture url
+                appId: Settings.applozic_key,
+                userId: profile._id,
+                userName: profile.username,
+                imageLink: profile.avatar,
                 email: profile.email,
                 desktopNotification: true,
-                notificationIconLink: 'https://www.applozic.com/favicon.ico',   //Icon to show in desktop notification, replace with your icon
+                notificationIconLink: 'https://www.applozic.com/favicon.ico',
                 // authenticationTypeId: '0',      //1 for password verification from Applozic server and 0 for access Token verification from your server
                 // accessToken: '',                //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
                 onInit: function (response) {
@@ -151,6 +149,15 @@
                 localStorageService.clearAll();
                 $location.path('login');
                 return false;
+            }
+        });
+
+        $applozic.fn.applozic('subscribeToEvents', {
+            onMessageReceived: function (data) {
+                console.log('onMessageReceived', data);
+            },
+            onUserConnect: function (data) {
+                console.log('onUserConnect', data);
             }
         });
 

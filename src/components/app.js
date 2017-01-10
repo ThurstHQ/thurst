@@ -16,20 +16,5 @@
             'app.user'
             // 'app.policy',
             // 'app.terms'
-        ])
-        .run(appRun);
-
-    appRun.$inject = [];
-    function appRun() {
-
-
-        $applozic.fn.applozic('subscribeToEvents', {
-            onMessageReceived: function (data) {
-                console.log('onMessageReceived', data);
-            },
-            onUserConnect: function (data) {
-                console.log('onUserConnect', data);
-            }
-        });
-    }
+        ]);
 })();
