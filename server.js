@@ -25,7 +25,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(morgan('dev'));
 
 app.use(passport.initialize());
-app.use(express.static(__dirname + '/public', { maxAge: '1d' }));
+app.use('/public', express.static(__dirname + '/public', { maxAge: '1d' }));
 //connect database
 mongoose.connect(config.getEnv().database);
 
