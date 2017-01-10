@@ -9,17 +9,9 @@
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
-
-
         vm.pictureUpdate = pictureUpdate;
         vm.profileUpdate = profileUpdate;
-        vm.initGeo = initGeo;
 
-        function initGeo(data) {
-            if (data) {
-                $rootScope.$emit('initGeo');
-            }
-        }
 
         function pictureUpdate() {
             var options = {
@@ -53,6 +45,11 @@
         }
 
         function profileUpdate(data) {
+            if (data.loc) {
+                $rootScope.$emit('initGeo', data);
+            } else {
+                data.coords = [];
+            }
             profileService.profilePUT(data).then(function (res) {
                 vm.profile = res;
             });

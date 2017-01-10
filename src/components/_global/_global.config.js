@@ -101,17 +101,17 @@
                     $location.path('profile');
                 }
                 if (res.loc) {
-                    initGeo();
+                    initGeo(res);
                 }
             });
         }
 
-        function initGeo() {
+        function initGeo(res) {
             navigator.geolocation.getCurrentPosition(function (pos) {
                 locationService.updateLocationPOST({
                     longitude: pos.coords.longitude,
                     latitude: pos.coords.latitude
-                });
+                },res);
             });
         }
 
@@ -157,8 +157,8 @@
         $rootScope.$on('initApplozic', function (event, profile) {
             initApplozic(profile);
         });
-        $rootScope.$on('initGeo', function () {
-            initGeo();
+        $rootScope.$on('initGeo', function (event, profile) {
+            initGeo(profile);
         });
         $rootScope.$on('getProfileDetail', function () {
             getProfileDetail();

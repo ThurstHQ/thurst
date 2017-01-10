@@ -10,12 +10,13 @@
         'localStorageService'
     ];
 
-    function locationService(Restangular, notificationsService) {
+    function locationService(Restangular, notificationsService, localStorageService) {
         return {
             location: Restangular.service('api/location'),
-            updateLocationPOST: function (data) {
+            updateLocationPOST: function (data, profile) {
                 return this.location.post(data).then(function (res) {
-                    notificationsService.hide();
+                    profile.coords = res.coords;
+                    localStorageService.set('profile', profile);
                     return res;
                 }, function (error) {
                     notificationsService.warn(error.data.message);

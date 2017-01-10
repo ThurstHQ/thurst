@@ -26,7 +26,7 @@ ion-view
                 span.input-label Gender
                 input(type='text' ng-model='vm.profile.gender')
             label.item.item-input
-                input(type='date' ng-model='vm.birthday' placeholder='date of birth')
+                input(type='date' ng-model='vm.profile.birthday' placeholder='date of birth')
             label.item.item-input
                 input(type='text' ng-model='vm.profile.pronouns' placeholder='Pronouns')
             label.item.item-input
@@ -34,7 +34,7 @@ ion-view
             .item.item-toggle
                 | Location
                 label.toggle.toggle-calm
-                    input(type="checkbox" ng-model='vm.profile.loc' ng-change="vm.initGeo(vm.profile.loc)")
+                    input(type="checkbox" ng-model='vm.profile.loc')
                     .track
                         .handle
         button.button.button-block.button-calm(ng-click='vm.profileUpdate(vm.profile)') Update profile

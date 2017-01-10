@@ -22,12 +22,15 @@
         vm.search = search;
         vm.doRefresh = doRefresh;
 
-        function load() {
+        function load(doRefresh) {
             var data = Object.assign({
                 page: page,
                 amount: perPage
             }, vm.filter);
             searchService.allGET(data).then(function (res) {
+                if (doRefresh) {
+                    vm.list = {};
+                }
                 angular.forEach(res, function (val) {
                     if (val.avatar) {
                         val.avatar = Settings.url + val.avatar;
@@ -77,7 +80,7 @@
 
         function doRefresh() {
             page = 1;
-            load();
+            load(true);
         }
 
         $ionicModal.fromTemplateUrl('components/_global/templates/filter.html', {
