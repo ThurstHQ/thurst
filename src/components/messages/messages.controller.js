@@ -20,7 +20,6 @@
         }
 
         $rootScope.$watch('messages', function () {
-            console.log($rootScope.messages);
             vm.list = $rootScope.messages;
         });
     }

@@ -47,8 +47,8 @@
             connectionsDELETE: function (data) {
                 var me = this;
                 notificationsService.loading();
-                return this.connections.one().customDELETE(null, data).then(function (res) {
-                    delete me.data[data.connectionId];
+                return this.connections.one().customDELETE(null, {connectionId: data}).then(function () {
+                    delete me.data[data];
                     localStorageService.set('connections', me.data);
                     notificationsService.hide();
                     return me.data;

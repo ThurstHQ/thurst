@@ -10,8 +10,9 @@
             perPage = 10,
             page = 1;
 
-        vm.showInfinite = true;
+        vm.moreDataCanBeLoaded = true;
         vm.list = {};
+        vm.filter = {};
         vm.profile = localStorageService.get('profile');
 
         vm.load = load;
@@ -21,17 +22,12 @@
         vm.search = search;
         vm.doRefresh = doRefresh;
 
-        function load(filter) {
-            var data = {
+        function load() {
+            var data = Object.assign({
                 page: page,
                 amount: perPage
-            };
-            data = Object.assign(data, vm.filter);
-
+            }, vm.filter);
             searchService.allGET(data).then(function (res) {
-                if (filter) {
-                    vm.list = {};
-                }
                 angular.forEach(res, function (val) {
                     if (val.avatar) {
                         val.avatar = Settings.url + val.avatar;
@@ -39,12 +35,12 @@
                     vm.list[val._id] = val;
                 });
                 if (res.length < perPage) {
-                    page--;
-                    vm.showInfinite = false;
+                    vm.moreDataCanBeLoaded = false;
                 } else {
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
                     page++;
+                    vm.moreDataCanBeLoaded = true;
                 }
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 $rootScope.$broadcast('scroll.refreshComplete');
             });
         }
@@ -56,10 +52,10 @@
             });
         }
 
-        function remove(user) {
-            connectionsService.connectionsDELETE({connectionId: user._id}).then(function () {
+        function remove(id) {
+            connectionsService.connectionsDELETE(id).then(function () {
                 $ionicListDelegate.closeOptionButtons();
-                vm.list[user._id].connectedBy.splice(vm.profile._id, 1);
+                vm.list[id].connectedBy.splice(vm.profile._id, 1);
             });
         }
 
@@ -67,19 +63,22 @@
             $applozic.fn.applozic('loadTab', id);
         }
 
-        function search(filter) {
-            if (filter) {
-                page = 1;
-                load(filter);
-            }
+        function search() {
+            page = 1;
+            vm.list = {};
             vm.modal.hide();
+            angular.forEach(vm.filter, function (val, key) {
+                if (!val) {
+                    delete vm.filter[key];
+                }
+            });
+            load();
         }
 
         function doRefresh() {
             page = 1;
-            load(true);
+            load();
         }
-
 
         $ionicModal.fromTemplateUrl('components/_global/templates/filter.html', {
             scope: $scope,
