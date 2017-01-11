@@ -1024,7 +1024,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
                 $applozic(d).on("click", ".mck-delete-button", function() {
-                    if (confirm("Are you sure want to delete all the conversation!")) {
+                    if (confirm("Are you sure you want to delete all of this?")) {
                         mckMessageService.deleteConversation();
                     }
                 });

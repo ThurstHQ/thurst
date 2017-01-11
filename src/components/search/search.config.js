@@ -11,6 +11,7 @@
         $stateProvider
             .state('app.search', {
                 url: 'search',
+                cache: true,
                 views: {
                     'menuContent': {
                         templateUrl: 'components/search/search.html',

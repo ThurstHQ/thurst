@@ -42,8 +42,8 @@
         AnalyticsProvider.setPageEvent('$stateChangeSuccess');
     }
 
-    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'profileService', 'notificationsService'];
-    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, profileService, notificationsService) {
+    runAppConfig.$inject = ['Settings', 'localStorageService', '$location', 'Restangular', '$rootScope', 'locationService', 'profileService', 'notificationsService', '$state'];
+    function runAppConfig(Settings, localStorageService, $location, Restangular, $rootScope, locationService, profileService, notificationsService, $state) {
 
         var token = localStorageService.get('token');
 
@@ -172,6 +172,13 @@
         });
         $rootScope.$on('login', function (event, token) {
             init(token);
+        });
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            console.log($state.current);
+            if (fromState.name === 'app.search' && toState.name !== 'app.user') {
+                $state.current.cache = false;
+            }
         });
     }
 })();

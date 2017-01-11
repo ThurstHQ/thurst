@@ -18,7 +18,6 @@
         vm.load = load;
         vm.add = add;
         vm.remove = remove;
-        vm.message = message;
         vm.search = search;
         vm.doRefresh = doRefresh;
 
@@ -60,10 +59,6 @@
                 $ionicListDelegate.closeOptionButtons();
                 vm.list[id].connectedBy.splice(vm.profile._id, 1);
             });
-        }
-
-        function message(id) {
-            $applozic.fn.applozic('loadTab', id);
         }
 
         function search() {

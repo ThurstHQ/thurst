@@ -12,6 +12,7 @@
 
         vm.add = add;
         vm.remove = remove;
+        vm.message = message;
 
         function add(user) {
             connectionsService.connectionsPOST(user).then(function () {
@@ -25,6 +26,10 @@
                 vm.user.connectedBy.splice(vm.profile._id, 1);
                 $rootScope.$emit('updateUserInSearch', vm.user);
             });
+        }
+
+        function message() {
+            $applozic.fn.applozic('loadTab', vm.user._id);
         }
     }
 })();
