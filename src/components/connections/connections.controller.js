@@ -8,12 +8,7 @@
     function ConnectionsCtrl(localStorageService, connectionsService) {
         var vm = this;
         vm.connections = localStorageService.get('connections');
-        vm.message = message;
         vm.remove = remove;
-
-        function message(id) {
-            $applozic.fn.applozic('loadTab', id);
-        }
 
         function remove(id) {
             connectionsService.connectionsDELETE(id).then(function (res) {

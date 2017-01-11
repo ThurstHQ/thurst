@@ -2,8 +2,8 @@
     ion-nav-title.logo Connections
     ion-content.connections-page
         ion-list
-            ion-item(ng-repeat="item in vm.connections", ng-click="vm.message(item._id)")
-                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}" ng-click="$event.stopPropagation()", ui-sref="app.user({id:item._id})")
+            ion-item(ng-repeat="item in vm.connections", ui-sref="app.user({id:item._id})")
+                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
                 .wrapper-text
                     h2 {{item.username || 'No name'}}
                     p {{item.pronouns}}
