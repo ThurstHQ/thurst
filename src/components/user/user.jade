@@ -13,7 +13,7 @@ ion-view
             .item {{vm.user.gender}}
         .card(ng-if="vm.user.birthday")
             .item.item-divider  Date of birth
-            .item {{vm.user.birthday}}
+            .item {{vm.user.birthday| date : 'MM/dd/yyyy' }}
         .card(ng-if="vm.user.pronouns")
             .item.item-divider Pronouns
             .item {{vm.user.pronouns}}
