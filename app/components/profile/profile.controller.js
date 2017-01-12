@@ -113,7 +113,7 @@ exports.Search = function (req, res, next) {
 
                 if (field === 'sexuality') {
                     var searchSexuality = new RegExp(reqQuery.sexuality, 'i');
-                    separateObj.sexuality = {$regex: searchSexuality};
+                    separateObj.sexuality = { $regex: searchSexuality };
                 } else if (field === 'gender') {
                     var arrGender = new RegExp(reqQuery.gender, 'i');
                     separateObj.gender = {$regex: arrGender};
@@ -127,16 +127,19 @@ exports.Search = function (req, res, next) {
                 }
                 queryArr.push(separateObj);
             }
-            // if (!req.query.maxdistance && req.user.loc) {
-            //     separateObj = {
-            //         coords: {
-            //             $near: [ req.user.coords[0], req.user.coords[1]]
-            //         }
-            //     };
-            //     queryArr.push(separateObj);
-            // }
+            if (!req.query.maxdistance && req.user.loc) {
+                separateObj = {
+                    coords: {
+                        $near: [ req.user.coords[0], req.user.coords[1]]
+                    }
+                };
+                queryArr.push(separateObj);
+            }
+            console.log('User');
+            console.log(req.user.email);
             console.log('Advanced');
             console.log(queryArr);
+
             User
                 .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}}, {
                     password: 0,
@@ -149,20 +152,6 @@ exports.Search = function (req, res, next) {
                     if (err) return res.status(500).send({message: err.message});
                     return res.json(users);
                 });
-        // User.find({
-        //     coords : {
-        //         $near : [ parseFloat(req.params.lon) , parseFloat(req.params.lat) ]
-        //     }
-        // })
-        //     .limit(parseInt(reqAmount))
-        //     .populate('userId', 'gender sexuality')
-        //     .exec(function (err, geopoints) {
-        //         if (err) return res.send(err);
-        //
-        //         res.send(geopoints)
-        //     });
-
-
         }
 };
 
