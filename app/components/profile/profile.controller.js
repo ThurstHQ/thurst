@@ -73,48 +73,29 @@ exports.Search = function (req, res, next) {
     console.log(Object.keys(reqQuery).length);
 
     if (Object.keys(reqQuery).length == 2) {
-        //TODO: random search by "sample function"
-        // User.random(req.user._id, function (err, doc) {
-        //     if (err) return res.json({"Error": err});
-        //     return res.json(doc);
-        // });
-        // }
 
-        //TODO: random for search newest user field "created"
-        // User
-        //     .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
-        //     .sort({"created": -1})
-        //     .skip(reqPage*10)
-        //     .limit(parseInt(reqAmount))
-        //     .exec(function (err, users) {
-        //         if (err) return res.status(500).send({message: err.message});
-        //         return res.json(users);
-        //     });
+        if (req.user.loc) {
 
+            User.find({
+                coords : {
+                    $near : [ req.user.coords[0] , req.user.coords[1] ]
+                },
+                _id: {'$ne': req.user._id},
+                invisible: {'$ne': true},
+                verified: {'$ne': false}
+            }, { password: 0 })
+                .skip(reqPage*10)
+                .limit(parseInt(reqAmount))
+                .exec(function (err, users) {
+                    if (err) return res.status(500).send({message: err});
+                    // User.find({coords: []}, function (err, usersWithoutCoords) {
+                    //     if (err) return res.status(500).send({message: err.message});
+                    //     res.json(users.concat(usersWithoutCoords));
+                    // });
+                    res.json(users);
+                });
 
-        // if (req.user.loc) {
-        //
-        //     User.find({
-        //         coords : {
-        //             $near : [ req.user.coords[0] , req.user.coords[1] ]
-        //         },
-        //         coords: [],
-        //         _id: {'$ne': req.user._id},
-        //         invisible: {'$ne': true},
-        //         verified: {'$ne': false}
-        //     }, { password: 0 })
-        //         .skip(reqPage*10)
-        //         .limit(parseInt(reqAmount))
-        //         .exec(function (err, users) {
-        //             if (err) return res.status(500).send({message: err});
-        //             // User.find({coords: []}, function (err, usersWithoutCoords) {
-        //             //     if (err) return res.status(500).send({message: err.message});
-        //             //     res.json(users.concat(usersWithoutCoords));
-        //             // });
-        //             res.json(users);
-        //         });
-        //
-        // } else {
+        } else {
             User
                 .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
                 .sort({"created": -1})
@@ -124,7 +105,7 @@ exports.Search = function (req, res, next) {
                     if (err) return res.status(500).send({message: err.message});
                     return res.json(users);
                 });
-        // }
+        }
 
     } else {
             for (var field in reqQuery) {
