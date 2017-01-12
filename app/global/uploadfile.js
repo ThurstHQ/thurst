@@ -3,53 +3,51 @@ var http = require('http'),
     os = require('os'),
     fs = require('fs'),
     mkdirp = require('mkdirp'),
-    easyimg = require('easyimage'),
-    appDir = path.dirname(require.main.filename),
-    randomstring = require('randomstring'),
+    randomstring = require('randomstring');
 
-    User = require('../models/user');
-
-var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.uploadFiles = function (req, res, next) {
 
-    var userId = req.user._id || 'empty userId';
-
-    var pathForSave = path.join('public', 'images', userId.toString());
+    var userId = req.user._id || 'empty userId',
+        userIdString = req.user._id.toString();
 
     if (req.body.avatar) {
-        // var AWS = require('aws-sdk');
-        //
-        // // Create an S3 client
-        // var s3 = new AWS.S3();
-        //
-        // // Create a bucket and upload something into it
-        // var bucketName = userId.toString();
-        //
-        // var buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
-        //
-        // console.log('Buffer');
-        // console.log(buf);
-        //
-        // s3.createBucket({Bucket: bucketName}, function() {
-        //     var params = {
-        //         Bucket: bucketName,
-        //         Key: bucketName,
-        //         Body: buf,
-        //         ContentEncoding: 'base64',
-        //         ContentType: 'image/jpeg'
-        //     };
-        //     s3.putObject(params, function(err, data) {
-        //         if (err)
-        //             console.log(err);
-        //         else
-        //             console.log("Successfully uploaded data to " + bucketName + "/" + keyName);
-        //         res.json({"path": userId + '.jpeg' });
-        //     });
-        // });
+
+        var AWS = require('aws-sdk');
+        AWS.config.accessKeyId = process.env.AKI;
+        AWS.config.secretAccessKey = process.env.SAK;
+        AWS.config.region = "us-west-2";
+
+        var s3Bucket = new AWS.S3( { params: {Bucket: userIdString} } );
+
+        buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
+
+        s3Bucket.createBucket({Bucket: userIdString}, function(err, result) {
+            if (err) return res.status(500).json(err, err.stack);
+
+            var data = {
+                Key: userIdString + '.jpeg',
+                Body: buf,
+                ContentEncoding: 'base64',
+                ContentType: 'image/jpeg',
+                ACL: 'public-read'
+            };
+
+            s3Bucket.putObject(data, function(err, data){
+                if (err) {
+                    if (err) return res.status(500).json(err, err.stack);
+                } else {
+                    res.json({"success": true, "path": "https://s3-us-west-2.amazonaws.com/" + userIdString + '/' + userIdString + '.jpeg'});
+
+                }
+            });
+        });
+
+        console.log(process.env.AKI);
+        console.log(process.env.SAK);
 
 
-        var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
+       /* var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
         console.log();
 
         mkdirp(pathForSave, function (err) {
@@ -86,7 +84,7 @@ exports.uploadFiles = function (req, res, next) {
 
                 });
             });
-        })
+        })*/
     }
 
 };
