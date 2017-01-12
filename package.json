@@ -27,7 +27,6 @@
     "nodemailer": "^2.7.0",
     "passport": "^0.3.0",
     "passport-jwt": "^2.2.1",
-    "randomstring": "^1.1.5",
-    "s3": "^4.4.0"
+    "randomstring": "^1.1.5"
   }
 }

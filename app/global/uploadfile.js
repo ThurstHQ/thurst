@@ -3,7 +3,8 @@ var http = require('http'),
     os = require('os'),
     fs = require('fs'),
     mkdirp = require('mkdirp'),
-    randomstring = require('randomstring');
+    randomstring = require('randomstring'),
+    easyimg = require('easyimage');
 
 
 exports.uploadFiles = function (req, res, next) {
@@ -20,32 +21,47 @@ exports.uploadFiles = function (req, res, next) {
 
         var s3Bucket = new AWS.S3( { params: {Bucket: userIdString} } );
 
-        buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
+        // buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
 
-        s3Bucket.createBucket({Bucket: userIdString}, function(err, result) {
-            if (err) return res.status(500).json(err, err.stack);
+        var base64Data = req.body.avatar.replace(/^data:image\/png;base64,/, "");
 
-            var data = {
-                Key: userIdString + '.jpeg',
-                Body: buf,
-                ContentEncoding: 'base64',
-                ContentType: 'image/jpeg',
-                ACL: 'public-read'
-            };
+        fs.writeFile(path.join('upload', userIdString + ".jpeg"), base64Data, 'base64', function(err) {
+            if (err) { console.log(err); }
 
-            s3Bucket.putObject(data, function(err, data){
-                if (err) {
-                    if (err) return res.status(500).json(err, err.stack);
-                } else {
-                    res.json({"success": true, "path": "https://s3-us-west-2.amazonaws.com/" + userIdString + '/' + userIdString + '.jpeg'});
+            easyimg.resize({
+                src: path.join('upload', userIdString + ".jpeg"),
+                dst: path.join('upload', userIdString + ".jpeg"),
+                width: 250, height: 250
+            }).then(
+                function(image) {
 
+                    s3Bucket.createBucket({Bucket: userIdString}, function(err, result) {
+                        if (err) console.log(err.stack);
+
+                        var data = {
+                            Key: userIdString + '.jpeg',
+                            Bucket: userIdString,
+                            Body: fs.readFileSync(path.join('upload', userIdString + ".jpeg")),
+                            ACL: 'public-read'
+                        };
+
+                        s3Bucket.putObject(data, function(err, data){
+                            if (err) {
+                                if (err) return res.status(500).json(err, err.stack);
+                            } else {
+                                fs.unlink(path.join('upload', userIdString + ".jpeg"), function (err, data) {
+                                    if (err) console.log(err);
+                                });
+                                res.json({"success": true, "path": "https://s3-us-west-2.amazonaws.com/" + userIdString + '/' + userIdString + '.jpeg'});
+                            }
+                        });
+                    });
+                },
+                function (err) {
+                    console.log(err);
                 }
-            });
+            );
         });
-
-        console.log(process.env.AKI);
-        console.log(process.env.SAK);
-
 
        /* var base64Data = req.body.avatar.replace(/^data:image\/jpeg;base64,/, "");
         console.log();
