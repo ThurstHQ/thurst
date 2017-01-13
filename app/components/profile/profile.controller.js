@@ -1,9 +1,9 @@
-var jwt      = require('jwt-simple'),
+var jwt = require('jwt-simple'),
     fs = require('fs'),
     path = require('path'),
     fsExtra = require('fs-extra'),
 
-    User     = require('../../models/user'),
+    User = require('../../models/user'),
     GeoPoint = require('../../models/geojson'),
 
     config = require('../../../config/config').config,
@@ -11,7 +11,7 @@ var jwt      = require('jwt-simple'),
 
 exports.getUserProfile = function (req, res, next) {
 
-    User.findById(req.user._id, { password:0, verify_token:0 }, function(err, user) {
+    User.findById(req.user._id, {password: 0, verify_token: 0}, function (err, user) {
         if (err) return res.status(500).json({'Error :': err}); //TODO: change to err.message in prod
         if (!user) {
             return res.status(403).send({success: false, "message": 'Authentication failed. User not found.'});
@@ -24,7 +24,10 @@ exports.getUserProfile = function (req, res, next) {
 
 exports.editUserProfile = function (req, res, next) {
 
-    User.findByIdAndUpdate(req.user._id, req.body, { fields:{ password:0, verify_token:0 }, new:true }, function (err, user) {
+    User.findByIdAndUpdate(req.user._id, req.body, {
+        fields: {password: 0, verify_token: 0},
+        new: true
+    }, function (err, user) {
         if (err) return res.status(500).json({'Error': err});
         console.log(user);
 
@@ -49,9 +52,9 @@ exports.deleteProfile = function (req, res, next) {
 
 exports.deleteDatabase = function (req, res, next) {
 
-    User.collection.remove( {} , function (err, data) {
+    User.collection.remove({}, function (err, data) {
         if (err) return res.status(500).json({'Error message': err});
-        GeoPoint.collection.remove( {} , function (err, data) {
+        GeoPoint.collection.remove({}, function (err, data) {
             if (err) return res.status(500).json({'Error message': err});
             return res.json({success: true, "message": 'Collection was successfully removed.'});
         });
@@ -72,34 +75,60 @@ exports.Search = function (req, res, next) {
     console.log(reqQuery.amount);
     console.log(Object.keys(reqQuery).length);
 
-    if (Object.keys(reqQuery).length == 2) {
+    if (Object.keys(reqQuery).length == 3) {
 
         if (req.user.loc) {
-
-            User.find({
-                coords : {
-                    $near : [ req.user.coords[0] , req.user.coords[1] ]
-                },
-                _id: {'$ne': req.user._id},
-                invisible: {'$ne': true},
-                verified: {'$ne': false}
-            }, { password: 0 })
-                .skip(reqPage*10)
-                .limit(parseInt(reqAmount))
-                .exec(function (err, users) {
-                    if (err) return res.status(500).send({message: err});
-                    // User.find({coords: []}, function (err, usersWithoutCoords) {
-                    //     if (err) return res.status(500).send({message: err.message});
-                    //     res.json(users.concat(usersWithoutCoords));
-                    // });
-                    res.json(users);
-                });
+            console.log('location');
+            console.log(reqQuery.location);
+            if (reqQuery.location === 'true') {
+                console.log('WRONG!!!');
+                User.find({
+                    coords: {
+                        $near: [req.user.coords[0], req.user.coords[1]]
+                    },
+                    _id: {'$ne': req.user._id},
+                    invisible: {'$ne': true},
+                    verified: {'$ne': false}
+                }, {password: 0})
+                    .skip(reqPage * 10)
+                    .limit(parseInt(reqAmount))
+                    .exec(function (err, users) {
+                        if (err) return res.status(500).send({message: err});
+                        if (users.length > 0) {
+                            res.json(users);
+                        } else {
+                            reqPage = 0;
+                            User.find({coords: []})
+                                .skip(reqPage * 10)
+                                .limit(parseInt(reqAmount))
+                                .exec(function (err, usersWithoutCoords) {
+                                    if (err) return res.status(500).send({message: err.message});
+                                    res.json({
+                                        users: usersWithoutCoords,
+                                        page: 2,
+                                        location: false
+                                    });
+                                });
+                        }
+                    });
+            } else {
+                User.find({coords: []})
+                    .skip(reqPage * 10)
+                    .limit(parseInt(reqAmount))
+                    .exec(function (err, usersWithoutCoords) {
+                        if (err) return res.status(500).send({message: err.message});
+                        res.json({
+                            users: usersWithoutCoords,
+                            location: false
+                        });
+                    });
+            }
 
         } else {
             User
-                .find({ _id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false} })
+                .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}})
                 .sort({"created": -1})
-                .skip(reqPage*10)
+                .skip(reqPage * 10)
                 .limit(parseInt(reqAmount))
                 .exec(function (err, users) {
                     if (err) return res.status(500).send({message: err.message});
@@ -108,51 +137,51 @@ exports.Search = function (req, res, next) {
         }
 
     } else {
-            for (var field in reqQuery) {
-                var separateObj = {};
+        for (var field in reqQuery) {
+            var separateObj = {};
 
-                if (field === 'sexuality') {
-                    var searchSexuality = new RegExp(reqQuery.sexuality, 'i');
-                    separateObj.sexuality = { $regex: searchSexuality };
-                } else if (field === 'gender') {
-                    var arrGender = new RegExp(reqQuery.gender, 'i');
-                    separateObj.gender = {$regex: arrGender};
-                } else if (field === 'maxdistance' && req.user.loc) {
-                    separateObj = {
-                        coords: {
-                            $near: [ req.user.coords[0], req.user.coords[1]],
-                            $maxDistance: req.query.maxdistance / 111.12
-                        }
-                    }
-                }
-                queryArr.push(separateObj);
-            }
-            if (!req.query.maxdistance && req.user.loc) {
+            if (field === 'sexuality') {
+                var searchSexuality = new RegExp(reqQuery.sexuality, 'i');
+                separateObj.sexuality = {$regex: searchSexuality};
+            } else if (field === 'gender') {
+                var arrGender = new RegExp(reqQuery.gender, 'i');
+                separateObj.gender = {$regex: arrGender};
+            } else if (field === 'maxdistance' && req.user.loc) {
                 separateObj = {
                     coords: {
-                        $near: [ req.user.coords[0], req.user.coords[1]]
+                        $near: [req.user.coords[0], req.user.coords[1]],
+                        $maxDistance: req.query.maxdistance / 111.12
                     }
-                };
-                queryArr.push(separateObj);
+                }
             }
-            console.log('User');
-            console.log(req.user.email);
-            console.log('Advanced');
-            console.log(queryArr);
-
-            User
-                .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}}, {
-                    password: 0,
-                    verify_token: 0
-                })
-                .and(queryArr)
-                .skip(reqPage * 10)
-                .limit(parseInt(reqAmount))
-                .exec(function (err, users) {
-                    if (err) return res.status(500).send({message: err.message});
-                    return res.json(users);
-                });
+            queryArr.push(separateObj);
         }
+        if (!req.query.maxdistance && req.user.loc) {
+            separateObj = {
+                coords: {
+                    $near: [req.user.coords[0], req.user.coords[1]]
+                }
+            };
+            queryArr.push(separateObj);
+        }
+        console.log('User');
+        console.log(req.user.email);
+        console.log('Advanced');
+        console.log(queryArr);
+
+        User
+            .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}}, {
+                password: 0,
+                verify_token: 0
+            })
+            .and(queryArr)
+            .skip(reqPage * 10)
+            .limit(parseInt(reqAmount))
+            .exec(function (err, users) {
+                if (err) return res.status(500).send({message: err.message});
+                return res.json(users);
+            });
+    }
 };
 
 
@@ -229,7 +258,7 @@ exports.getConnections = function (req, res, next) {
             myConnections.iamconnected = user.connections;
             myConnections.connectedMe = user.connectedBy;
             res.json(myConnections);
-    });
+        });
 
 };
 
@@ -237,7 +266,7 @@ exports.getUserInfo = function (req, res) {
 
     if (req.params.id) {
         User
-            .findOne({'_id': req.params.id},  { password:0, verify_token:0 })
+            .findOne({'_id': req.params.id}, {password: 0, verify_token: 0})
             .exec(function (err, users) {
                 if (err) return res.status(500).send({message: 'Something is wrong... Problem accessing the server'});
                 res.json(users);

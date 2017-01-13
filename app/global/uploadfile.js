@@ -26,7 +26,7 @@ exports.uploadFiles = function (req, res, next) {
 
         // buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
 
-        var base64Data = req.body.avatar.replace(/^data:image\/png;base64,/, "");
+        var base64Data = req.body.avatar.replace(/^data:image\/\w+;base64,/, "");
 
         fs.writeFile(path.join('upload', userIdString + ".jpeg"), base64Data, 'base64', function(err) {
             if (err) { console.log(err); }
