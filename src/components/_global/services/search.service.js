@@ -14,7 +14,7 @@
                     return res;
                 }, function (error) {
                     notificationsService.warn(error.data.message);
-                    return error;
+                    return false;
                 });
             }
         };

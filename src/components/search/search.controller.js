@@ -27,23 +27,25 @@
                 amount: perPage
             }, vm.filter);
             searchService.allGET(data).then(function (res) {
-                if (doRefresh) {
-                    vm.list = {};
-                }
-                angular.forEach(res, function (val) {
-                    if (val.avatar) {
-                        val.avatar = Settings.url + val.avatar;
+                if (res) {
+                    if (doRefresh) {
+                        vm.list = {};
                     }
-                    vm.list[val._id] = val;
-                });
-                if (res.length < perPage) {
-                    vm.moreDataCanBeLoaded = false;
-                } else {
-                    page++;
-                    vm.moreDataCanBeLoaded = true;
+                    angular.forEach(res, function (val) {
+                        if (val.avatar) {
+                            val.avatar = Settings.url + val.avatar;
+                        }
+                        vm.list[val._id] = val;
+                    });
+                    if (res.length < perPage) {
+                        vm.moreDataCanBeLoaded = false;
+                    } else {
+                        page++;
+                        vm.moreDataCanBeLoaded = true;
+                    }
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                    $rootScope.$broadcast('scroll.refreshComplete');
                 }
-                $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                $rootScope.$broadcast('scroll.refreshComplete');
             });
         }
 

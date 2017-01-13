@@ -61,6 +61,14 @@
             profileService.profilePUT(data).then(function (res) {
                 vm.profile = res;
                 initBirthday(res.birthday);
+                if (res.loc) {
+                    navigator.geolocation.getCurrentPosition(function (pos) {
+                        locationService.updateLocationPOST({
+                            longitude: pos.coords.longitude,
+                            latitude: pos.coords.latitude
+                        }, res);
+                    });
+                }
             });
         }
     }
