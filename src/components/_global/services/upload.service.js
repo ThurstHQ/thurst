@@ -18,7 +18,6 @@
                 var profile = localStorageService.get('profile');
                 notificationsService.loading();
                 return this.upload.post(data).then(function (res) {
-                    profile.avatar = Settings.url + res.path;
                     localStorageService.set('profile', profile);
                     notificationsService.hide();
                     return profile;

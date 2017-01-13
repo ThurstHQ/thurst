@@ -4,8 +4,8 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate', 'Settings'];
-    function SearchCtrl(searchService, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate, Settings) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate'];
+    function SearchCtrl(searchService, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate) {
         var vm = this,
             perPage = 10,
             page = 1;
@@ -32,9 +32,6 @@
                         vm.list = {};
                     }
                     angular.forEach(res, function (val) {
-                        if (val.avatar) {
-                            val.avatar = Settings.url + val.avatar;
-                        }
                         vm.list[val._id] = val;
                     });
                     if (res.length < perPage) {

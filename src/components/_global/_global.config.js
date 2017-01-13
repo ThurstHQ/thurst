@@ -174,11 +174,10 @@
             init(token);
         });
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            console.log($state.current);
-            if (fromState.name === 'app.search' && toState.name !== 'app.user') {
-                $state.current.cache = false;
-            }
-        });
+        // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+        //     if (fromState.name === 'app.search' && toState.name !== 'app.user') {
+        //         $state.current.cache = false;
+        //     }
+        // });
     }
 })();

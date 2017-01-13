@@ -11,9 +11,6 @@
             profile: Restangular.service('api/profile'),
             profileGET: function () {
                 return this.profile.one().get().then(function (res) {
-                    if (res.avatar) {
-                        res.avatar = Settings.url + res.avatar;
-                    }
                     localStorageService.set('profile', res);
                     return res;
                 }, function (error) {
@@ -24,9 +21,6 @@
             profilePUT: function (data) {
                 notificationsService.loading();
                 return this.profile.one().customPUT(data).then(function (res) {
-                    if (res.avatar) {
-                        res.avatar = Settings.url + res.avatar;
-                    }
                     localStorageService.set('profile', res);
                     if (res.username && res.sexuality && res.gender) {
                         $rootScope.$emit('initApplozic', res);
