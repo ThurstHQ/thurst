@@ -15,7 +15,7 @@
         }
 
         function doRefresh() {
-            $rootScope.$emit('getUserDetail');
+            $rootScope.$emit('getProfileDetail');
             $rootScope.$broadcast('scroll.refreshComplete');
         }
 
