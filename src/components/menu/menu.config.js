@@ -5,11 +5,9 @@
         .config(menuConfig);
 
     menuConfig.$inject = [
-        '$stateProvider',
-        '$urlRouterProvider'
+        '$stateProvider'
     ];
-    function menuConfig($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/messages');
+    function menuConfig($stateProvider) {
 
         $stateProvider
             .state('app', {
