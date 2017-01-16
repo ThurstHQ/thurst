@@ -62,33 +62,6 @@
             window.cordova.plugins.Keyboard.disableScroll(true);
         }
 
-        // if (window.PushNotification) {
-        //     var push = window.PushNotification.init({
-        //         android: {
-        //             senderID: Settings.keyAndroid
-        //         },
-        //         ios: {
-        //             alert: true,
-        //             badge: true,
-        //             sound: true,
-        //             clearBadge: true
-        //         }
-        //     });
-        //     push.on('registration', function (data) {
-        //         // authenticationService.notificationPOST({
-        //         //     uuid: window.device.uuid,
-        //         //     notify_id: data.registrationId //jshint ignore:line
-        //         // });
-        //         localStorageService.set('pushToken', data.registrationId);
-        //     });
-        //     push.on('notification', function (data) {
-        //         console.log(data);
-        //     });
-        //     push.on('error', function (e) {
-        //         console.log(e.message);
-        //     });
-        // }
-
         function init(token) {
             Restangular.setDefaultHeaders({'Authorization': token});
             profileService.profileGET().then(function (res) {
@@ -173,11 +146,5 @@
         $rootScope.$on('login', function (event, token) {
             init(token);
         });
-
-        // $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-        //     if (fromState.name === 'app.search' && toState.name !== 'app.user') {
-        //         $state.current.cache = false;
-        //     }
-        // });
     }
 })();

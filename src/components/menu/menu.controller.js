@@ -12,7 +12,6 @@
         function logout() {
             loginService.logout();
         }
-
         $scope.$on('$stateChangeSuccess', function () {
             vm.now = $state.current.name;
         });
