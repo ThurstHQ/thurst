@@ -3,7 +3,7 @@
     ion-content.connections-page
         ion-list
             ion-item(ng-repeat="item in vm.connections", ui-sref="app.user({id:item._id})")
-                img(ng-src="{{item.avatar||'assets/images/avatar.png'}}")
+                .avatar(style="{{item.avatar ? 'background-image:url('+item.avatar+')' : 'background-image:url(assets/images/avatar.png)'}}")
                 .wrapper-text
                     h2 {{item.username || 'No name'}}
                     p {{item.pronouns}}

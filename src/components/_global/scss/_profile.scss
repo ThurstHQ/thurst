@@ -1,9 +1,13 @@
 .profile-content {
   .wrapper-avatar {
     text-align: center;
-    img {
-      max-width: 216px;
-      max-height: 216px;
+    .avatar {
+      width: 216px;
+      height: 216px;
+      background: no-repeat center;
+      background-size: cover;
+      border-radius: 50%;
+      margin: auto;
     }
   }
   label.item {
@@ -16,7 +20,7 @@
     .input-label {
       color: $color-text;
     }
-    select{
+    select {
       width: 100%;
       direction: ltr;
       padding-left: 0;
