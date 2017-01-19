@@ -36,9 +36,9 @@ app.get('/', function(req, res) {
     res.send('Hello! The API is working.');
 });
 
-// require('./app/app')(app, apiRoutes);
+require('./app/app')(app, apiRoutes);
 
-// app.use('/api', apiRoutes);
+app.use('/api', apiRoutes);
 
 app.listen(port);
 console.log('Server working...');
