@@ -50,11 +50,16 @@ $bg-blue-button-block-app: #11c1f3;
         color: $color-text;
       }
     }
-    i {
-      &.connect {
+    .icon {
+      &.ion-image {
+        position: relative;
+        font-size: 20px;
+        left: -6px;
+      }
+      &.ion-record {
         font-size: 20px;
         color: #7e7e7e;
-        @at-root #{&}--online {
+        &.connected {
           color: green;
         }
       }
