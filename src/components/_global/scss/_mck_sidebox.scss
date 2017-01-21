@@ -10,10 +10,11 @@
   display: none;
 }
 
-.mck-sidebox {
+.mck-sidebox.mck-fade{
   left: auto;
   box-shadow: none;
   width: 100% !important;
+  background: transparentize($color-black,.9) !important;
   .mck-box-dialog {
     min-width: 310px;
     .mck-box-content {
