@@ -9,11 +9,22 @@
         var vm = this;
 
         vm.logout = logout;
+
         function logout() {
             loginService.logout();
         }
+
         $scope.$on('$stateChangeSuccess', function () {
             vm.now = $state.current.name;
+        });
+
+        $applozic.fn.applozic('subscribeToEvents', {
+            onMessageReceived: function (data) {
+                console.log('onMessageReceived', data);
+            },
+            onUserConnect: function (data) {
+                console.log('onUserConnect', data);
+            }
         });
     }
 })();

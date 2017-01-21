@@ -95,15 +95,6 @@
             }
         }
 
-        $applozic.fn.applozic('subscribeToEvents', {
-            onMessageReceived: function (data) {
-                console.log('onMessageReceived', data);
-            },
-            onUserConnect: function (data) {
-                console.log('onUserConnect', data);
-            }
-        });
-
         $rootScope.$on('login', function (event, token) {
             init(token);
         });
