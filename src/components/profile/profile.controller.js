@@ -4,8 +4,8 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
-    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
+    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope', 'Settings'];
+    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope, Settings) {
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
@@ -61,14 +61,13 @@
             profileService.profilePUT(data).then(function (res) {
                 vm.profile = res;
                 initBirthday(res.birthday);
-                if (res.loc) {
-                    navigator.geolocation.getCurrentPosition(function (pos) {
-                        locationService.updateLocationPOST({
-                            longitude: pos.coords.longitude,
-                            latitude: pos.coords.latitude
-                        }, res);
-                    });
-                }
+                $applozic.fn.applozic('reInitialize', {
+                    appId: Settings.applozic_key,
+                    userId: vm.profile._id,
+                    userName: vm.profile.username,
+                    imageLink: vm.profile.avatar,
+                    email: vm.profile.email
+                });
             });
         }
     }

@@ -4,13 +4,25 @@
         .module('app.config')
         .factory('profileService', profileService);
 
-    profileService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'loginService', '$rootScope', 'Settings'];
+    profileService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'loginService', 'locationService'];
 
-    function profileService(Restangular, localStorageService, notificationsService, loginService, $rootScope, Settings) {
+    function profileService(Restangular, localStorageService, notificationsService, loginService, locationService) {
         return {
             profile: Restangular.service('api/profile'),
+            initGeo: function (profile) {
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    locationService.updateLocationPOST({
+                        longitude: pos.coords.longitude,
+                        latitude: pos.coords.latitude
+                    }, profile);
+                });
+            },
             profileGET: function () {
+                var me = this;
                 return this.profile.one().get().then(function (res) {
+                    if (res.loc) {
+                        me.initGeo(res);
+                    }
                     localStorageService.set('profile', res);
                     return res;
                 }, function (error) {
@@ -19,12 +31,13 @@
                 });
             },
             profilePUT: function (data) {
+                var me = this;
                 notificationsService.loading();
                 return this.profile.one().customPUT(data).then(function (res) {
-                    localStorageService.set('profile', res);
-                    if (res.username && res.sexuality && res.gender) {
-                        $rootScope.$emit('initApplozic', res);
+                    if (res.loc) {
+                        me.initGeo(res);
                     }
+                    localStorageService.set('profile', res);
                     notificationsService.show('Saved');
                     return res;
                 }, function (error) {

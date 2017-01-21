@@ -3,8 +3,9 @@
     ion-content.messages-page
         ion-refresher(pulling-text="Pull to refresh..." on-refresh="vm.doRefresh()")
         ion-list
-            ion-item.item-content.item-icon-right(ng-repeat="item in vm.list", ng-click="vm.message(item.userId)")
+            ion-item.item-content.item-icon-right(ng-repeat="item in vm.list.userDetails", ng-click="vm.message(item.userId)")
                 .avatar(style="{{item.imageLink ? 'background-image:url('+item.imageLink+')' : 'background-image:url(assets/images/avatar.png)'}}" ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
                 .wrapper-text
                     h2 {{item.userName || 'No name'}}
                 i.icon.ion-compose
+        ion-infinite-scroll(ng-if="!vm.loaded" on-infinite='vm.load()', distance='1%')
