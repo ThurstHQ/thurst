@@ -51,7 +51,13 @@ $bg-blue-button-block-app: #11c1f3;
       }
     }
     i {
-      font-size: 24px;
+      &.connect {
+        font-size: 20px;
+        color: #7e7e7e;
+        @at-root #{&}--online {
+          color: green;
+        }
+      }
     }
   }
 }

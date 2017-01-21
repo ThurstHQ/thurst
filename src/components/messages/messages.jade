@@ -7,5 +7,7 @@
                 .avatar(style="{{item.imageLink ? 'background-image:url('+item.imageLink+')' : 'background-image:url(assets/images/avatar.png)'}}" ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
                 .wrapper-text
                     h2 {{item.userName || 'No name'}}
-                i.icon.ion-compose
+                    //p {{item.lastMessage.fileMeta ? item.lastMessage.fileMeta : item.lastMessage.message}}
+                    p {{item.lastMessage.fileMeta ? item.lastMessage.fileMeta : item.lastMessage.message}}
+                i.icon.ion-record.connect(ng-class="{'connect--online':item.connected}")
         ion-infinite-scroll(ng-if="!vm.loaded" on-infinite='vm.load()', distance='1%')
