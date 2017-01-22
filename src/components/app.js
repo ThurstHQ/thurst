@@ -16,5 +16,10 @@
             'app.user'
             // 'app.policy',
             // 'app.terms'
-        ]);
+        ])
+        .filter('cacheReset', function () {
+            return function (input) {
+                return input + '?' + Math.random();
+            };
+        });
 })();

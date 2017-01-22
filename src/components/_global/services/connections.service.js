@@ -18,7 +18,7 @@
                     });
                     angular.forEach(res.iamconnected, function (val) {
                         if (val.avatar) {
-                            val.avatar = Settings.url + val.avatar;
+                            val.avatar = val.avatar;
                         }
                         me.data[val._id] = val;
                     });

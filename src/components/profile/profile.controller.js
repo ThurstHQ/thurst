@@ -4,8 +4,8 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
-    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
+    ProfileCtrl.$inject = ['$scope', 'profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
+    function ProfileCtrl($scope, profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
@@ -38,8 +38,11 @@
                     }
                     cameraService.getPicture(options).then(function (imageData) {
                         hideSheet();
-                        uploadService.setPhotoPOST({avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
-                            vm.profile = res;
+                        uploadService.setPhotoPOST({avatar: "data:image/png;base64," + imageData}).then(function (res) {
+                            $scope.$evalAsync(function () {
+                                console.log(res, localStorageService.get('profile'));
+                                vm.profile = localStorageService.get('profile');
+                            });
                         });
                     });
                 }

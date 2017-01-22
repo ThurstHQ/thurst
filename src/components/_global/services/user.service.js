@@ -12,7 +12,7 @@
             userGET: function (data) {
                 return this.user.get(data).then(function (res) {
                     if (res.avatar) {
-                        res.avatar = Settings.url + res.avatar;
+                        res.avatar = res.avatar;
                     }
                     return res;
                 }, function (error) {

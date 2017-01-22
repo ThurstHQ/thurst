@@ -12,7 +12,7 @@
             profileGET: function () {
                 return this.profile.one().get().then(function (res) {
                     if (res.avatar) {
-                        res.avatar = Settings.url + res.avatar;
+                        res.avatar = res.avatar;
                     }
                     localStorageService.set('profile', res);
                     return res;
@@ -25,7 +25,7 @@
                 notificationsService.loading();
                 return this.profile.one().customPUT(data).then(function (res) {
                     if (res.avatar) {
-                        res.avatar = Settings.url + res.avatar;
+                        res.avatar = res.avatar;
                     }
                     localStorageService.set('profile', res);
                     if (res.username && res.sexuality && res.gender) {

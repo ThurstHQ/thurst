@@ -2,7 +2,7 @@ ion-view
     ion-nav-title Profile
     ion-content.profile-content.padding
         .wrapper-avatar
-            img(ng-src='{{vm.profile.avatar || "assets/images/avatar.png"}}', ng-click="vm.pictureUpdate()")
+            img(ng-src='{{vm.profile.avatar || "assets/images/avatar.png" | cacheReset}}', ng-click="vm.pictureUpdate()")
         .list
             label.item.item-input
                 span.input-label Username

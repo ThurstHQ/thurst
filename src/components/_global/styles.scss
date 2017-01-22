@@ -46,6 +46,10 @@ body {
   }
 }
 
+.platform-android .action-sheet .action-sheet-title, .platform-android .action-sheet .button {
+  padding: 16px;
+}
+
 @import 'scss/login';
 @import 'scss/verification';
 @import 'scss/error';
