@@ -4,8 +4,8 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['$scope', 'profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope'];
-    function ProfileCtrl($scope, profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope) {
+    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope', 'Settings'];
+    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope, Settings) {
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
@@ -38,11 +38,8 @@
                     }
                     cameraService.getPicture(options).then(function (imageData) {
                         hideSheet();
-                        uploadService.setPhotoPOST({avatar: "data:image/png;base64," + imageData}).then(function (res) {
-                            $scope.$evalAsync(function () {
-                                console.log(res, localStorageService.get('profile'));
-                                vm.profile = localStorageService.get('profile');
-                            });
+                        uploadService.setPhotoPOST({avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
+                            vm.profile = res;
                         });
                     });
                 }
@@ -64,14 +61,13 @@
             profileService.profilePUT(data).then(function (res) {
                 vm.profile = res;
                 initBirthday(res.birthday);
-                if (res.loc) {
-                    navigator.geolocation.getCurrentPosition(function (pos) {
-                        locationService.updateLocationPOST({
-                            longitude: pos.coords.longitude,
-                            latitude: pos.coords.latitude
-                        }, res);
-                    });
-                }
+                $applozic.fn.applozic('reInitialize', {
+                    appId: Settings.applozic_key,
+                    userId: vm.profile._id,
+                    userName: vm.profile.username,
+                    imageLink: vm.profile.avatar,
+                    email: vm.profile.email
+                });
             });
         }
     }

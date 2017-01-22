@@ -11,9 +11,6 @@
             user: Restangular.service('api/user'),
             userGET: function (data) {
                 return this.user.get(data).then(function (res) {
-                    if (res.avatar) {
-                        res.avatar = res.avatar;
-                    }
                     return res;
                 }, function (error) {
                     notificationsService.warn(error.data.message);

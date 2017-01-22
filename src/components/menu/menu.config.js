@@ -8,6 +8,7 @@
         '$stateProvider'
     ];
     function menuConfig($stateProvider) {
+
         $stateProvider
             .state('app', {
                 url: '/',

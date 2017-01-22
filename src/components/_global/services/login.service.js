@@ -15,10 +15,9 @@
                         localStorageService.set('token', res.token);
                         $rootScope.$emit('login', res.token);
                     }
-                    notificationsService.hide();
                     return res;
                 }, function (error) {
-                    notificationsService.hide();
+                    notificationsService.warn(error.data.message);
                     return error;
                 });
             },
@@ -29,7 +28,6 @@
                         localStorageService.set('token', res.token);
                         $rootScope.$emit('login', res.token);
                     }
-                    notificationsService.hide();
                     return res;
                 }, function (error) {
                     notificationsService.warn(error.data.message);

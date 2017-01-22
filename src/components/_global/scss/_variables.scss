@@ -30,10 +30,13 @@ $bg-blue-button-block-app: #11c1f3;
     display: flex;
     align-items: center;
     padding-right: 16px;
-    img {
-      min-width: 40px;
-      max-width: 40px;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: no-repeat center;
       margin-right: 16px;
+      border-radius: 50%;
+      background-size: cover;
     }
     .wrapper-text {
       display: flex;
@@ -47,8 +50,19 @@ $bg-blue-button-block-app: #11c1f3;
         color: $color-text;
       }
     }
-    i {
-      font-size: 24px;
+    .icon {
+      &.ion-image {
+        position: relative;
+        font-size: 20px;
+        left: -6px;
+      }
+      &.ion-record {
+        font-size: 20px;
+        color: #7e7e7e;
+        &.connected {
+          color: green;
+        }
+      }
     }
   }
 }

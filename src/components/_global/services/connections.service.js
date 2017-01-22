@@ -17,9 +17,6 @@
                         delete me.data[val._id];
                     });
                     angular.forEach(res.iamconnected, function (val) {
-                        if (val.avatar) {
-                            val.avatar = val.avatar;
-                        }
                         me.data[val._id] = val;
                     });
                     localStorageService.set('connections', me.data);

@@ -8,19 +8,25 @@
     function MessagesCtrl($rootScope) {
         var vm = this;
         vm.message = message;
-        vm.doRefresh = doRefresh;
+        vm.load = load;
+
+        function load() {
+            $applozic.fn.applozic('getMessages', {
+                callback: function getUserDetail(response) {
+                    if (response.status === 'success') {
+                        angular.forEach(response.data.userDetails, function (val, key) {
+                            response.data.userDetails[key].lastMessage = response.data.message[key];
+                        });
+                        vm.list = response.data;
+                        vm.loaded = response.data.userDetails.length < 100;
+                    }
+                    $rootScope.$broadcast('scroll.refreshComplete');
+                }
+            });
+        }
 
         function message(id) {
             $applozic.fn.applozic('loadTab', id);
         }
-
-        function doRefresh() {
-            $rootScope.$emit('getUserDetail');
-            $rootScope.$broadcast('scroll.refreshComplete');
-        }
-
-        $rootScope.$watch('messages', function () {
-            vm.list = $rootScope.messages;
-        });
     }
 })();
