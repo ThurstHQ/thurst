@@ -9,5 +9,5 @@
                     h2 {{item.userName || 'No name'}}
                     p  {{item.lastMessage.message}}
                         i.icon.ion-image(ng-if="item.lastMessage.fileMeta")
-                i.icon.ion-record(ng-class="{'connected':item.connected}")
+                i.icon.ion-record(ng-class="{'balanced':item.connected}")
         ion-infinite-scroll(ng-if="!vm.loaded" on-infinite='vm.load()', distance='1%')

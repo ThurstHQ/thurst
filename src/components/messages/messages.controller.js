@@ -15,7 +15,11 @@
                 callback: function getUserDetail(response) {
                     if (response.status === 'success') {
                         angular.forEach(response.data.userDetails, function (val, key) {
-                            response.data.userDetails[key].lastMessage = response.data.message[key];
+                            angular.forEach(response.data.message, function (mval) {
+                                if (val.userId === mval.contactIds) {
+                                    response.data.userDetails[key].lastMessage = mval;
+                                }
+                            });
                         });
                         vm.list = response.data;
                         vm.loaded = response.data.userDetails.length < 100;

@@ -10,6 +10,7 @@
     function messagesConfig($stateProvider) {
         $stateProvider
             .state('app.messages', {
+                cache: false,
                 url: 'messages',
                 views: {
                     'menuContent': {
