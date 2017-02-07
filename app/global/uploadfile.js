@@ -43,7 +43,7 @@ exports.uploadFiles = function (req, res, next) {
 
                         var data = {
                             Key: userIdString + '.jpeg',
-                            Bucket: 'images/' + userIdString,
+                            Bucket: 'images3763246283746/' + userIdString,
                             Body: fs.readFileSync(path.join('upload', userIdString + ".jpeg")),
                             ACL: 'public-read'
                         };
