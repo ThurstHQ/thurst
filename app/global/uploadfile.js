@@ -22,7 +22,7 @@ exports.uploadFiles = function (req, res, next) {
         AWS.config.secretAccessKey = process.env.SAK;
         AWS.config.region = "us-west-2";
 
-        var s3Bucket = new AWS.S3( { params: {Bucket: userIdString} } );
+        var s3Bucket = new AWS.S3( { params: {Bucket: 'images/' + userIdString} } );
 
         // buf = new Buffer(req.body.avatar.replace(/^data:image\/\w+;base64,/, ""),'base64');
 
@@ -38,12 +38,12 @@ exports.uploadFiles = function (req, res, next) {
             }).then(
                 function(image) {
 
-                    s3Bucket.createBucket({Bucket: userIdString}, function(err, result) {
+                    s3Bucket.createBucket({Bucket: 'images/' + userIdString}, function(err, result) {
                         if (err) console.log(err.stack);
 
                         var data = {
                             Key: userIdString + '.jpeg',
-                            Bucket: userIdString,
+                            Bucket: 'images/' + userIdString,
                             Body: fs.readFileSync(path.join('upload', userIdString + ".jpeg")),
                             ACL: 'public-read'
                         };

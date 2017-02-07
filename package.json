@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server"
   },
-  "author": "Vitaliy Trachenko",
+  "author": "Vasiliy Onoprienko",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.7.21",
