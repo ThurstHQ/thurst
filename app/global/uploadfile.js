@@ -50,7 +50,7 @@ exports.uploadFiles = function (req, res, next) {
 
                         s3Bucket.putObject(data, function(err, data){
                             if (err) {
-                                if (err) return res.status(500).json(err, err.stack);
+                                if (err) console.log(err);
                             } else {
                                 fs.unlink(path.join('upload', userIdString + ".jpeg"), function (err, data) {
                                     if (err) console.log(err);
