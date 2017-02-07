@@ -28,12 +28,12 @@ exports.uploadFiles = function (req, res, next) {
 
         var base64Data = req.body.avatar.replace(/^data:image\/\w+;base64,/, "");
 
-        fs.writeFile(path.join('upload', userIdString + ".jpeg"), base64Data, 'base64', function(err) {
+        fs.writeFile(__dirname + path.join('upload', userIdString + ".jpeg"), base64Data, 'base64', function(err) {
             if (err) { console.log('1= ', err); }
 
             easyimg.resize({
-                src: path.join('upload', userIdString + ".jpeg"),
-                dst: path.join('upload', userIdString + ".jpeg"),
+                src: __dirname + path.join('upload', userIdString + ".jpeg"),
+                dst: __dirname + path.join('upload', userIdString + ".jpeg"),
                 width: 250, height: 250
             }).then(
                 function(image) {
@@ -44,7 +44,7 @@ exports.uploadFiles = function (req, res, next) {
                         var data = {
                             Key: userIdString + '.jpeg',
                             Bucket: 'images3763246283746',
-                            Body: fs.readFileSync(path.join('upload', userIdString + ".jpeg")),
+                            Body: fs.readFileSync(__dirname + path.join('upload', userIdString + ".jpeg")),
                             ACL: 'public-read'
                         };
 
@@ -52,7 +52,7 @@ exports.uploadFiles = function (req, res, next) {
                             if (err) {
                                 if (err) console.log('7= ', err);
                             } else {
-                                fs.unlink(path.join('upload', userIdString + ".jpeg"), function (err, data) {
+                                fs.unlink(__dirname + path.join('upload', userIdString + ".jpeg"), function (err, data) {
                                     if (err) console.log('6= ', err);
                                 });
 
@@ -69,10 +69,7 @@ exports.uploadFiles = function (req, res, next) {
                 function (err) {
                     console.log('3= ', err);
                 }
-            )
-                .catch(function (err) {
-                    console.log('4= ', err);
-                });
+            );
         });
     }
 
