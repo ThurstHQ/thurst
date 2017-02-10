@@ -67,8 +67,7 @@ exports.signUp = function (req, res, next) {
                             });
                         } else {
                             var token = jwt.encode(user, config.getEnv().secret);
-                            user.password = undefined;
-                            res.json({success: true, verify: true, token: 'JWT ' + token, user: user});
+                            res.json({success: true, verify: true, token: 'JWT ' + token});
                         }
                     } else {
                         res.status(403).send({success: false, "message": 'Authentication failed. Wrong password.'});
@@ -90,13 +89,13 @@ exports.verify = function (req, res, next) {
         if (user.verify_token == code) {
             // console.log('that token is correct! Verify the user');
 
-            User.findOneAndUpdate({_id: userId}, {'verified': true, 'verify_token': ''}, {new: true}, function (err, resp) {
+            User.findOneAndUpdate({_id: userId}, {'verified': true, 'verify_token': ''}, function (err, resp) {
                 if (err) return res.status(500).send({'message': err.message});
                 console.log('The user has been verified!');
 
                 var token = jwt.encode(user, config.getEnv().secret);
-                resp.password = undefined;
-                return res.json({success: true, verify: true, token: 'JWT ' + token, user: resp});
+
+                return res.json({success: true, verify: true, token: 'JWT ' + token});
             });
         } else {
             return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
@@ -161,6 +160,7 @@ exports.restorePassword = function (req, res) {
             if (err) return res.status(500).send({"message": err.message});
 
             user.password = req.body.password;
+            user.forgotPassCode = '';
             user.save(function (err, newuser) {
                 if (err) return res.status(500).send({"message": err.message});
                 newuser.password = undefined;

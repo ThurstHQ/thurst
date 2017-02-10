@@ -72,7 +72,11 @@ var UserSchema = new Schema({
         default: false
     },
     connections: [Schema.Types.ObjectId],
-    connectedBy: [Schema.Types.ObjectId]
+    connectedBy: [Schema.Types.ObjectId],
+    forgotPassCode: {
+        type: String,
+        default: ''
+    }
 });
 
 UserSchema.pre('save', function (next) {
