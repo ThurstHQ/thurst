@@ -14,4 +14,13 @@ module.exports = function (app, router) {
         .all(passport.authenticate('jwt', { session: false}))
         .post(AuthController.changePass);
 
+    router.route('/forgot')
+        .post(AuthController.restorePassword);
+
+    router.route('/forgotemail')
+        .post(AuthController.forgotEmail);
+
+    router.route('/forgotcode')
+        .post(AuthController.forgotCode);
+
 };

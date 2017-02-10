@@ -121,3 +121,75 @@ exports.changePass = function (req, res, next) {
         res.status(500). json({"message": "Need field password."})
     }
 };
+
+exports.forgotEmail = function (req, res, next) {
+    if (req.body.email) {
+        User.findOne({email: req.body.email}, function (err, user) {
+            if (err) return res.status(500).json({success: false, "message": "User not found in database"});
+            var verificationCode = randomstring.generate({length: 4});
+            user.forgotPassCode = verificationCode;
+            user.save();
+            var newMail = {
+                to: user.email,
+                subject: 'Panic-app: Code for restore password',
+                text: `<div style="background-color:#205f8a;padding:20px;justify-content: space-between;align-items: center;"><img src="http://212.150.158.37:8085/assets/images/mailogo.png" width="20%" alt="Logo" />
+<p style="color: #fff; float: right;">איפוס סיסמה</p>
+</div>
+<div style="padding: 20px; text-align: right;">:מספר הקוד שלך<br>${ verificationCode }</div>`
+            };
+            sendEmail(newMail.to, newMail.subject, newMail.text);
+            res.json({success: true, "message": "Check your e-mail please."});
+        });
+    } else {
+        res.status(500).json({success: false, "message": "Enter e-mail."})
+    }
+
+};
+
+exports.forgotCode = function (req, res) {
+    if (req.body.code && req.body.code !== "") {
+        User.findOne({forgotPassCode: req.body.code}, function (err, user) {
+            if (err) return res.status(500).json({success: false, "message": "Code not found in database"});
+            var token = jwt.encode(user, config.getEnv().secret);
+
+            return res.json({success: true});
+        });
+    } else {
+        res.status(500).json({success: false, "message": "Enter code please."})
+    }
+};
+
+exports.restorePassword = function (req, res) {
+    if (req.body.email && req.body.password && /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/.test(req.body.password)) {
+        User.findOne({email: req.body.email}, function (err, user) {
+            if (err) return res.status(500).send({"message": err.message});
+
+            user.password = req.body.password;
+            user.save(function (err, newuser) {
+                if (err) return res.status(500).send({"message": err.message});
+                newuser.password = undefined;
+                var token = jwt.encode(newuser, config.getEnv().secret);
+                if (user.verified) {
+                    return res.json({success: true, verified: newuser.verified, token: 'JWT ' + token, user: newuser});
+                } else {
+                    var verificationToken = randomstring.generate({length: 4});
+                    var newMail = {
+                        to: newuser.email,
+                        subject: 'Welcome to panicApp',
+                        text: `<div style="background-color: #205f8a; padding: 20px; display: flex; align-items: center; justify-content: space-between;"><img src="http://212.150.158.37:8085/assets/images/mailogo.png" width="20%" alt="Logo" />
+<p style="color: #fff;">הרשמה לאפליקציה</p>
+</div>
+<div style="padding: 20px; text-align: right;">!הרשמתך לאפליקציה הסתיימה בהצלחה, ${newuser.firstName + ' '} שלום
+<br /> .אל מנת להפעיל את האפליקציה יש להכניס את הקוד
+<br />` + verificationToken + `:מספר הקוד שלך</div>`
+                    };
+                    console.log(newMail);
+                    sendEmail(newMail.to, newMail.subject, newMail.text);
+                    return res.json({success: true, verified: false});
+                }
+            });
+        });
+    } else {
+        res.status(500).json({success: false, "message": "Please send password with such requirements: 6-20 letters, numbers or symbols !@#$%^&*()_"})
+    }
+};
