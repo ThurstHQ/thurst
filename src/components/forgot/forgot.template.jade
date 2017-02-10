@@ -1,0 +1,17 @@
+ion-view
+    ion-content.forgot-content.padding(scroll="false")
+        h4.text-center {{!vm.code ? 'The specified email will be sent with confirmation code.' : (vm.code && !vm.codeVerify ? 'We have sent you an email with a confirmation code.' : '')}}
+        .list.list-inset
+            label.item.item-input(ng-if="!vm.code")
+                input(type='email', ng-model='vm.email', placeholder='Email')
+            label.item.item-input(ng-if="vm.code && !vm.codeVerify")
+                input(type="text", ng-model="vm.postCode", placeholder="Code")
+            label.item.item-input(ng-if="vm.code && vm.codeVerify")
+                input(type="password", ng-model="vm.user.oldPassword", placeholder="New password")
+            label.item.item-input(ng-if="vm.code && vm.codeVerify")
+                input(type="password", ng-model="vm.user.password", placeholder="Confirm password", compare-to="vm.user.oldPassword")
+        button.button.button-block.button-calm(ng-click="vm.sendEmailForForgot(vm.email)", ng-if="!vm.code") Next
+        button.button.button-block.button-calm(ng-click="vm.sendCodeForForgot(vm.postCode)", ng-if="vm.code && !vm.codeVerify") Next
+        button.button.button-block.button-calm(ng-click="vm.forgot(vm.user.password, vm.email)", ng-if="vm.code && vm.codeVerify") Send
+
+

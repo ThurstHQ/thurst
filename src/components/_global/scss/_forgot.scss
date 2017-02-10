@@ -1,0 +1,9 @@
+.forgot-content {
+  .list {
+    @include login-verification-form(20px, 40px);
+  }
+  button {
+    margin: 10px auto;
+    width: calc(100% - 78px);
+  }
+}

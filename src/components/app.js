@@ -13,7 +13,8 @@
             'app.connections',
             'app.messages',
             'app.search',
-            'app.user'
+            'app.user',
+            'app.forgot'
             // 'app.policy',
             // 'app.terms'
         ])
