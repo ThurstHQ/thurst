@@ -4,8 +4,8 @@
         .module('app.verification')
         .controller('VerificationCtrl', VerificationCtrl);
 
-    VerificationCtrl.$inject = ['$state', 'loginService', '$stateParams'];
-    function VerificationCtrl($state, loginService, $stateParams) {
+    VerificationCtrl.$inject = ['$state', 'loginService', '$stateParams', 'notificationsService'];
+    function VerificationCtrl($state, loginService, $stateParams, notificationsService) {
         var vm = this;
         vm.email = $stateParams.email;
 
@@ -15,8 +15,11 @@
             loginService.verificationPOST({
                 id: $stateParams.id,
                 code: code
-            }).then(function () {
-                $state.go('app.profile');
+            }).then(function (response) {
+                notificationsService.hide();
+                if (response) {
+                    $state.go('app.profile');
+                }
             });
         }
     }

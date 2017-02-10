@@ -2,7 +2,8 @@
     'use strict';
     angular
         .module('app')
-        .directive('compareTo', compareTo);
+        .directive('compareTo', compareTo)
+        .directive('errSrc', errSrc);
 
     compareTo.$inject = [];
     function compareTo() {
@@ -19,6 +20,24 @@
 
                 scope.$watch('otherModelValue', function () {
                     ngModel.$validate();
+                });
+            }
+        };
+    }
+
+    function errSrc() {
+        return {
+            link: function (scope, element, attrs) {
+                scope.$watch(function () {
+                    return attrs.ngSrc;
+                }, function (value) {
+                    if (!value) {
+                        element.attr('src', attrs.errSrc);
+                    }
+                });
+
+                element.bind('error', function () {
+                    element.attr('src', attrs.errSrc);
                 });
             }
         };

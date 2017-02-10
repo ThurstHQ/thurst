@@ -24,7 +24,8 @@
                 });
             },
             warn: function (text) {
-                this.show('Warning!', text);
+                this.hide();
+                this.show('Timeout Error', text);
             },
             hide: function () {
                 $ionicLoading.hide();

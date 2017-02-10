@@ -4,8 +4,8 @@
         .module('app.profile')
         .controller('ProfileCtrl', ProfileCtrl);
 
-    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope', 'Settings'];
-    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope, Settings) {
+    ProfileCtrl.$inject = ['profileService', 'cameraService', '$ionicActionSheet', 'localStorageService', 'uploadService', '$rootScope', 'Settings', 'analyticService'];
+    function ProfileCtrl(profileService, cameraService, $ionicActionSheet, localStorageService, uploadService, $rootScope, Settings, analyticService) {
         var vm = this;
 
         vm.profile = localStorageService.get('profile');
@@ -38,7 +38,8 @@
                     }
                     cameraService.getPicture(options).then(function (imageData) {
                         hideSheet();
-                        uploadService.setPhotoPOST({avatar: "data:image/jpeg;base64," + imageData}).then(function (res) {
+                        uploadService.setPhotoPOST({avatar: 'data:image/png;base64,' + imageData}).then(function (res) {
+                            analyticService.trackEvent('profile', 'avatar', 'updated');
                             vm.profile = res;
                         });
                     });
@@ -59,10 +60,11 @@
                 data.coords = [];
             }
             profileService.profilePUT(data).then(function (res) {
+                analyticService.trackEvent('profile', 'info', 'updated');
                 vm.profile = res;
                 initBirthday(res.birthday);
-                $applozic.fn.applozic('reInitialize', {
-                    appId: Settings.applozic_key,
+                window.$applozic.fn.applozic('reInitialize', {
+                    appId: Settings.applozic_key, //jshint ignore:line
                     userId: vm.profile._id,
                     userName: vm.profile.username,
                     imageLink: vm.profile.avatar,

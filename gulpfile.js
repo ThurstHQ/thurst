@@ -1,15 +1,17 @@
 'use strict';
 
-var appName = 'thurst-co';
+var appName = 'pascalium0angular';
 
 var gulp = require('gulp'),
-    $ = require('gulp-load-plugins')(),
-    del = require('del'),
-    browserSync = require('browser-sync').create(),
-    shell = require('shelljs'),
-    argv = require('yargs').argv;
-
+    $ = require('gulp-load-plugins')();
 $.wiredep = require('wiredep').stream;
+var del = require('del');
+var browserSync = require('browser-sync').create();
+var es6 = require('es6-promise').polyfill();
+var shell = require('shelljs');
+var uglify = require('gulp-uglify');
+
+var argv = require('yargs').argv;
 
 var variables = {
     filters: {
@@ -54,9 +56,14 @@ gulp.task('bower', bowerComponents);
 
 gulp.task('build-clean', clean);
 
+var url = require('url');
+var proxy = require('proxy-middleware');
 
 function bSync() {
     var options = {
+        //tunnel: appName,
+        //open: 'tunnel',
+        //host: 'example.com',
         port: 3000,
         files: [
             variables.src.appJs,
@@ -92,6 +99,7 @@ function buildProject(cb) {
                 .src(variables.src.appJs)
                 .pipe($.naturalSort('asc'))
                 .pipe($.angularFilesort()), {
+                // read: false,
                 starttag: '<!-- inject:js -->',
                 addRootSlash: false,
                 addPrefix: '../'
@@ -100,6 +108,7 @@ function buildProject(cb) {
         .pipe($.inject(
             gulp
                 .src(variables.src.tmp + variables.src.components + variables.filters.js), {
+                // read: false,
                 starttag: '<!-- inject:partials -->',
                 addRootSlash: false,
                 addPrefix: '../'
@@ -108,6 +117,7 @@ function buildProject(cb) {
         .pipe($.inject(
             gulp
                 .src(variables.src.tmp + '**/styles.css'), {
+                // read: false,
                 starttag: '<!-- inject:css -->',
                 addRootSlash: false,
                 addPrefix: '../'
@@ -116,6 +126,7 @@ function buildProject(cb) {
         .pipe(assets)
         .pipe($.rev())
         .pipe(jsFilter)
+        // .pipe(uglify())
         .pipe(jsFilter.restore())
         .pipe(cssFilter)
         .pipe($.csso())
@@ -173,6 +184,7 @@ function watchPartials() {
 
     var filesHtml = gulp
         .src(variables.src.app + variables.src.components + variables.filters.html);
+    // .pipe(indexFilter);
 
     var filesJs = gulp
         .src(variables.src.appJs)
@@ -182,6 +194,8 @@ function watchPartials() {
     filesHtml
         .pipe($.cached('compiled-html'))
         .pipe(gulp.dest(variables.src.tmp));
+    // .pipe(indexFilter.restore())
+    // .pipe($.cached('compiled-html'))
 
     return filesJade
         .pipe($.inject(filesJs, {relative: true}))

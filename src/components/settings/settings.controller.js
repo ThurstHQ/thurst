@@ -4,8 +4,8 @@
         .module('app.settings')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['profileService', '$ionicPopup', 'localStorageService', 'changePasswordService'];
-    function SettingsCtrl(profileService, $ionicPopup, localStorageService, changePasswordService) {
+    SettingsCtrl.$inject = ['profileService', '$ionicPopup', 'localStorageService', 'changePasswordService', 'analyticService'];
+    function SettingsCtrl(profileService, $ionicPopup, localStorageService, changePasswordService, analyticService) {
         var vm = this;
         vm.profile = localStorageService.get('profile');
 
@@ -15,6 +15,7 @@
 
         function passwordUpdate(data) {
             changePasswordService.changePasswordPOST(data).then(function (res) {
+                analyticService.trackEvent('settings', 'password', 'updated');
                 if (res.success) {
                     vm.password = {
                         password: '',
@@ -27,6 +28,7 @@
 
         function hideProfile() {
             profileService.profilePUT({invisible: !vm.profile.invisible}).then(function (res) {
+                analyticService.trackEvent('settings', 'visible', !vm.profile.invisible);
                 vm.profile = res;
             });
         }
@@ -36,6 +38,7 @@
                 title: 'Are you sure you want delete account?'
             }).then(function (res) {
                 if (res) {
+                    analyticService.trackEvent('settings', 'account-deleted');
                     profileService.profileDELETE();
                 }
             });

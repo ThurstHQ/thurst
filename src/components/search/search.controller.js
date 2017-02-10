@@ -4,8 +4,8 @@
         .module('app.search')
         .controller('SearchCtrl', SearchCtrl);
 
-    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate'];
-    function SearchCtrl(searchService, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate) {
+    SearchCtrl.$inject = ['searchService', '$scope', '$rootScope', '$ionicModal', 'connectionsService', 'localStorageService', '$ionicListDelegate', 'analyticService'];
+    function SearchCtrl(searchService, $scope, $rootScope, $ionicModal, connectionsService, localStorageService, $ionicListDelegate, analyticService) {
         var vm = this,
             perPage = 10,
             page = 1;
@@ -22,19 +22,22 @@
         vm.doRefresh = doRefresh;
 
         function load(doRefresh) {
-            var data = Object.assign({
+            var data = $.extend({
                 page: page,
                 amount: perPage
             }, vm.filter);
+
             searchService.allGET(data).then(function (res) {
                 if (res) {
+                    var users = (res.users) ? res.users : res;
+                    analyticService.trackEvent('search', 'search', 'found', users.length);
                     if (doRefresh) {
                         vm.list = {};
                     }
-                    angular.forEach(res, function (val) {
+                    angular.forEach(users, function (val) {
                         vm.list[val._id] = val;
                     });
-                    if (res.length < perPage) {
+                    if (users.length < perPage) {
                         vm.moreDataCanBeLoaded = false;
                     } else {
                         page++;
@@ -48,6 +51,7 @@
 
         function add(user) {
             connectionsService.connectionsPOST(user).then(function () {
+                analyticService.trackEvent('search', 'request', 'add');
                 $ionicListDelegate.closeOptionButtons();
                 vm.list[user._id].connectedBy.push(vm.profile._id);
             });
@@ -55,6 +59,7 @@
 
         function remove(id) {
             connectionsService.connectionsDELETE(id).then(function () {
+                analyticService.trackEvent('search', 'request', 'delete');
                 $ionicListDelegate.closeOptionButtons();
                 vm.list[id].connectedBy.splice(vm.profile._id, 1);
             });

@@ -4,9 +4,9 @@
         .module('app.config')
         .factory('userService', userService);
 
-    userService.$inject = ['Restangular', 'notificationsService', 'Settings'];
+    userService.$inject = ['Restangular', 'notificationsService'];
 
-    function userService(Restangular, notificationsService, Settings) {
+    function userService(Restangular, notificationsService) {
         return {
             user: Restangular.service('api/user'),
             userGET: function (data) {

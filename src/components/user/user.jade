@@ -4,7 +4,8 @@ ion-view
         ion-nav-title {{vm.user.username}}
     ion-content.profile-content.padding
         .wrapper-avatar
-            .avatar(style="{{vm.user.avatar ? 'background-image:url('+vm.user.avatar+')' : 'background-image:url(assets/images/avatar.png)'}}")
+            img.avatar(ng-src="{{vm.user.avatar || 'assets/images/avatar.png'}}", err-src="assets/images/avatar.png")
+            //.avatar(style="{{vm.user.avatar ? 'background-image:url('+vm.user.avatar+')' : 'background-image:url(assets/images/avatar.png)'}}")
         .card(ng-if="vm.user.sexuality")
             .item.item-divider Sexuality
             .item {{vm.user.sexuality}}

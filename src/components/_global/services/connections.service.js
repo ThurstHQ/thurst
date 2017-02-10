@@ -4,9 +4,9 @@
         .module('app.config')
         .factory('connectionsService', connectionsService);
 
-    connectionsService.$inject = ['Restangular', 'localStorageService', 'notificationsService', 'Settings'];
+    connectionsService.$inject = ['Restangular', 'localStorageService', 'notificationsService'];
 
-    function connectionsService(Restangular, localStorageService, notificationsService, Settings) {
+    function connectionsService(Restangular, localStorageService, notificationsService) {
         return {
             connections: Restangular.service('api/connections'),
             data: localStorageService.get('connections') || {},
