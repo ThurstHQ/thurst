@@ -166,7 +166,7 @@ exports.restorePassword = function (req, res) {
                 newuser.password = undefined;
                 var token = jwt.encode(newuser, config.getEnv().secret);
                 if (user.verified) {
-                    return res.json({success: true, verified: newuser.verified, token: 'JWT ' + token, user: newuser});
+                    return res.json({success: true, verify: newuser.verified, token: 'JWT ' + token});
                 } else {
                     var verificationCode = randomstring.generate({length: 4});
                     var newMail = {
@@ -176,7 +176,7 @@ exports.restorePassword = function (req, res) {
                     };
                     console.log(newMail);
                     sendEmail(newMail.to, newMail.subject, newMail.text);
-                    return res.json({success: true, verified: false});
+                    return res.json({success: true, verify: false});
                 }
             });
         });
