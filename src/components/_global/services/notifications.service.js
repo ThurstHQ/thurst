@@ -20,7 +20,8 @@
                 $ionicLoading.hide();
                 $ionicPopup.alert({
                     title: title,
-                    template: text
+                    template: text,
+                    okType: 'button-calm'
                 });
             },
             warn: function (text) {
