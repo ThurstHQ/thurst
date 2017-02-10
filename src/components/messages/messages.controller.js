@@ -22,7 +22,6 @@
         function load() {
             window.$applozic.fn.applozic('getMessages', {
                 callback: function getUserDetail(response) {
-                    console.log(response);
                     if (response.status === 'success') {
                         angular.forEach(response.data.userDetails, function (val, key) {
                             angular.forEach(response.data.message, function (mval) {

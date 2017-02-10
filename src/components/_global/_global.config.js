@@ -30,17 +30,7 @@
         $ionicConfigProvider.tabs.position('bottom');
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.views.swipeBackEnabled(false);
-
         RestangularProvider.setBaseUrl(Settings.url);
-
-        // AnalyticsProvider.setAccount('UA-89420914-1');
-        // AnalyticsProvider.setHybridMobileSupport(true);
-        // AnalyticsProvider.logAllCalls(true);
-        // AnalyticsProvider.setAccount({
-        //     tracker: 'UA-89420914-1',
-        //     trackEvent: true
-        // });
-        // AnalyticsProvider.setPageEvent('$stateChangeSuccess');
     }
 
     runAppConfig.$inject = [

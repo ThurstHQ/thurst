@@ -10,9 +10,11 @@
         return {
             verify: function (res, email) {
                 if (res.verify) {
+                    analyticService.trackEvent('login', 'status', 'success');
                     localStorageService.set('token', res.token);
                     $rootScope.$emit('login', res.token);
                 } else {
+                    analyticService.trackEvent('login', 'status', 'verification');
                     notificationsService.hide();
                     $state.go('verification', {id: res.id, email: email});
                 }
@@ -21,7 +23,6 @@
                 var me = this;
                 notificationsService.loading();
                 return Restangular.one('api/authenticate').post(null, data).then(function (res) {
-                    analyticService.trackEvent('login', 'status', 'success');
                     me.verify(res, data.email);
                     return res;
                 }, function () {

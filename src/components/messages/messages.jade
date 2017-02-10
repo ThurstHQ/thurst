@@ -4,8 +4,8 @@
         ion-refresher(pulling-text="Pull to refresh..." on-refresh="vm.load()")
         ion-list
             ion-item.item-content.item-icon-right(ng-repeat="item in vm.list.userDetails", ng-click="vm.message(item.userId)")
-                img.avatar(ng-src="{{item.imageLink || 'assets/images/avatar.png'}}", err-src="assets/images/avatar.png", ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
-                //.avatar(style="{{item.imageLink ? 'background-image:url('+item.imageLink+')' : 'background-image:url(assets/images/avatar.png)'}}" ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
+                //img.avatar(ng-src="{{item.imageLink || 'assets/images/avatar.png'}}", err-src="assets/images/avatar.png", ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
+                .avatar(style="{{item.imageLink ? 'background-image:url('+item.imageLink+')' : 'background-image:url(assets/images/avatar.png)'}}" ng-click="$event.stopPropagation()", ui-sref="app.user({id:item.userId})")
                 .wrapper-text
                     h2 {{item.userName || 'No name'}}
                         b(ng-if="item.unreadCount") &nbsp;(new messages)
