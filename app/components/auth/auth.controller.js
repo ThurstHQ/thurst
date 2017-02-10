@@ -67,7 +67,8 @@ exports.signUp = function (req, res, next) {
                             });
                         } else {
                             var token = jwt.encode(user, config.getEnv().secret);
-                            res.json({success: true, verify: true, token: 'JWT ' + token});
+                            user.password = undefined;
+                            res.json({success: true, verify: true, token: 'JWT ' + token, user: user});
                         }
                     } else {
                         res.status(403).send({success: false, "message": 'Authentication failed. Wrong password.'});
@@ -89,13 +90,13 @@ exports.verify = function (req, res, next) {
         if (user.verify_token == code) {
             // console.log('that token is correct! Verify the user');
 
-            User.findOneAndUpdate({_id: userId}, {'verified': true, 'verify_token': ''}, function (err, resp) {
+            User.findOneAndUpdate({_id: userId}, {'verified': true, 'verify_token': ''}, {new: true}, function (err, resp) {
                 if (err) return res.status(500).send({'message': err.message});
                 console.log('The user has been verified!');
 
                 var token = jwt.encode(user, config.getEnv().secret);
-
-                return res.json({success: true, verify: true, token: 'JWT ' + token});
+                resp.password = undefined;
+                return res.json({success: true, verify: true, token: 'JWT ' + token, user: resp});
             });
         } else {
             return res.status(401).json({ 'message': 'The code is wrong! User email not confirmed.' })
@@ -131,11 +132,8 @@ exports.forgotEmail = function (req, res, next) {
             user.save();
             var newMail = {
                 to: user.email,
-                subject: 'Panic-app: Code for restore password',
-                text: `<div style="background-color:#205f8a;padding:20px;justify-content: space-between;align-items: center;"><img src="http://212.150.158.37:8085/assets/images/mailogo.png" width="20%" alt="Logo" />
-<p style="color: #fff; float: right;">איפוס סיסמה</p>
-</div>
-<div style="padding: 20px; text-align: right;">:מספר הקוד שלך<br>${ verificationCode }</div>`
+                subject: 'Thurst: Code for restore password',
+                text: `Code for restore password: ${ verificationCode }`
             };
             sendEmail(newMail.to, newMail.subject, newMail.text);
             res.json({success: true, "message": "Check your e-mail please."});
@@ -150,8 +148,6 @@ exports.forgotCode = function (req, res) {
     if (req.body.code && req.body.code !== "") {
         User.findOne({forgotPassCode: req.body.code}, function (err, user) {
             if (err) return res.status(500).json({success: false, "message": "Code not found in database"});
-            var token = jwt.encode(user, config.getEnv().secret);
-
             return res.json({success: true});
         });
     } else {
@@ -172,16 +168,11 @@ exports.restorePassword = function (req, res) {
                 if (user.verified) {
                     return res.json({success: true, verified: newuser.verified, token: 'JWT ' + token, user: newuser});
                 } else {
-                    var verificationToken = randomstring.generate({length: 4});
+                    var verificationCode = randomstring.generate({length: 4});
                     var newMail = {
                         to: newuser.email,
-                        subject: 'Welcome to panicApp',
-                        text: `<div style="background-color: #205f8a; padding: 20px; display: flex; align-items: center; justify-content: space-between;"><img src="http://212.150.158.37:8085/assets/images/mailogo.png" width="20%" alt="Logo" />
-<p style="color: #fff;">הרשמה לאפליקציה</p>
-</div>
-<div style="padding: 20px; text-align: right;">!הרשמתך לאפליקציה הסתיימה בהצלחה, ${newuser.firstName + ' '} שלום
-<br /> .אל מנת להפעיל את האפליקציה יש להכניס את הקוד
-<br />` + verificationToken + `:מספר הקוד שלך</div>`
+                        subject: 'Welcome to Thurst',
+                        text: `Code for restore password: ${ verificationCode }`
                     };
                     console.log(newMail);
                     sendEmail(newMail.to, newMail.subject, newMail.text);
