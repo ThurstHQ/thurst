@@ -7,7 +7,6 @@
         ion-refresher(pulling-text="Pull to refresh..." on-refresh="vm.doRefresh()")
         ion-list
             ion-item(ng-repeat="item in vm.list", ui-sref="app.user({id:item._id})")
-                //img.avatar(ng-src="{{item.avatar || 'assets/images/avatar.png'}}", err-src="assets/images/avatar.png")
                 .avatar(style="{{item.avatar ? 'background-image:url('+item.avatar+')' : 'background-image:url(assets/images/avatar.png)'}}")
                 .wrapper-text
                     h2 {{item.username || 'No name'}}
