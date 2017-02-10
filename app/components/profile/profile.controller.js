@@ -71,24 +71,25 @@ exports.Search = function (req, res, next) {
 
         // send docs per request
         reqAmount = req.query.amount || 10;
-    console.log(reqQuery.page);
-    console.log(reqQuery.amount);
-    console.log(Object.keys(reqQuery).length);
+    // console.log(reqQuery.page);
+    // console.log(reqQuery.amount);
+    // console.log(Object.keys(reqQuery).length);
 
     if (Object.keys(reqQuery).length == 3) {
 
         if (req.user.loc) {
-            console.log('location');
-            console.log(reqQuery.location);
+            // console.log('location');
+            // console.log(reqQuery.location);
             if (reqQuery.location === 'true') {
-                console.log('WRONG!!!');
+                // console.log('WRONG!!!');
                 User.find({
                     coords: {
                         $near: [req.user.coords[0], req.user.coords[1]]
                     },
                     _id: {'$ne': req.user._id},
                     invisible: {'$ne': true},
-                    verified: {'$ne': false}
+                    verified: {'$ne': false},
+                    username: {'$ne': ''}
                 }, {password: 0})
                     .skip(reqPage * 10)
                     .limit(parseInt(reqAmount))
@@ -98,7 +99,7 @@ exports.Search = function (req, res, next) {
                             res.json(users);
                         } else {
                             reqPage = 0;
-                            User.find({coords: []})
+                            User.find({coords: [], username: {'$ne': ''}})
                                 .skip(reqPage * 10)
                                 .limit(parseInt(reqAmount))
                                 .exec(function (err, usersWithoutCoords) {
@@ -112,7 +113,7 @@ exports.Search = function (req, res, next) {
                         }
                     });
             } else {
-                User.find({coords: []})
+                User.find({coords: [], username: {'$ne': ''}})
                     .skip(reqPage * 10)
                     .limit(parseInt(reqAmount))
                     .exec(function (err, usersWithoutCoords) {
@@ -126,7 +127,7 @@ exports.Search = function (req, res, next) {
 
         } else {
             User
-                .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}})
+                .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}, username: {'$ne': ''}})
                 .sort({"created": -1})
                 .skip(reqPage * 10)
                 .limit(parseInt(reqAmount))
@@ -164,13 +165,13 @@ exports.Search = function (req, res, next) {
             };
             queryArr.push(separateObj);
         }
-        console.log('User');
-        console.log(req.user.email);
-        console.log('Advanced');
-        console.log(queryArr);
+        // console.log('User');
+        // console.log(req.user.email);
+        // console.log('Advanced');
+        // console.log(queryArr);
 
         User
-            .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}}, {
+            .find({_id: {'$ne': req.user._id}, invisible: {'$ne': true}, verified: {'$ne': false}, username: {'$ne': ''}}, {
                 password: 0,
                 verify_token: 0
             })
